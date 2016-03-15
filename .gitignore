@@ -1,0 +1,12 @@
+.classpath
+.project
+.settings/
+target/
+*.iml
+*.ipr
+*.iws
+/test-output
+.idea
+src/test/resources/commons-logging.properties
+src/test/.DS_Store
+.envrc
