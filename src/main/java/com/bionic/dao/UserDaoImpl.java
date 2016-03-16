@@ -15,4 +15,13 @@ public class UserDaoImpl implements UserDao {
     public User findByUsername(String username) {
         return entityManager.find(User.class, username);
     }
+
+	@Override
+	public void processUser(User user) {
+		if (user.getId()==0){
+			entityManager.persist(user);
+		}else{
+			entityManager.merge(user);
+		}	
+	}	
 }
