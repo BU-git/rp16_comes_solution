@@ -81,6 +81,11 @@
             <version>${spring-framework.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.integration</groupId>
+            <artifactId>spring-integration-mail</artifactId>
+            <version>${spring-framework.version}</version>
+        </dependency>
 
         <!-- Spring Security -->
         <dependency>
@@ -210,7 +215,11 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.38</version>
         </dependency>
-
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.6-rc1</version>
+        </dependency>
     </dependencies>
 
     <build>
