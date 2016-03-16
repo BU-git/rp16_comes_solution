@@ -9,6 +9,9 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import javax.annotation.Resource;
 import java.util.Properties;
 
+/**
+ * @author taras.yaroshchuk
+ */
 @Configuration
 @PropertySource("classpath:mail.properties")
 public class MailConfig {
