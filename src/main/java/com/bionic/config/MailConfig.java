@@ -1,6 +1,5 @@
 package com.bionic.config;
 
-import com.bionic.service.MailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -41,11 +40,5 @@ public class MailConfig {
         javaMailSender.setJavaMailProperties(props);
 
         return javaMailSender;
-    }
-
-
-    @Bean
-    public MailService mail(){
-        return new MailService();
     }
 }
