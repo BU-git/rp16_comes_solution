@@ -19,11 +19,16 @@ public class UserServiceImpl implements UserService {
         return userDao.findByUsername(username);
     }
 
-	@Transactional
+    @Override
+    public User findById(int id) {
+        return userDao.findById(id);
+    }
+
+    @Transactional
 	public void processUser(User user) {
 		ShaPasswordEncoder encoder = new ShaPasswordEncoder();
         String hashedPass = encoder.encodePassword(user.getPassword(), user.getUsername());
-		user.setPassword(hashedPass);		
+		user.setPassword(hashedPass);
 	}
     
 

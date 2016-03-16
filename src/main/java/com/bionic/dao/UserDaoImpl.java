@@ -22,6 +22,11 @@ public class UserDaoImpl implements UserDao {
 			entityManager.persist(user);
 		}else{
 			entityManager.merge(user);
-		}	
-	}	
+		}
+	}
+
+    @Override
+    public User findById(int id) {
+        return entityManager.find(User.class, id);
+    }
 }

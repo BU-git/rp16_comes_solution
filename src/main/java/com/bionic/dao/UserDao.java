@@ -11,4 +11,6 @@ public interface UserDao {
 
     public User findByUsername(String username);
     public void processUser(User user);
+
+    User findById(int id);
 }

@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MainConfig.class);
         UserService userService = context.getBean(UserService.class);
-        User u1 = userService.findByUsername("pasha");
+        User u1 = userService.findById(1);
         System.out.println("password = " + u1.getPassword());
 
 
