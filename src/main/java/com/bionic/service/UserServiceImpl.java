@@ -1,14 +1,12 @@
 package com.bionic.service;
 
+import com.bionic.dao.JobDao;
 import com.bionic.dao.UserDao;
+import com.bionic.model.Job;
 import com.bionic.model.User;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import java.util.List;
 
 @Service
@@ -17,6 +15,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private JobDao jobDao;
 
     @Override
     public User addUser(User user) {
@@ -48,4 +48,7 @@ public class UserServiceImpl implements UserService {
     public User findById(int id) {
         return userDao.findOne(id);
     }
+
+    @Override
+    public Job findJobById(int id) { return jobDao.findById(id); }
 }
