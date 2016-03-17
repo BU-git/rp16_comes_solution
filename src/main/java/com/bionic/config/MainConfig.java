@@ -16,7 +16,7 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableJpaRepositories("com.bionic.dao")
 @EnableTransactionManagement(proxyTargetClass = true)
 @Import({PersistenceConfig.class, MailConfig.class})
-@ComponentScan(basePackages = {"com.bionic.dao", "com.bionic.model", "com.bionic.service", "com.bionic.controllers"})
+@ComponentScan(basePackages = {"com.bionic.dao", "com.bionic.model", "com.bionic.service", "com.bionic.controllers","com.bionic.config"})
 public class MainConfig extends WebMvcConfigurerAdapter {
 
 

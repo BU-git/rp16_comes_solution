@@ -1,23 +1,25 @@
 package com.bionic;
 
 import com.bionic.config.MainConfig;
+import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.model.Job;
 import com.bionic.model.User;
-import com.bionic.model.WorkSchedule;
 import com.bionic.service.MailService;
 import com.bionic.service.UserService;
-import com.bionic.service.WorkScheduleService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 import java.util.Random;
 
 public class Main {
+    @Autowired
+    private static BCryptPasswordEncoder passwordEncoder;
+
     @SuppressWarnings("resource")
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MainConfig.class);
         UserService userService = context.getBean(UserService.class);
-        WorkScheduleService workScheduleService = context.getBean(WorkScheduleService.class);
         User u1 = userService.findById(3);
         System.out.println("password = " + u1.getPassword());
         System.out.println("Employer's name = " + u1.getEmployer().getName());
@@ -31,12 +33,13 @@ public class Main {
 
         String name=new String("test@test.com");
         User u2 = userService.findByUsername(name);
-        u2.setId(5);
-        if (userService.findByUsername(name).getId()==0) {
-            userService.addUser(u2);
-        } else {
-            System.out.println("User exists");
-        }
+
+
+          try {
+              userService.addUser(u2);
+          }catch (UserExistsException e){
+              System.out.println(e.getMessage());
+          }
 
 
         //workschedule

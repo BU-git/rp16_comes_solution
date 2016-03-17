@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import com.bionic.service.UserDetailServiceImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * @author vitalii.levash
@@ -27,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailService).passwordEncoder(getShaPasswordEncoder());
+		auth.userDetailsService(userDetailService).passwordEncoder(getPasswordEncoder());
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 	}
 
 	@Bean
-	public ShaPasswordEncoder getShaPasswordEncoder() {
-		return new ShaPasswordEncoder();
+	public BCryptPasswordEncoder getPasswordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 }
