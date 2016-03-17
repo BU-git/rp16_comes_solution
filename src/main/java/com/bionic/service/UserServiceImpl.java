@@ -3,23 +3,37 @@ package com.bionic.service;
 import com.bionic.dao.JobDao;
 import com.bionic.dao.UserDao;
 import com.bionic.model.Job;
+import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author vitalii.levash
+ * @author Dima Budko
+ */
+
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private UserDao userDao;
     @Autowired
     private JobDao jobDao;
 
-    @Override
-    public User addUser(User user) {
+
+    public User addUser(User user) throws  UserExistsException {
+        if (findByUsername(user.getEmail())!=null){
+            throw new UserExistsException(user.getEmail());
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userDao.saveAndFlush(user);
         return savedUser;
     }
