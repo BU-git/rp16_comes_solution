@@ -1,7 +1,8 @@
 package com.bionic.model;
 
+import com.bionic.model.dict.UserRoleEnum;
+
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,7 @@ public class User {
     @Column(name = "userEmail")
     private String email;
     @Column(name = "userPassword")
-    @Size(max = 20)
+    @Size(max = 60)
     private String password;
     private String firstName;
     private String lastName;
@@ -43,6 +44,10 @@ public class User {
     @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="workScheduleId")
     private WorkSchedule workSchedule;
+
+    @Column(name = "role")
+    @Enumerated(EnumType.ORDINAL)
+    private UserRoleEnum role;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "employerId")
@@ -178,5 +183,13 @@ public class User {
 
     public void setPasswordExpire(Date passwordExpire) {
         this.passwordExpire = passwordExpire;
+    }
+
+    public UserRoleEnum getRole() {
+        return role;
+    }
+
+    public void setRole(UserRoleEnum role) {
+        this.role = role;
     }
 }
