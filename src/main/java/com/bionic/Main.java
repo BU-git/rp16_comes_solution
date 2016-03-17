@@ -4,9 +4,8 @@ import com.bionic.config.MainConfig;
 import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.model.Job;
 import com.bionic.model.User;
-import com.bionic.model.WorkSchedule;
-import com.bionic.service.MailService;
 import com.bionic.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

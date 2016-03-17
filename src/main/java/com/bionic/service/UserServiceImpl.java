@@ -2,12 +2,13 @@ package com.bionic.service;
 
 import com.bionic.dao.JobDao;
 import com.bionic.dao.UserDao;
-import com.bionic.model.Job;
 import com.bionic.exception.auth.impl.UserExistsException;
+import com.bionic.model.Job;
 import com.bionic.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
