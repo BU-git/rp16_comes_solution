@@ -1,5 +1,6 @@
 package com.bionic.controllers;
 
+import com.bionic.model.forms.Login;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -24,24 +25,21 @@ public class RootController {
     public String loginPageNavigation(ModelMap map){
 
 
+        map.addAttribute("Login",new Login());
         return "login";
     }
+
+//    @RequestMapping(value = "/",method = RequestMethod.GET)
+//    public String index(ModelMap map){
+//
+//
+//        return "index";
+//    }
 
 
 
 
     //Class to get all input fields in one entity
-    private class Login{
-        String login,password;
-
-        @Override
-        public String toString() {
-            return "Login{" +
-                    "login='" + login + '\'' +
-                    ", password='" + password + '\'' +
-                    '}';
-        }
-    }
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public String loginProceed(@ModelAttribute("Login")
@@ -52,7 +50,8 @@ public class RootController {
         if(result.hasErrors()) return "login";
 
         System.out.println(login.toString());
-        return "index";
+
+        return "redirect:/main";
     }
 
     @RequestMapping(value = "/register",method = RequestMethod.GET)
@@ -60,6 +59,14 @@ public class RootController {
 
 
         return "register";
+    }
+
+    @RequestMapping(value = "/main", method = RequestMethod.GET)
+    public String mainPageNav(ModelMap map){
+
+
+
+        return "main_page";
     }
 
 
