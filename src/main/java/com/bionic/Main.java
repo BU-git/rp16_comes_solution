@@ -56,8 +56,11 @@ public class Main {
         workScheduleService.delete(ws2.getId());
         System.out.println(workScheduleService.getById(ws2.getId()));
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 2bfa7983e44f1788f3bf5864a28599552cc0e236
 
 
 //        MailService mail = context.getBean(MailService.class);
