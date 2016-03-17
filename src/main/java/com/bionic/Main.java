@@ -18,11 +18,22 @@ public class Main {
         User u1 = userService.findById(3);
         System.out.println("password = " + u1.getPassword());
         System.out.println("Employer's name = " + u1.getEmployer().getName());
+
         List<User> list = userService.getAll();
         for (User user : list) {
             System.out.println("Test list" + user.getFirstName());
         }
 
+
+
+        String name=new String("test@test.com");
+        User u2 = userService.findByUsername(name);
+        u2.setId(4);
+        if (userService.findByUsername(name).getId()==0) {
+            userService.addUser(u2);
+        } else {
+            System.out.println("User exists");
+        }
 
 
 
