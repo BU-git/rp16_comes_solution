@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Import({PersistenceConfig.class, MailConfig.class})
 @EnableJpaRepositories("com.bionic.dao")
 @EnableTransactionManagement(proxyTargetClass = true)
-@ComponentScan(basePackages = {"com.bionic.dao", "com.bionic.model", "com.bionic.service"})
+@ComponentScan(basePackages = {"com.bionic.dao", "com.bionic.model", "com.bionic.service","com.bionic.config"})
 
 public class MainConfig {
 }

@@ -1,6 +1,7 @@
 package com.bionic.model;
 
 import com.bionic.model.dict.UserRoleEnum;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -24,6 +25,7 @@ public class User {
     private Integer id;
 
     @Column(name = "userEmail")
+    @Email(message = "Your email is incorect")
     private String email;
     @Column(name = "userPassword")
     @Size(max = 60)
