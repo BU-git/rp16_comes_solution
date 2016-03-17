@@ -56,7 +56,7 @@ public class Main {
         workScheduleService.delete(ws2.getId());
         System.out.println(workScheduleService.getById(ws2.getId()));
 
-<<<<<<< HEAD
+
 
 
 =======
