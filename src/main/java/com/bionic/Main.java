@@ -7,6 +7,7 @@ import com.bionic.service.MailService;
 import com.bionic.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.util.List;
 import java.util.Random;
 
 public class Main {
@@ -17,9 +18,11 @@ public class Main {
         User u1 = userService.findById(3);
         System.out.println("password = " + u1.getPassword());
         System.out.println("Employer's name = " + u1.getEmployer().getName());
-        User u2 = userService.findByUsername("test@test.com");
-        u2.setId(4);
-        userService.addUser(u2);
+        List<User> list = userService.getAll();
+        for (User user : list) {
+            System.out.println("Test list" + user.getFirstName());
+        }
+
 
 
 

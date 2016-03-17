@@ -14,21 +14,6 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-//    public User findByUsername(String username) {
-//        return userDao.findByUsername(username);
-//    }
-//
-//    @Override
-//    public User findById(int id) {
-//        return userDao.findById(id);
-//    }
-//
-//    @Transactional
-//	public void processUser(User user) {
-//		ShaPasswordEncoder encoder = new ShaPasswordEncoder();
-//        String hashedPass = encoder.encodePassword(user.getPassword(), user.getEmail());
-//		user.setPassword(hashedPass);
-//	}
 
     @Autowired
     private UserDao userDao;
