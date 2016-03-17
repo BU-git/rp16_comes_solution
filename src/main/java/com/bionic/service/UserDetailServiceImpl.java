@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.bionic.service;
 
@@ -33,7 +33,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		 * Set Default Role to user
 		 */
 		roles.add(new SimpleGrantedAuthority("USER"));
-		UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(),
+		UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getEmail(),
 				user.getPassword(), roles);
 		return userDetails;
 	}

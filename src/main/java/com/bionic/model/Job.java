@@ -3,23 +3,26 @@
  */
 package com.bionic.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author vitalii.levash
  *
  */
 @Entity
+@Table(name = "jobs")
 public class Job {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "jobId")
 	private int id;
 	private String jobName;
+
+
+
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "jobs")
+	private List<User> users;
 
 	public Job() {
 	}
@@ -40,4 +43,11 @@ public class Job {
 		this.jobName = jobName;
 	}
 
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
 }

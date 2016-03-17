@@ -20,13 +20,14 @@ public class Employer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="employerId")
-	private int id;
+	private Integer id;
+	@Column(name="employerName")
 	private String name;
 	
 	public Employer(){ }
 
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 

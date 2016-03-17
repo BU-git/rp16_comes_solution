@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests().antMatchers("/**").access("hasRole('USER') or hasRole('ADMIN')")		                        
+		http.authorizeRequests().antMatchers("/**").access("hasRole('USER') or hasRole('ADMIN')")
 		                        .antMatchers("/admin**").access("hasRole('ADMIN')")
 		                        .and().formLogin().and().exceptionHandling()
 				.accessDeniedPage("/403");
@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 				.usernameParameter("j_username").passwordParameter("j_password").permitAll();
 
 		http.logout().permitAll().logoutUrl("/logout").logoutSuccessUrl("/login?logout").invalidateHttpSession(true);
-        
+
 	}
 
 	@Bean

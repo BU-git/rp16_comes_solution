@@ -1,37 +1,78 @@
 package com.bionic.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 
  * @author vitalii.levash
- * @version 0.2
+ * @author Dima Budko
+ * @version 0.3
  */
 
 @Entity
-@Table(name="userstest")
+@Table(name="users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Max(20)
-    private String username;
+    @Column(name = "userId")
+    private Integer id;
+
+    @Column(name = "userEmail")
+    private String email;
+    @Column(name = "userPassword")
+    @Size(max = 20)
     private String password;
+    private String firstName;
+    private String lastName;
+    private String insertion;
+    private String sex;
+    private boolean fourWeekPayOff;
+    private boolean zeroHours;
+    private int contractHours;
+    private boolean enabled;
+    @Temporal(TemporalType.DATE)
+    private Date birthDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date passwordExpire;
 
-    private String enabled;
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="workScheduleId")
+    private WorkSchedule workSchedule;
 
-    public String getUsername() {
-        return username;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "employerId")
+    private Employer employer;
+
+    @ManyToMany
+    @JoinTable(name="users_to_jobs",
+            joinColumns = @JoinColumn(name="userId", referencedColumnName="userId"),
+            inverseJoinColumns = @JoinColumn(name="jobId", referencedColumnName="jobId")
+    )
+    private List<Job> jobs;
+
+
+    public User() {
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -42,20 +83,100 @@ public class User {
         this.password = password;
     }
 
-    public String getEnabled() {
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getInsertion() {
+        return insertion;
+    }
+
+    public void setInsertion(String insertion) {
+        this.insertion = insertion;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public boolean isFourWeekPayOff() {
+        return fourWeekPayOff;
+    }
+
+    public void setFourWeekPayOff(boolean fourWeekPayOff) {
+        this.fourWeekPayOff = fourWeekPayOff;
+    }
+
+    public boolean isZeroHours() {
+        return zeroHours;
+    }
+
+    public void setZeroHours(boolean zeroHours) {
+        this.zeroHours = zeroHours;
+    }
+
+    public int getContractHours() {
+        return contractHours;
+    }
+
+    public void setContractHours(int contractHours) {
+        this.contractHours = contractHours;
+    }
+
+    public Employer getEmployer() {
+        return employer;
+    }
+
+    public void setEmployer(Employer employer) {
+        this.employer = employer;
+    }
+
+
+    public List<Job> getJobs() {
+        return jobs;
+    }
+
+    public void setJobs(List<Job> jobs) {
+        this.jobs = jobs;
+    }
+
+    public boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(String enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
-	public int getId() {
-		return id;
-	}
+    public Date getBirthDate() {
+        return birthDate;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
-    
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public Date getPasswordExpire() {
+        return passwordExpire;
+    }
+
+    public void setPasswordExpire(Date passwordExpire) {
+        this.passwordExpire = passwordExpire;
+    }
 }
