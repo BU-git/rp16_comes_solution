@@ -13,6 +13,9 @@ public class WorkSchedule {
     @Column(name = "workScheduleId")
     private Integer id;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationTime;
 
@@ -33,6 +36,14 @@ public class WorkSchedule {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getCreationTime() {
@@ -98,4 +109,5 @@ public class WorkSchedule {
     public void setSaturday(String saturday) {
         this.saturday = saturday;
     }
+
 }
