@@ -14,7 +14,9 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableTransactionManagement(proxyTargetClass = true)
 @Import({PersistenceConfig.class, MailConfig.class})
 @EnableAspectJAutoProxy
-@ComponentScan(basePackages = {"com.bionic.dao", "com.bionic.model", "com.bionic.service", "com.bionic.controllers","com.bionic.config","com.bionic.logging"})
+@ComponentScan(basePackages = {"com.bionic.dao", "com.bionic.model",
+                               "com.bionic.service", "com.bionic.controllers",
+                               "com.bionic.config","com.bionic.logging"})
 public class MainConfig extends WebMvcConfigurerAdapter {
 
 

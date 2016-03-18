@@ -1,5 +1,6 @@
 package com.bionic.config;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
@@ -13,12 +14,13 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
  * This class is a replacement for WEB xml descriptor in java based configuration
  *
  */
+@Order(1)
 public class WebInitializer  extends
         AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { MainConfig.class };
+        return new Class[] { PersistenceConfig.class,SecurityConfig.class };
     }
 
     @Override

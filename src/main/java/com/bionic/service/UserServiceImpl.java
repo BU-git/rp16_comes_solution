@@ -35,6 +35,7 @@ public class UserServiceImpl implements UserService {
             throw new UserExistsException(user.getEmail());
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         User savedUser = userDao.saveAndFlush(user);
         return savedUser;
     }
