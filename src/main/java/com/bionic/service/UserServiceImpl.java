@@ -3,6 +3,7 @@ package com.bionic.service;
 import com.bionic.dao.JobDao;
 import com.bionic.dao.UserDao;
 import com.bionic.exception.auth.impl.UserExistsException;
+import com.bionic.exception.auth.impl.UserNotExistsException;
 import com.bionic.model.Job;
 import com.bionic.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +75,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void resetPassword(String email) {
+    public void resetPassword(String email) throws UserNotExistsException {
         User user = userDao.findByEmail(email);
         if (!(user == null)) {
             int tempPasswordLength = 10;
@@ -96,12 +97,12 @@ public class UserServiceImpl implements UserService {
             message += "Password is valid for 1 hour.";
             ms.sendMail(sender, receiver, subject, message);
 
-            user.setPassword(tempPassword);
+            user.setPassword(passwordEncoder.encode(tempPassword));
             user.setPasswordExpire(new Date(System.currentTimeMillis() + 60 * 60 * 1000));
             userDao.save(user);
 
         } else {
-            System.out.println("User with this email does not exist");
+            throw new UserNotExistsException(email);
         }
     }
 }

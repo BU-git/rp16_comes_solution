@@ -1,5 +1,6 @@
 package com.bionic.service;
 
+import com.bionic.exception.auth.impl.UserNotExistsException;
 import com.bionic.model.Job;
 import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.model.User;
@@ -18,6 +19,6 @@ public interface UserService {
     List<User> getAll();
     Job findJobById(int id);
 
-    void resetPassword(String email);
+    void resetPassword(String email) throws UserNotExistsException;
 
 }
