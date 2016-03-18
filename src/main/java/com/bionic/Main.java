@@ -4,17 +4,11 @@ import com.bionic.config.MainConfig;
 import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.model.Job;
 import com.bionic.model.User;
-import com.bionic.model.WorkSchedule;
-import com.bionic.service.MailService;
 import com.bionic.service.UserService;
 import com.bionic.service.WorkScheduleService;
-import com.bionic.service.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.util.List;
 
 public class Main {
     
@@ -28,19 +22,12 @@ public class Main {
 
         UserService userService = context.getBean(UserService.class);
         WorkScheduleService workScheduleService = context.getBean(WorkScheduleService.class);
-        User u1 = userService.findById(3);
-        System.out.println("password = " + u1.getPassword());
-        System.out.println("Employer's name = " + u1.getEmployer().getName());
 
-        List<User> list = userService.getAll();
-        for (User user : list) {
-            System.out.println("Test list" + user.getFirstName());
-        }
 
         Job testJob = userService.findJobById(1);
         System.out.println(testJob.getJobName());
 
-        String name=new String("test@test.com");
+        String name= "test@test.com";
         User u2 = userService.findByUsername(name);
 
 
@@ -67,12 +54,7 @@ public class Main {
 //        workScheduleService.delete(ws2.getId());
 //        System.out.println(workScheduleService.getById(ws2.getId()));
 
-//        MailService mail = context.getBean(MailService.class);
-//        String sender = "comes.solutions@gmail.com";
-//        String receiver = "comes.solutions@gmail.com";
-//        Random random = new Random();
-//        mail.sendMail(sender, receiver, "Test", "Hello! " + random.nextInt(1000) );
-//        System.out.println("Done!");
+
     }
 
 }
