@@ -1,5 +1,6 @@
 package com.bionic.config;
 
+import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.eclipse.persistence.jpa.PersistenceProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 @Configuration
 @EnableTransactionManagement
@@ -55,6 +57,9 @@ public class PersistenceConfig {
     private Map<String, Object> additionalProperties() {
         Map<String, Object> properties = new HashMap<String, Object>();
         properties.put("eclipselink.weaving", "false");
+        properties.put("eclipselink.logging.level", "WARNING");
+        properties.put("eclipselink.logging.level.sql", "WARNING");
+
         return properties;
     }
 

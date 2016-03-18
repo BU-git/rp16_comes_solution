@@ -2,10 +2,12 @@ package com.bionic;
 
 import com.bionic.config.MainConfig;
 import com.bionic.exception.auth.impl.UserExistsException;
-import com.bionic.model.Job;
 import com.bionic.model.User;
+import com.bionic.model.WorkSchedule;
 import com.bionic.service.MailService;
 import com.bionic.service.UserService;
+import com.bionic.service.WorkScheduleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -13,13 +15,17 @@ import java.util.List;
 import java.util.Random;
 
 public class Main {
+    
+
     @Autowired
     private static BCryptPasswordEncoder passwordEncoder;
 
     @SuppressWarnings("resource")
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MainConfig.class);
+
         UserService userService = context.getBean(UserService.class);
+        WorkScheduleService workScheduleService = context.getBean(WorkScheduleService.class);
         User u1 = userService.findById(3);
         System.out.println("password = " + u1.getPassword());
         System.out.println("Employer's name = " + u1.getEmployer().getName());
@@ -58,6 +64,7 @@ public class Main {
         System.out.println("WorkSchedule2 friday new= " + ws2.getFriday());
         workScheduleService.delete(ws2.getId());
         System.out.println(workScheduleService.getById(ws2.getId()));
+
 
 //        MailService mail = context.getBean(MailService.class);
 //        String sender = "comes.solutions@gmail.com";
