@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -96,6 +97,7 @@ public class UserServiceImpl implements UserService {
             ms.sendMail(sender, receiver, subject, message);
 
             user.setPassword(tempPassword);
+            user.setPasswordExpire(new Date(System.currentTimeMillis() + 60 * 60 * 1000));
             userDao.save(user);
 
         } else {
