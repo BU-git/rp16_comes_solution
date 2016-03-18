@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author vitalii.levash
@@ -50,6 +51,8 @@ public class UserServiceImpl implements UserService {
         return userDao.findByName(name);
     }
 
+    public User findByUserEmail(String email) { return userDao.findByEmail(email); }
+
     @Override
     public User editUser(User User) {
         return userDao.saveAndFlush(User);
@@ -67,4 +70,36 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Job findJobById(int id) { return jobDao.findById(id); }
+
+    @Override
+    @Transactional
+    public void resetPassword(String email) {
+        User user = userDao.findByEmail(email);
+        if (!(user == null)) {
+            int tempPasswordLength = 10;
+            String letters = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789";
+            String tempPassword = "";
+            Random rand = new Random(43);
+
+            for (int i=0; i<tempPasswordLength; i++)
+            {
+                int index = (int)(rand.nextDouble()*letters.length());
+                tempPassword += letters.substring(index, index+1);
+            }
+
+            MailService ms = new MailService();
+            String sender = "comes.solutions@gmail.com";
+            String receiver = email;
+            String subject = "Password reset";
+            String message = "Your new temporary password: " + tempPassword + " \n";
+            message += "Password is valid for 1 hour.";
+            ms.sendMail(sender, receiver, subject, message);
+
+            user.setPassword(tempPassword);
+            userDao.save(user);
+
+        } else {
+            System.out.println("User with this email does not exist");
+        }
+    }
 }

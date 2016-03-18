@@ -13,8 +13,11 @@ public interface UserService {
     User addUser(User user) throws UserExistsException;
     void delete(int id);
     User findByUsername(String name);
+    User findByUserEmail(String email);
     User editUser(User user);
     List<User> getAll();
     Job findJobById(int id);
+
+    void resetPassword(String email);
 
 }
