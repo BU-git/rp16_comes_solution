@@ -1,9 +1,10 @@
 package com.bionic.service;
 
+import com.bionic.dao.JobDao;
 import com.bionic.dao.UserDao;
 import com.bionic.exception.auth.impl.UserExistsException;
+import com.bionic.model.Job;
 import com.bionic.model.User;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private JobDao jobDao;
 
 
     public User addUser(User user) throws  UserExistsException {
@@ -60,4 +63,7 @@ public class UserServiceImpl implements UserService {
     public User findById(int id) {
         return userDao.findOne(id);
     }
+
+    @Override
+    public Job findJobById(int id) { return jobDao.findById(id); }
 }

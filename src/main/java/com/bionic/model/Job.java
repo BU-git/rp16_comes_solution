@@ -16,12 +16,13 @@ public class Job {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "jobId")
-	private int id;
+	private Integer id;
+    @Column()
 	private String jobName;
 
 
 
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "jobs")
+//	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "jobs")
 	private List<User> users;
 
 	public Job() {
