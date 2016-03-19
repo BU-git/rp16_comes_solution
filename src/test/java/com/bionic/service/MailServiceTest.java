@@ -1,21 +1,26 @@
 package com.bionic.service;
 
-import com.bionic.config.MainConfig;
+import com.bionic.config.RootConfig;
+import com.bionic.config.WebConfig;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
+import org.springframework.test.context.web.WebAppConfiguration;
 
-import javax.inject.Inject;
 import java.util.Random;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = MainConfig.class)
+@WebAppConfiguration
+@ContextConfiguration(classes = {RootConfig.class, WebConfig.class},
+        loader = AnnotationConfigWebContextLoader.class)
 public class MailServiceTest {
 
-    @Inject
+    @Autowired
     private MailService mailService;
 
     @Ignore

@@ -1,9 +1,7 @@
 package com.bionic.config;
 
-import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.eclipse.persistence.jpa.PersistenceProvider;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -18,13 +16,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 @Configuration
 @EnableJpaRepositories("com.bionic.dao")
-@ComponentScan(basePackages = {"com.bionic.dao", "com.bionic.model",
-        "com.bionic.service", "com.bionic.controllers",
-        "com.bionic.config","com.bionic.logging"})
 @EnableTransactionManagement
 public class PersistenceConfig {
 
@@ -61,7 +55,7 @@ public class PersistenceConfig {
     }
 
     private Map<String, Object> additionalProperties() {
-        Map<String, Object> properties = new HashMap<String, Object>();
+        Map<String, Object> properties = new HashMap<>();
         properties.put("eclipselink.weaving", "false");
         properties.put("eclipselink.logging.level", "WARNING");
         properties.put("eclipselink.logging.level.sql", "WARNING");

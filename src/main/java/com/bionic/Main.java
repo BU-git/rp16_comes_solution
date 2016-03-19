@@ -1,10 +1,9 @@
 package com.bionic;
 
-import com.bionic.config.MainConfig;
+import com.bionic.config.RootConfig;
 import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.model.Job;
 import com.bionic.model.User;
-import com.bionic.model.WorkSchedule;
 import com.bionic.service.UserService;
 import com.bionic.service.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class Main {
 
     @SuppressWarnings("resource")
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MainConfig.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(RootConfig.class);
 
         UserService userService = context.getBean(UserService.class);
         WorkScheduleService workScheduleService = context.getBean(WorkScheduleService.class);
