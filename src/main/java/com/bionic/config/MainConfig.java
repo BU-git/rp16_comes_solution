@@ -3,6 +3,7 @@ package com.bionic.config;
 import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -10,13 +11,9 @@ import org.springframework.web.servlet.view.JstlView;
 
 
 @Configuration
-@EnableJpaRepositories("com.bionic.dao")
-@EnableTransactionManagement(proxyTargetClass = true)
-@Import({PersistenceConfig.class, MailConfig.class})
+@EnableWebMvc
+@ComponentScan("com.bionic.controller")
 @EnableAspectJAutoProxy
-@ComponentScan(basePackages = {"com.bionic.dao", "com.bionic.model",
-                               "com.bionic.service", "com.bionic.controllers",
-                               "com.bionic.config","com.bionic.logging"})
 public class MainConfig extends WebMvcConfigurerAdapter {
 
 

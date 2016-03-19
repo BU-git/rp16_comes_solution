@@ -3,7 +3,9 @@ package com.bionic.config;
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.eclipse.persistence.jpa.PersistenceProvider;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -19,6 +21,10 @@ import java.util.Map;
 import java.util.logging.Level;
 
 @Configuration
+@EnableJpaRepositories("com.bionic.dao")
+@ComponentScan(basePackages = {"com.bionic.dao", "com.bionic.model",
+        "com.bionic.service", "com.bionic.controllers",
+        "com.bionic.config","com.bionic.logging"})
 @EnableTransactionManagement
 public class PersistenceConfig {
 
