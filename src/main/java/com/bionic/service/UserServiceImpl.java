@@ -29,9 +29,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+
     @Autowired
     private JobDao jobDao;
 
+    @Autowired
+    private MailService mailService;
 
     public User addUser(User user) throws  UserExistsException {
         if (findByUsername(user.getEmail())!=null){
@@ -89,13 +92,12 @@ public class UserServiceImpl implements UserService {
                 tempPassword += letters.substring(index, index+1);
             }
 
-            MailService ms = new MailService();
-            String sender = "comes.solutions@gmail.com";
+
             String receiver = email;
             String subject = "Password reset";
             String message = "Your new temporary password: " + tempPassword + " \n";
             message += "Password is valid for 1 hour.";
-            ms.sendMail(sender, receiver, subject, message);
+            mailService.sendMail(receiver, subject, message);
 
             user.setPassword(passwordEncoder.encode(tempPassword));
             user.setPasswordExpire(new Date(System.currentTimeMillis() + 60 * 60 * 1000));
