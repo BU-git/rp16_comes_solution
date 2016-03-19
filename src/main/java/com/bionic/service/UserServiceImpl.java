@@ -21,7 +21,6 @@ import java.util.Random;
  */
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -36,6 +35,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MailService mailService;
 
+    @Transactional
     public User addUser(User user) throws  UserExistsException {
         if (findByUsername(user.getEmail())!=null){
             throw new UserExistsException(user.getEmail());
@@ -46,6 +46,7 @@ public class UserServiceImpl implements UserService {
         return savedUser;
     }
 
+    @Transactional
     @Override
     public void delete(int id) {
         userDao.delete(id);
@@ -58,6 +59,7 @@ public class UserServiceImpl implements UserService {
 
     public User findByUserEmail(String email) { return userDao.findByEmail(email); }
 
+    @Transactional
     @Override
     public User editUser(User User) {
         return userDao.saveAndFlush(User);
