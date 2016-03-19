@@ -192,4 +192,27 @@ public class User {
     public void setRole(UserRoleEnum role) {
         this.role = role;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", insertion='" + insertion + '\'' +
+                ", sex='" + sex + '\'' +
+                ", fourWeekPayOff=" + fourWeekPayOff +
+                ", zeroHours=" + zeroHours +
+                ", contractHours=" + contractHours +
+                ", enabled=" + enabled +
+                ", birthDate=" + birthDate +
+                ", passwordExpire=" + passwordExpire +
+                ", workSchedule=" + workSchedule +
+                ", role=" + role +
+                ", employer=" + employer +
+                ", jobs=" + jobs +
+                '}';
+    }
 }

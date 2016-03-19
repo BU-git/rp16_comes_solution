@@ -52,9 +52,10 @@ public class UserController {
         userService.delete(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+
+    @RequestMapping(value = "user/",method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED) // HTTP 201 "Created"
-    public User createUser(@Valid User user, BindingResult result, HttpServletResponse response) throws BindException {
+    public User createUser(@Valid @RequestBody User user, BindingResult result, HttpServletResponse response) throws BindException {
         if (result.hasErrors()) {
             throw new BindException(result);
         }
@@ -64,6 +65,6 @@ public class UserController {
             e.printStackTrace();
         }
         response.setHeader("Location", "/users/" + user.getId());
-        return user;
+        return null;
     }
 }
