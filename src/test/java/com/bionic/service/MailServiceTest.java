@@ -21,10 +21,9 @@ public class MailServiceTest {
     @Ignore
     @Test
     public void testSendMail() {
-        String sender = "comes.solutions@gmail.com";
         String receiver = "comes.solutions@gmail.com";
         Random random = new Random();
-        mailService.sendMail(sender, receiver, "Test", "Hello! " + random.nextInt(1000) );
+        mailService.sendMail(receiver, "Test", "Hello! " + random.nextInt(1000) );
         System.out.println("Done!");
     }
 

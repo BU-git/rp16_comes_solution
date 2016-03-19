@@ -12,6 +12,6 @@ public interface WorkScheduleService {
     WorkSchedule addWorkSchedule(WorkSchedule workSchedule);
     void delete(int id);
     WorkSchedule getById(int id);
-    WorkSchedule editWorchedule(WorkSchedule workSchedule);
+    WorkSchedule editWorkSchedule(WorkSchedule workSchedule);
     List<WorkSchedule> getAll();
 }

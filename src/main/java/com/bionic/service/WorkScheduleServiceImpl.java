@@ -11,14 +11,14 @@ import java.util.List;
  * Created by Kliakhin on 03/17/16.
  */
 @Service
-public class WorkScheduleServiceImpl implements WorkScheduleService{
+public class WorkScheduleServiceImpl implements WorkScheduleService {
 
     @Autowired
     private WorkScheduleDao workScheduleDao;
 
     @Override
     public WorkSchedule addWorkSchedule(WorkSchedule workSchedule) {
-        return workScheduleDao.save(workSchedule);
+        return workScheduleDao.saveAndFlush(workSchedule);
     }
 
     @Override
@@ -32,12 +32,12 @@ public class WorkScheduleServiceImpl implements WorkScheduleService{
     }
 
     @Override
-    public WorkSchedule editWorchedule(WorkSchedule workSchedule) {
-        return workScheduleDao.save(workSchedule);
+    public WorkSchedule editWorkSchedule(WorkSchedule workSchedule) {
+        return workScheduleDao.saveAndFlush(workSchedule);
     }
 
     @Override
     public List<WorkSchedule> getAll() {
-        return null;
+        return workScheduleDao.findAll();
     }
 }
