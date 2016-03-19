@@ -2,6 +2,7 @@ package com.bionic.service;
 
 import com.bionic.config.MainConfig;
 import com.bionic.model.User;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.Rollback;
@@ -14,11 +15,14 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * @author taras.yaroshchuk
+ */
 //@DirtiesContext
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MainConfig.class)
 @Transactional
-@Rollback(true) //??
+@Rollback(true)
 public class UserServiceTest {
 
     @Inject
@@ -44,4 +48,9 @@ public class UserServiceTest {
         assertTrue(list.size() > 0);
     }
 
+    @Ignore
+    @Test
+    public void testResetPassword() throws Exception {
+        userService.resetPassword("boiko.pasha@gmail.com");
+    }
 }

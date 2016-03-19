@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
 
             user.setPassword(passwordEncoder.encode(tempPassword));
             user.setPasswordExpire(new Date(System.currentTimeMillis() + 60 * 60 * 1000));
-            userDao.save(user);
+            userDao.saveAndFlush(user);
 
         } else {
             throw new UserNotExistsException(email);
