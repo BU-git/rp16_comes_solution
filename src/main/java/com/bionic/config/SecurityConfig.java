@@ -22,7 +22,7 @@ import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 /**
  * @author vitalii.levash
- * @version 0.1
+ * @version 0.2
  */
 @Configuration
 @EnableWebSecurity
@@ -48,10 +48,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 				.sessionManagement()
 				.and()
 				.authorizeRequests()
-				.antMatchers("/user**").authenticated()
-				.anyRequest().permitAll().and().httpBasic();
+				.antMatchers("/").permitAll()
+				.antMatchers("/rest/**").authenticated().and().httpBasic();
 
-		//http.addFilterBefore(digestAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 
 	/**

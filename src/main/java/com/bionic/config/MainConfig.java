@@ -12,7 +12,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.bionic.controller")
+@ComponentScan("com.bionic.controllers")
 @EnableAspectJAutoProxy
 public class MainConfig extends WebMvcConfigurerAdapter {
 
