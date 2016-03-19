@@ -17,26 +17,26 @@ import java.util.List;
  * @author taras.yaroshchuk
  */
 @RestController
-@RequestMapping("/rest/api/users")
+@RequestMapping("/rest/api")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "users", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<User> getAllUsers() {
         return userService.getAll();
     }
 
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "user/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public User getUser(@PathVariable int id) {
         return userService.findById(id);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "user/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT) //204
     public void putUser(@PathVariable int id, @Valid User user) {
         try {
@@ -46,7 +46,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "user/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT) //204
     public void deleteSpittle(@PathVariable int id) {
         userService.delete(id);

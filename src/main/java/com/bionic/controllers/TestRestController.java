@@ -14,9 +14,9 @@ public class TestRestController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/{userid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public User getUserInfo(@PathVariable("userid") String userid){
-      return userService.findById(Integer.valueOf(userid));
+    public User getUserInfo(@PathVariable("id") String id){
+      return userService.findById(Integer.valueOf(id));
     }
 }
