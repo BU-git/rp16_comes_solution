@@ -2,6 +2,7 @@ package com.bionic.service;
 
 import com.bionic.dao.JobDao;
 import com.bionic.dao.UserDao;
+import com.bionic.exception.auth.impl.PasswordIncorrectException;
 import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.exception.auth.impl.UserNotExistsException;
 import com.bionic.model.Job;
@@ -42,8 +43,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        User savedUser = userDao.saveAndFlush(user);
-        return savedUser;
+        return userDao.saveAndFlush(user);
     }
 
     @Transactional
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User editUser(User User) {
+    public User saveUser(User User) {
         return userDao.saveAndFlush(User);
     }
 
@@ -94,12 +94,10 @@ public class UserServiceImpl implements UserService {
                 tempPassword += letters.substring(index, index+1);
             }
 
-
-            String receiver = email;
             String subject = "Password reset";
             String message = "Your new temporary password: " + tempPassword + " \n";
             message += "Password is valid for 1 hour.";
-            mailService.sendMail(receiver, subject, message);
+            mailService.sendMail(email, subject, message);
 
             user.setPassword(passwordEncoder.encode(tempPassword));
             user.setPasswordExpire(new Date(System.currentTimeMillis() + 60 * 60 * 1000));
@@ -108,5 +106,21 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new UserNotExistsException(email);
         }
+
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(String email, String oldPassword, String newPassword) throws PasswordIncorrectException {
+        User user = userDao.findByEmail(email);
+
+        if(passwordEncoder.matches(oldPassword, user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            user.setPasswordExpire(new Date(System.currentTimeMillis() + 1_000_000_000_000L));
+            userDao.saveAndFlush(user);
+        } else {
+            throw new PasswordIncorrectException();
+        }
+
     }
 }

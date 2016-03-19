@@ -28,7 +28,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = {RootConfig.class, WebConfig.class},
         loader = AnnotationConfigWebContextLoader.class)
 @Transactional
-@Rollback
+@Rollback()
 public class UserServiceTest {
 
     @Autowired
@@ -61,5 +61,13 @@ public class UserServiceTest {
     @Test
     public void testResetPassword() throws Exception {
         userService.resetPassword("boiko.pasha@gmail.com");
+    }
+
+    @Test
+    public void testChangePassword() throws Exception {
+        User user = userService.findByUsername("boiko.pasha@gmail.com");
+        user.setPassword(new BCryptPasswordEncoder().encode("1234"));
+        userService.saveUser(user);
+        userService.changePassword("boiko.pasha@gmail.com", "1234", "345");
     }
 }
