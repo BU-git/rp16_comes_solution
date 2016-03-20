@@ -101,4 +101,18 @@ public class WorkSchedule {
         this.saturday = saturday;
     }
 
+    @Override
+    public String toString() {
+        return "WorkSchedule{" +
+                "id=" + id +
+                ", creationTime=" + creationTime +
+                ", sunday='" + sunday + '\'' +
+                ", monday='" + monday + '\'' +
+                ", tuesday='" + tuesday + '\'' +
+                ", wednesday='" + wednesday + '\'' +
+                ", thursday='" + thursday + '\'' +
+                ", friday='" + friday + '\'' +
+                ", saturday='" + saturday + '\'' +
+                '}';
+    }
 }

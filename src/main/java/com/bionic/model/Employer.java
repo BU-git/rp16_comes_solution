@@ -45,6 +45,13 @@ public class Employer {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
 
+
+	@Override
+	public String toString() {
+		return "Employer{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				'}';
+	}
 }

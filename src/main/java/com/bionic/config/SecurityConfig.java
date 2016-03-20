@@ -38,9 +38,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web
-				.ignoring()
-				.antMatchers("/rest/api/users");
+//		web
+//				.ignoring()
+//				.antMatchers("/rest/api/users");
 	}
 
 	@Override
@@ -55,7 +55,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 				.and()
 				.authorizeRequests()
 				.antMatchers("/").permitAll()
-				.antMatchers("/rest/api/auth/**").permitAll()
 				.antMatchers("/rest/api/users/**").authenticated().and().httpBasic();
 
 	}

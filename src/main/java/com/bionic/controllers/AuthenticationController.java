@@ -41,5 +41,13 @@ public class AuthenticationController {
         return savedUser;
     }
 
-
+//    @RequestMapping(value = "login", method = RequestMethod.GET)
+//    @ResponseStatus(HttpStatus.OK)
+//    public User login () throws UserNotFoundException {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        String name = auth.getName();
+//        User user = userService.findByUserEmail(name);
+//        if (user == null) throw new UserNotFoundException();
+//        return user;
+//    }
 }
