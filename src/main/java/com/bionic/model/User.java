@@ -193,6 +193,19 @@ public class User {
         this.role = role;
     }
 
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public WorkSchedule getWorkSchedule() {
+        return workSchedule;
+    }
+
+    public void setWorkSchedule(WorkSchedule workSchedule) {
+        this.workSchedule = workSchedule;
+    }
+
     @Override
     public String toString() {
         return "User{" +

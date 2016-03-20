@@ -4,6 +4,7 @@ import com.bionic.config.RootConfig;
 import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.model.Job;
 import com.bionic.model.User;
+import com.bionic.service.MailService;
 import com.bionic.service.UserService;
 import com.bionic.service.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +14,26 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class Main {
     
 
-    @Autowired
-    private static BCryptPasswordEncoder passwordEncoder;
 
     @SuppressWarnings("resource")
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(RootConfig.class);
 
         UserService userService = context.getBean(UserService.class);
-        WorkScheduleService workScheduleService = context.getBean(WorkScheduleService.class);
+        MailService mailService = context.getBean(MailService.class);
+        mailService.sendMail("dimonich41@gmail.com","Reset password","Link to input new password");
+        User user = userService.findByUserEmail("dimonich41@gmail.com");
+
+//
+//
+//        User user = userService.findById(7);
+//        for(Job job : user.getJobs()) {
+//            System.out.println(job.getJobName());
+//            for (User us : job.getUsers()) {
+//                us.getFirstName();
+//            }
+//        }
+        /*WorkScheduleService workScheduleService = context.getBean(WorkScheduleService.class);
 
 
         Job testJob = userService.findJobById(1);
@@ -35,7 +47,7 @@ public class Main {
               userService.addUser(u2);
           }catch (UserExistsException e){
               System.out.println(e.getMessage());
-          }
+          }*/
 
         //workschedule
         /*WorkSchedule ws1 = workScheduleService.getById(1);

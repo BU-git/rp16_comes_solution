@@ -3,6 +3,7 @@ package com.bionic.controllers;
 import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.exception.web.impl.UserNotFoundException;
 import com.bionic.model.User;
+import com.bionic.service.MailService;
 import com.bionic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    MailService mailService;
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -58,6 +62,7 @@ public class UserController {
         if (result.hasErrors()) {
             throw new BindException(result);
         }
+        //System.out.println(user);
         try {
             System.out.println(user);
             userService.addUser(user);
@@ -67,5 +72,19 @@ public class UserController {
         User savedUser = userService.findByUserEmail(user.getEmail());
         response.setHeader("Location", "/users/" + savedUser.getId());
         return savedUser;
+    }
+
+
+    @RequestMapping(value = "resetPassword", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public void resetPassword(@RequestBody String email) {
+        System.out.println(email);
+        User user = userService.findByUserEmail(email);
+        if (user == null) {
+            throw new UserNotFoundException();
+        } else {
+            mailService.sendMail(email,"Reset password","Link to input new password");
+        }
+
     }
 }

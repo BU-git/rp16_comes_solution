@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 				.and()
 				.authorizeRequests()
 				.antMatchers("/").permitAll();
-//				.antMatchers("/rest/**").authenticated().and().httpBasic();
+				//.antMatchers("/rest/**").authenticated().and().httpBasic();
 
 	}
 
