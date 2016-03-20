@@ -48,8 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 				.sessionManagement()
 				.and()
 				.authorizeRequests()
-				.antMatchers("/").permitAll();
-				//.antMatchers("/rest/**").authenticated().and().httpBasic();
+				.antMatchers("/").permitAll()
+				.antMatchers("/rest/**").authenticated().and().httpBasic();
 
 	}
 

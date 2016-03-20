@@ -8,6 +8,8 @@ import com.bionic.service.MailService;
 import com.bionic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -82,11 +84,13 @@ public class UserController {
         userService.resetPassword(email);
     }
 
-    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @RequestMapping(value = "login", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public User login (@RequestBody String email, String password) throws UserNotExistsException {
-        User user = userService.findByUserEmail(email);
-        if (user == null) throw new UserNotExistsException();
+    public User login () throws UserNotFoundException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        User user = userService.findByUserEmail(name);
+        if (user == null) throw new UserNotFoundException();
         return user;
     }
 }
