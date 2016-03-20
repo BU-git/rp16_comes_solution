@@ -63,11 +63,13 @@ public class UserController {
             throw new BindException(result);
         }
         try {
+            System.out.println(user);
             userService.addUser(user);
         } catch (UserExistsException e) {
             e.printStackTrace();
         }
-        response.setHeader("Location", "/users/" + user.getId());
-        return null;
+        User savedUser = userService.findByUserEmail(user.getEmail());
+        response.setHeader("Location", "/users/" + savedUser.getId());
+        return savedUser;
     }
 }
