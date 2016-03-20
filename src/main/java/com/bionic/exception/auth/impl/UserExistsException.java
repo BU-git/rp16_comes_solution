@@ -1,10 +1,13 @@
 package com.bionic.exception.auth.impl;
 
 import com.bionic.exception.auth.AuthException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author vitalii.levash
  */
+@ResponseStatus(HttpStatus.FORBIDDEN)
 public class UserExistsException extends AuthException {
     public UserExistsException(){
         super("Email for user exists");

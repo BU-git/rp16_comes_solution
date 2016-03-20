@@ -75,11 +75,18 @@ public class UserController {
         return savedUser;
     }
 
-
     @RequestMapping(value = "resetPassword", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void resetPassword(@RequestBody String email) throws UserNotExistsException {
         System.out.println(email);
         userService.resetPassword(email);
+    }
+
+    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public User login (@RequestBody String email, String password) throws UserNotExistsException {
+        User user = userService.findByUserEmail(email);
+        if (user == null) throw new UserNotExistsException();
+        return user;
     }
 }
