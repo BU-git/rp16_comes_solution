@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService {
     private static final int ONE_HOUR = 3_600_000;
 
     @Transactional
-    public User addUser(User user) throws  UserExistsException {
-        if (findByUsername(user.getEmail())!=null){
+    public User addUser(User user) throws UserExistsException {
+        if (findByUsername(user.getEmail()) != null) {
             throw new UserExistsException(user.getEmail());
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -60,12 +60,14 @@ public class UserServiceImpl implements UserService {
         return userDao.findByName(name);
     }
 
-    public User findByUserEmail(String email) { return userDao.findByEmail(email); }
+    public User findByUserEmail(String email) {
+        return userDao.findByEmail(email);
+    }
 
     @Transactional
     @Override
-    public User saveUser(User User) {
-        return userDao.saveAndFlush(User);
+    public User saveUser(User user) {
+        return userDao.saveAndFlush(user);
     }
 
     @Override
@@ -79,7 +81,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Job findJobById(int id) { return jobDao.findById(id); }
+    public Job findJobById(int id) {
+        return jobDao.findById(id);
+    }
 
     @Override
     @Transactional
@@ -91,10 +95,9 @@ public class UserServiceImpl implements UserService {
             String tempPassword = "";
             Random rand = new Random(43);
 
-            for (int i=0; i<tempPasswordLength; i++)
-            {
-                int index = (int)(rand.nextDouble()*letters.length());
-                tempPassword += letters.substring(index, index+1);
+            for (int i = 0; i < tempPasswordLength; i++) {
+                int index = (int) (rand.nextDouble() * letters.length());
+                tempPassword += letters.substring(index, index + 1);
             }
 
             String subject = "Password reset";
@@ -117,7 +120,7 @@ public class UserServiceImpl implements UserService {
     public void changePassword(String email, String oldPassword, String newPassword) throws PasswordIncorrectException {
         User user = userDao.findByEmail(email);
 
-        if(passwordEncoder.matches(oldPassword, user.getPassword())) {
+        if (passwordEncoder.matches(oldPassword, user.getPassword())) {
             user.setPassword(passwordEncoder.encode(newPassword));
             user.setPasswordExpire(new Date(System.currentTimeMillis() + TEN_YEARS));
             userDao.saveAndFlush(user);

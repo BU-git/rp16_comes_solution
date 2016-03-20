@@ -35,18 +35,14 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public User getUser(@PathVariable int id) {
         User user = userService.findById(id);
-        if(user == null) throw new UserNotFoundException();
-            return user;
+        if (user == null) throw new UserNotFoundException();
+        return user;
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT) //204
-    public void putUser(@PathVariable int id, @Valid User user) {
-        try {
-            userService.addUser(user);
-        } catch (UserExistsException e) {
-            e.printStackTrace();
-        }
+    public void putUser(@PathVariable int id, @Valid @RequestBody User user) {
+        userService.saveUser(user);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
