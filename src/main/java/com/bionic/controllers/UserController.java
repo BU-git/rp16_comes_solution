@@ -1,6 +1,7 @@
 package com.bionic.controllers;
 
 import com.bionic.exception.auth.impl.UserExistsException;
+import com.bionic.exception.web.impl.UserNotFoundException;
 import com.bionic.model.User;
 import com.bionic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,9 @@ public class UserController {
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public User getUser(@PathVariable int id) {
-        return userService.findById(id);
+        User user = userService.findById(id);
+        if(user == null) throw new UserNotFoundException();
+            return user;
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
