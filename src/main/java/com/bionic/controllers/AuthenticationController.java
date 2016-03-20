@@ -2,14 +2,11 @@ package com.bionic.controllers;
 
 
 import com.bionic.exception.auth.impl.UserExistsException;
-import com.bionic.exception.web.impl.UserNotFoundException;
 import com.bionic.model.User;
 import com.bionic.service.MailService;
 import com.bionic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -44,13 +41,5 @@ public class AuthenticationController {
         return savedUser;
     }
 
-    @RequestMapping(value = "login", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public User login () throws UserNotFoundException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        User user = userService.findByUserEmail(name);
-        if (user == null) throw new UserNotFoundException();
-        return user;
-    }
+
 }
