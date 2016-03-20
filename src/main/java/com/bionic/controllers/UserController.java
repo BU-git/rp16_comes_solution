@@ -1,6 +1,7 @@
 package com.bionic.controllers;
 
 import com.bionic.exception.auth.impl.UserExistsException;
+import com.bionic.exception.auth.impl.UserNotExistsException;
 import com.bionic.exception.web.impl.UserNotFoundException;
 import com.bionic.model.User;
 import com.bionic.service.MailService;
@@ -77,14 +78,8 @@ public class UserController {
 
     @RequestMapping(value = "resetPassword", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void resetPassword(@RequestBody String email) {
+    public void resetPassword(@RequestBody String email) throws UserNotExistsException {
         System.out.println(email);
-        User user = userService.findByUserEmail(email);
-        if (user == null) {
-            throw new UserNotFoundException();
-        } else {
-            mailService.sendMail(email,"Reset password","Link to input new password");
-        }
-
+        userService.resetPassword(email);
     }
 }
