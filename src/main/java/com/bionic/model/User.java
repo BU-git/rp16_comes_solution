@@ -213,6 +213,6 @@ public class User {
                 ", role=" + role +
                 ", employer=" + employer +
                 ", jobs=" + jobs +
-                '}';
+                "}";
     }
 }

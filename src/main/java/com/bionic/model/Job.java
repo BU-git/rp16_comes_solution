@@ -3,6 +3,8 @@
  */
 package com.bionic.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -20,9 +22,8 @@ public class Job {
     @Column()
 	private String jobName;
 
-
-
-//	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "jobs")
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "jobs")
+    @JsonIgnore
 	private List<User> users;
 
 	public Job() {
@@ -51,4 +52,12 @@ public class Job {
 	public void setUsers(List<User> users) {
 		this.users = users;
 	}
+
+	@Override
+	public String toString() {
+        return "Job{" +
+                "id=" + id +
+                ", jobName=" + jobName +
+                "}";
+    }
 }

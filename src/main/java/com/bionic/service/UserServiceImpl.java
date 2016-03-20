@@ -36,6 +36,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MailService mailService;
 
+    private static final long TEN_YEARS = 315_000_000_000L;
+    private static final int ONE_HOUR = 3_600_000;
+
     @Transactional
     public User addUser(User user) throws  UserExistsException {
         if (findByUsername(user.getEmail())!=null){
@@ -100,7 +103,7 @@ public class UserServiceImpl implements UserService {
             mailService.sendMail(email, subject, message);
 
             user.setPassword(passwordEncoder.encode(tempPassword));
-            user.setPasswordExpire(new Date(System.currentTimeMillis() + 60 * 60 * 1000));
+            user.setPasswordExpire(new Date(System.currentTimeMillis() + ONE_HOUR));
             userDao.saveAndFlush(user);
 
         } else {
@@ -116,7 +119,7 @@ public class UserServiceImpl implements UserService {
 
         if(passwordEncoder.matches(oldPassword, user.getPassword())) {
             user.setPassword(passwordEncoder.encode(newPassword));
-            user.setPasswordExpire(new Date(System.currentTimeMillis() + 1_000_000_000_000L));
+            user.setPasswordExpire(new Date(System.currentTimeMillis() + TEN_YEARS));
             userDao.saveAndFlush(user);
         } else {
             throw new PasswordIncorrectException();
