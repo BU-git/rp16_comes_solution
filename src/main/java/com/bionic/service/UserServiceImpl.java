@@ -7,6 +7,7 @@ import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.exception.auth.impl.UserNotExistsException;
 import com.bionic.model.Job;
 import com.bionic.model.User;
+import com.bionic.model.dict.UserRoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,7 @@ public class UserServiceImpl implements UserService {
         if (findByUsername(user.getEmail()) != null) {
             throw new UserExistsException(user.getEmail());
         }
+        user.setRole(UserRoleEnum.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userDao.saveAndFlush(user);
