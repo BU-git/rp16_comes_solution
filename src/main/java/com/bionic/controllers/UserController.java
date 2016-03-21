@@ -50,7 +50,7 @@ public class UserController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT) //204
-    public void deleteSpittle(@PathVariable int id) {
+    public void deleteUser(@PathVariable int id) {
         userService.delete(id);
     }
 
@@ -73,7 +73,7 @@ public class UserController {
 //        return savedUser;
 //    }
 
-    @RequestMapping(value = "resetPassword", method = RequestMethod.POST)
+    @RequestMapping(value = "password", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public void resetPassword(@RequestBody String email) throws UserNotExistsException {
         System.out.println(email);
