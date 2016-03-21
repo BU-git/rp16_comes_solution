@@ -1,5 +1,7 @@
 package com.bionic.controllers;
 
+import com.bionic.dto.PasswordsDTO;
+import com.bionic.exception.auth.impl.PasswordIncorrectException;
 import com.bionic.exception.auth.impl.UserNotExistsException;
 import com.bionic.exception.web.impl.UserNotFoundException;
 import com.bionic.model.User;
@@ -79,6 +81,14 @@ public class UserController {
         System.out.println(email);
         userService.resetPassword(email);
     }
+
+
+    @RequestMapping(value = "password", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public void changePassword(@RequestBody PasswordsDTO input) throws PasswordIncorrectException {
+        userService.changePassword(input.getEmail(),input.getOldPassword(),input.getNewPassword());
+    }
+
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
