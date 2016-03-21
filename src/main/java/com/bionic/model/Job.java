@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.bionic.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -10,7 +7,6 @@ import java.util.List;
 
 /**
  * @author vitalii.levash
- *
  */
 @Entity
 @Table(name = "jobs")

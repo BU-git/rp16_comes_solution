@@ -1,25 +1,21 @@
-/**
- *  UserDetail Service
- */
-		package com.bionic.service;
+package com.bionic.service;
 
-		import java.util.*;
+import com.bionic.model.User;
+import com.bionic.model.dict.UserRoleEnum;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-		import com.bionic.model.dict.UserRoleEnum;
-		import org.springframework.beans.factory.annotation.Autowired;
-		import org.springframework.context.annotation.Bean;
-		import org.springframework.security.core.GrantedAuthority;
-		import org.springframework.security.core.authority.SimpleGrantedAuthority;
-		import org.springframework.security.core.userdetails.UserDetails;
-		import org.springframework.security.core.userdetails.UserDetailsService;
-		import org.springframework.security.core.userdetails.UsernameNotFoundException;
-		import org.springframework.stereotype.Service;
-
-		import com.bionic.model.User;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author vitalii.levash
- * @version 0.3
  */
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
@@ -70,7 +66,4 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		}
 		return authorities;
 	}
-
-
-
 }

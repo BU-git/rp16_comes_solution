@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/rest/api/users")
-public class UserController {
+public class UserRestController {
 
     @Autowired
     private UserService userService;
@@ -34,7 +34,6 @@ public class UserController {
     public List<User> getAllUsers() {
         return userService.getAll();
     }
-
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -55,7 +54,6 @@ public class UserController {
     public void deleteUser(@PathVariable int id) {
         userService.delete(id);
     }
-
 
 //    @RequestMapping(method = RequestMethod.POST)
 //    @ResponseStatus(HttpStatus.CREATED) // HTTP 201 "Created"
@@ -82,13 +80,11 @@ public class UserController {
         userService.resetPassword(email);
     }
 
-
     @RequestMapping(value = "password", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void changePassword(@RequestBody PasswordsDTO input) throws PasswordIncorrectException {
         userService.changePassword(input.getEmail(),input.getOldPassword(),input.getNewPassword());
     }
-
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

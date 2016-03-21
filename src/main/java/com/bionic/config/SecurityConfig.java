@@ -1,8 +1,4 @@
-/**
- * Security Configuration
- */
 package com.bionic.config;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +17,6 @@ import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 /**
  * @author vitalii.levash
- * @version 0.2
  */
 @Configuration
 @EnableWebSecurity
@@ -57,7 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 	}
 
 	/**
-	 *
 	 * @return Crypto password
 	 */
 	@Bean
@@ -66,13 +60,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 	}
 
 	/**
-	 *
 	 * @return Entry Point
      */
 	@Bean
 	public AuthenticationEntryPoint authenticationEntryPointBean() {
 		return (request, response, authException) -> response.sendError(SC_UNAUTHORIZED, "Access Denied");
 	}
-
-
 }

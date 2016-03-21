@@ -9,7 +9,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 /**
- * @author Pavel Boiko
+ * @author Sasha Chepurnoi
  */
 
 @Configuration
@@ -17,13 +17,6 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan("com.bionic.controllers")
 @EnableAspectJAutoProxy
 public class WebConfig {
-
-    //Resources declaration
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/resources/**")
-//                .addResourceLocations("/resources/");
-//    }
 
     @Bean
     public InternalResourceViewResolver viewResolver() {

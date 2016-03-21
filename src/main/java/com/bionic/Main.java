@@ -1,19 +1,12 @@
 package com.bionic;
 
 import com.bionic.config.RootConfig;
-import com.bionic.exception.auth.impl.UserExistsException;
-import com.bionic.model.Job;
 import com.bionic.model.User;
 import com.bionic.service.MailService;
 import com.bionic.service.UserService;
-import com.bionic.service.WorkScheduleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class Main {
-    
-
 
     @SuppressWarnings("resource")
     public static void main(String[] args) {
@@ -24,8 +17,6 @@ public class Main {
         mailService.sendMail("dimonich41@gmail.com","Reset password","Link to input new password");
         User user = userService.findByUserEmail("dimonich41@gmail.com");
 
-//
-//
 //        User user = userService.findById(7);
 //        for(Job job : user.getJobs()) {
 //            System.out.println(job.getJobName());

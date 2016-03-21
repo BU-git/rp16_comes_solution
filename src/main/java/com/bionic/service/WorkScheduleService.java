@@ -7,7 +7,6 @@ import java.util.List;
 /**
  * Created by Kliakhin on 03/17/16.
  */
-
 public interface WorkScheduleService {
     WorkSchedule addWorkSchedule(WorkSchedule workSchedule);
     void delete(int id);

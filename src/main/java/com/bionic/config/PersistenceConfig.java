@@ -17,6 +17,9 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Pavel Boiko
+ */
 @Configuration
 @EnableJpaRepositories("com.bionic.dao")
 @EnableTransactionManagement
@@ -59,7 +62,6 @@ public class PersistenceConfig {
         properties.put("eclipselink.weaving", "false");
         properties.put("eclipselink.logging.level", "WARNING");
         properties.put("eclipselink.logging.level.sql", "WARNING");
-
         return properties;
     }
 

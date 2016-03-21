@@ -28,10 +28,12 @@ public class User {
     @Column(name = "userEmail")
     @Email(message = "Your email is incorect")
     private String email;
+
     @Column(name = "userPassword")
     @Size(max = 60)
     @JsonIgnore
     private String password;
+
     private String firstName;
     private String lastName;
     private String insertion;
@@ -40,12 +42,14 @@ public class User {
     private boolean zeroHours;
     private int contractHours;
     private boolean enabled;
+
     @Temporal(TemporalType.DATE)
     private Date birthDate;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date passwordExpire;
 
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne()
     @JoinColumn(name="workScheduleId")
     private WorkSchedule workSchedule;
 
@@ -63,7 +67,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name="jobId", referencedColumnName="jobId")
     )
     private List<Job> jobs;
-
 
     public User() {
     }
@@ -154,7 +157,6 @@ public class User {
         this.employer = employer;
     }
 
-
     public List<Job> getJobs() {
         return jobs;
     }
@@ -194,7 +196,6 @@ public class User {
     public void setRole(UserRoleEnum role) {
         this.role = role;
     }
-
 
     public void setId(Integer id) {
         this.id = id;

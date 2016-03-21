@@ -115,7 +115,6 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new UserNotExistsException(email);
         }
-
     }
 
     @Override
@@ -130,6 +129,5 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new PasswordIncorrectException();
         }
-
     }
 }

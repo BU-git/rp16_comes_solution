@@ -13,7 +13,6 @@ public class WorkSchedule {
     @Column(name = "workScheduleId")
     private Integer id;
 
-
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationTime;
 
@@ -35,7 +34,6 @@ public class WorkSchedule {
     public void setId(Integer id) {
         this.id = id;
     }
-
 
     public Date getCreationTime() {
         return creationTime;

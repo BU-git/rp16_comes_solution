@@ -6,12 +6,10 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
-
 @Component
 @Aspect
 public class LoggingAspect {
     private static final Logger log = LogManager.getLogger();
-
 
     @Pointcut("execution(* com.bionic.service.UserServiceImpl.*(..))")
     private void allMethods() {

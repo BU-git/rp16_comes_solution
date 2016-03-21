@@ -1,6 +1,5 @@
 package com.bionic.controllers;
 
-
 import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.model.User;
 import com.bionic.service.MailService;
@@ -14,9 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+/**
+ * @author taras.yaroshchuk
+ */
+
 @RestController
 @RequestMapping("/rest/api/auth")
-public class AuthenticationController {
+public class AuthenticationRestController {
     @Autowired
     private UserService userService;
 
@@ -29,7 +32,7 @@ public class AuthenticationController {
         if (result.hasErrors()) {
             throw new BindException(result);
         }
-        //System.out.println(user);
+
         try {
             System.out.println(user);
             userService.addUser(user);
@@ -40,14 +43,4 @@ public class AuthenticationController {
         response.setHeader("Location", "/users/" + savedUser.getId());
         return savedUser;
     }
-
-//    @RequestMapping(value = "login", method = RequestMethod.GET)
-//    @ResponseStatus(HttpStatus.OK)
-//    public User login () throws UserNotFoundException {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        String name = auth.getName();
-//        User user = userService.findByUserEmail(name);
-//        if (user == null) throw new UserNotFoundException();
-//        return user;
-//    }
 }

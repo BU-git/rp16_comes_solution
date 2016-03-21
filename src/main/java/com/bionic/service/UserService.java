@@ -10,7 +10,6 @@ import java.util.List;
 
 public interface UserService {
 
-
     User findById(int id);
     User addUser(User user) throws UserExistsException;
     void delete(int id);

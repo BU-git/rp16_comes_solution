@@ -29,5 +29,4 @@ public class WebInitializer  extends
 
         return new String[] { "/" };
     }
-
 }

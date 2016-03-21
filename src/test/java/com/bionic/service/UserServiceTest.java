@@ -22,7 +22,6 @@ import static org.junit.Assert.*;
 /**
  * @author taras.yaroshchuk
  */
-//@DirtiesContext
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {RootConfig.class, WebConfig.class},
@@ -46,8 +45,8 @@ public class UserServiceTest {
 
     @Test
     public void testFindById() throws Exception {
-        User user = userService.findById(4);
-        assertEquals(user.getPassword(), "testpass");
+        User user = userService.findById(3);
+        assertTrue(passwordEncoder.matches("12345", user.getPassword()));
     }
 
     @Test

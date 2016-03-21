@@ -7,8 +7,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-
-
+/**
+ * @author Pavel Boiko
+ */
 @Configuration
 @Import({MailConfig.class, PersistenceConfig. class,
         SecurityConfig.class, SecurityInitializer.class})
