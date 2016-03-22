@@ -2,6 +2,7 @@ package com.bionic.exception.auth.impl;
 
 import com.bionic.exception.auth.AuthException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**

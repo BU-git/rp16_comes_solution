@@ -73,17 +73,17 @@ public class UserRestController {
 //        return savedUser;
 //    }
 
-    @RequestMapping(value = "password", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public void resetPassword(@RequestBody String email) throws UserNotExistsException {
-        System.out.println(email);
-        userService.resetPassword(email);
-    }
+//    @RequestMapping(value = "password", method = RequestMethod.POST)
+//    @ResponseStatus(HttpStatus.OK)
+//    public void resetPassword(@RequestBody String email) throws UserNotExistsException {
+//        System.out.println(email);
+//        userService.resetPassword(email);
+//    }
 
     @RequestMapping(value = "password", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public void changePassword(@RequestBody PasswordsDTO input) throws PasswordIncorrectException {
-        userService.changePassword(input.getEmail(),input.getOldPassword(),input.getNewPassword());
+    public void resetLink(@RequestBody String email) throws UserNotExistsException {
+        userService.resetLink(email);
     }
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
