@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,7 @@ public class User {
     @Column(name = "userPassword")
     @Size(max = 60)
     @JsonIgnore
+    @NotNull
     private String password;
 
     private String firstName;
@@ -61,7 +63,7 @@ public class User {
     @JoinColumn(name = "employerId")
     private Employer employer;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name="users_to_jobs",
             joinColumns = @JoinColumn(name="userId", referencedColumnName="userId"),
             inverseJoinColumns = @JoinColumn(name="jobId", referencedColumnName="jobId")

@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
         if (findByUsername(user.getEmail()) != null) {
             throw new UserExistsException(user.getEmail());
         }
-        user.setRole(UserRoleEnum.ADMIN);
+        user.setRole(UserRoleEnum.USER);
         user.setEnabled(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
