@@ -19,10 +19,8 @@ public interface UserService {
     User saveUser(User user);
     List<User> getAll();
     Job findJobById(int id);
-
     void resetLink(String email) throws UserNotExistsException;
     void resetPassword(long key) throws LinkUsedException;
-
     void changePassword(String email, String oldPassword, String newPassword) throws PasswordIncorrectException;
-
+    void enableAccount(long key);
 }

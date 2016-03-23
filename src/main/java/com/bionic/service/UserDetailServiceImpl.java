@@ -19,51 +19,49 @@ import java.util.List;
  */
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userService.findByUsername(username);
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userService.findByUsername(username);
 
-		boolean enabled = user.isEnabled();
-		boolean accountNonExpired = true;
-		boolean credentialsNonExpired = true;
-		boolean accountNonLocked = true;
+        boolean enabled = user.isEnabled();
+        boolean accountNonExpired = true;
+        boolean credentialsNonExpired = true;
+        boolean accountNonLocked = true;
 
-		UserDetails userDetails = new org.springframework.security.core.userdetails.User(
-				user.getEmail(),
-				user.getPassword(),
-				enabled,
-				accountNonExpired,
-				credentialsNonExpired,
-				accountNonLocked,
-				getAuthorities(user.getRole().ordinal())
-		);
-		return userDetails;
-	}
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                enabled,
+                accountNonExpired,
+                credentialsNonExpired,
+                accountNonLocked,
+                getAuthorities(user.getRole().ordinal())
+        );
+    }
 
-	private Collection<? extends GrantedAuthority> getAuthorities(Integer role) {
-		List<GrantedAuthority> authList = getGrantedAuthorities(getRoles(role));
-		return authList;
-	}
+    private Collection<? extends GrantedAuthority> getAuthorities(Integer role) {
+        return getGrantedAuthorities(getRoles(role));
+    }
 
-	public List<String> getRoles(Integer role) {
+    public List<String> getRoles(Integer role) {
 
-		List<String> roles = new ArrayList<String>();
-		roles.add(UserRoleEnum.USER.name());
-		if (role.intValue() == UserRoleEnum.ADMIN.ordinal()) {
-			roles.add(UserRoleEnum.ADMIN.name());
-		}
-		return roles;
-	}
+        List<String> roles = new ArrayList<>();
+        roles.add(UserRoleEnum.USER.name());
+        if (role.intValue() == UserRoleEnum.ADMIN.ordinal()) {
+            roles.add(UserRoleEnum.ADMIN.name());
+        }
+        return roles;
+    }
 
-	private  List<GrantedAuthority> getGrantedAuthorities(List<String> roles) {
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+    private List<GrantedAuthority> getGrantedAuthorities(List<String> roles) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
 
-		for (String role : roles) {
-			authorities.add(new SimpleGrantedAuthority(role));
-		}
-		return authorities;
-	}
+        for (String role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role));
+        }
+        return authorities;
+    }
 }

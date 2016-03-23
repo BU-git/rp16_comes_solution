@@ -1,15 +1,16 @@
 package com.bionic.service;
 
 import com.bionic.dao.JobDao;
-import com.bionic.dao.ResetKeyDao;
 import com.bionic.dao.UserDao;
+import com.bionic.dao.UserKeyDao;
 import com.bionic.exception.auth.impl.LinkUsedException;
 import com.bionic.exception.auth.impl.PasswordIncorrectException;
 import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.exception.auth.impl.UserNotExistsException;
+import com.bionic.exception.web.impl.UserNotFoundException;
 import com.bionic.model.Job;
-import com.bionic.model.ResetKey;
 import com.bionic.model.User;
+import com.bionic.model.UserKey;
 import com.bionic.model.dict.UserRoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -49,19 +50,26 @@ public class UserServiceImpl implements UserService {
     private MailService mailService;
 
     @Autowired
-    private ResetKeyDao resetKeyDao;
+    private UserKeyDao userKeyDao;
 
     private static final long TEN_YEARS = 315_000_000_000L;
     private static final int ONE_HOUR = 3_600_000;
 
     @Transactional
     public User addUser(User user) throws UserExistsException {
-        if (findByUsername(user.getEmail()) != null) {
-            throw new UserExistsException(user.getEmail());
+        String email = user.getEmail();
+        if (findByUsername(email) != null) {
+            throw new UserExistsException(email);
         }
         user.setRole(UserRoleEnum.USER);
-        user.setEnabled(true);
+        user.setEnabled(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        long key = System.currentTimeMillis();
+        UserKey userKey = new UserKey(key, email, "verification");
+        userKey.setId(0);
+        userKeyDao.saveAndFlush(userKey);
+        mailService.sendVerification(email, key);
 
         return userDao.saveAndFlush(user);
     }
@@ -109,14 +117,9 @@ public class UserServiceImpl implements UserService {
 
         if (!(user == null)) {
             long key = System.currentTimeMillis();
-            ResetKey resetKey = new ResetKey(key, user.getEmail());
-            resetKeyDao.saveAndFlush(resetKey);
-            String sentURL = "";
-            sentURL = env.getProperty(URL) + "/password?key=" + key;
-
-            String subject = "Password reset";
-            String message = "Your link to password reset: " + sentURL + " \n";
-            mailService.sendMail(email, subject, message);
+            UserKey userKey = new UserKey(key, user.getEmail(), "reset_password");
+            userKeyDao.saveAndFlush(userKey);
+            mailService.sendResetPasswordLink(email, key);
         } else {
             throw new UserNotExistsException(email);
         }
@@ -125,26 +128,23 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void resetPassword(long key) throws LinkUsedException {
-        ResetKey resetKey = resetKeyDao.findBySecret(key);
-        if (resetKey != null) {
-            User user = userDao.findByEmail(resetKey.getEmail());
+        UserKey userKey = userKeyDao.findBySecretForResetPass(key);
+        if (userKey != null) {
+            User user = userDao.findByEmail(userKey.getEmail());
             int tempPasswordLength = 10;
             String letters = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789";
-            String tempPassword = "";
+            StringBuilder tempPassword = new StringBuilder();
             Random rand = new Random(System.currentTimeMillis());
 
             for (int i = 0; i < tempPasswordLength; i++) {
                 int index = (int) (rand.nextDouble() * letters.length());
-                tempPassword += letters.substring(index, index + 1);
+                tempPassword.append(letters.substring(index, index + 1));
             }
-            String subject = "Password reset";
-            String message = "Your new temporary password: " + tempPassword + " \n";
-            message += "Password is valid for 1 hour.";
-            mailService.sendMail(user.getEmail(), subject, message);
+            mailService.sendTemporaryPassword(user.getEmail(), tempPassword.toString());
             user.setPassword(passwordEncoder.encode(tempPassword));
             user.setPasswordExpire(new Date(System.currentTimeMillis() + ONE_HOUR));
             userDao.saveAndFlush(user);
-            resetKeyDao.delete(resetKey);
+            userKeyDao.delete(userKey);
         } else {
             throw new LinkUsedException();
         }
@@ -161,6 +161,20 @@ public class UserServiceImpl implements UserService {
             userDao.saveAndFlush(user);
         } else {
             throw new PasswordIncorrectException();
+        }
+    }
+
+    @Override
+    @Transactional
+    public void enableAccount(long key) {
+        UserKey userKey = userKeyDao.findBySecretForVerification(key);
+        if (userKey != null) {
+            User user = userDao.findByEmail(userKey.getEmail());
+            user.setEnabled(true);
+            userDao.saveAndFlush(user);
+            userKeyDao.delete(userKey);
+        } else {
+            throw new UserNotFoundException();
         }
     }
 }
