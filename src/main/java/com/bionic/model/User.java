@@ -1,7 +1,6 @@
 package com.bionic.model;
 
 import com.bionic.model.dict.UserRoleEnum;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -32,7 +31,7 @@ public class User {
 
     @Column(name = "userPassword")
     @Size(max = 60)
-    @JsonIgnore
+//    @JsonIgnore
     @NotNull(message = "password must be not null")
     private String password;
 

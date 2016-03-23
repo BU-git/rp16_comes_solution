@@ -8,18 +8,21 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name="reset_keys")
-public class ResetKey {
+@Table(name = "user_keys")
+public class UserKey {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private long secret;
+    private Long secret;
+    @Column(name = "key_type")
+    private String keyType;
     private String email;
 
-    public ResetKey() {
+    public UserKey() {
     }
 
-    public ResetKey(long secret, String email) {
+    public UserKey(long secret, String email, String keyType) {
+        this.keyType = keyType;
         this.secret = secret;
         this.email = email;
     }
@@ -47,4 +50,23 @@ public class ResetKey {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getKeyType() {
+        return keyType;
+    }
+
+    public void setKeyType(String keyType) {
+        this.keyType = keyType;
+    }
+
+    @Override
+    public String toString() {
+        return "UserKey{" +
+                "id=" + id +
+                ", secret=" + secret +
+                ", key='" + keyType + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
 }
