@@ -1,7 +1,7 @@
 package com.bionic.controllers.validate;
 
-import com.bionic.dto.MessageDTO;
-import com.bionic.dto.dict.MessageType;
+
+import com.bionic.dto.ValidationErrorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -21,26 +22,48 @@ import java.util.Locale;
  */
 @ControllerAdvice
 public class ControllerValidationHandler {
+
+    private MessageSource messageSource;
+
     @Autowired
-    private MessageSource msgSource;
+    public ControllerValidationHandler(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public MessageDTO processValidationError(MethodArgumentNotValidException ex) {
-        BindingResult result = ex.getBindingResult();
-        FieldError error = result.getFieldError();
+    public ValidationErrorDTO processValidationError(MethodArgumentNotValidException ex) {
 
-        return processFieldError(error);
+        BindingResult result = ex.getBindingResult();
+        List<FieldError> fieldErrors = result.getFieldErrors();
+
+        return processFieldErrors(fieldErrors);
     }
 
-    private MessageDTO processFieldError(FieldError error) {
-        MessageDTO message = null;
-        if (error != null) {
-            Locale currentLocale = LocaleContextHolder.getLocale();
-            String msg = msgSource.getMessage(error.getDefaultMessage(), null, currentLocale);
-            message = new MessageDTO(MessageType.ERROR, msg);
+    private ValidationErrorDTO processFieldErrors(List<FieldError> fieldErrors) {
+        ValidationErrorDTO dto = new ValidationErrorDTO();
+
+        for (FieldError fieldError: fieldErrors) {
+            String localizedErrorMessage = resolveLocalizedErrorMessage(fieldError);
+            dto.addFieldError(fieldError.getField(), localizedErrorMessage);
         }
-        return message;
+
+        return dto;
+    }
+
+    private String resolveLocalizedErrorMessage(FieldError fieldError) {
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        String localizedErrorMessage = messageSource.getMessage(fieldError, currentLocale);
+
+        //If a message was not found, return the most accurate field error code instead.
+        //You can remove this check if you prefer to get the default error message.
+        /*
+        if (localizedErrorMessage.equals(fieldError.getDefaultMessage())) {
+            String[] fieldErrorCodes = fieldError.getCodes();
+            localizedErrorMessage = fieldErrorCodes[0];
+        }
+        */
+        return localizedErrorMessage;
     }
 }

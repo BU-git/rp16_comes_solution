@@ -2,6 +2,7 @@ package com.bionic.model;
 
 import com.bionic.model.dict.UserRoleEnum;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,7 +14,7 @@ import java.util.List;
  * 
  * @author vitalii.levash
  * @author Dima Budko
- * @version 0.3
+ * @version 0.4
  */
 
 @Entity
@@ -26,22 +27,30 @@ public class User {
     private Integer id;
 
     @Column(name = "userEmail")
+    @NotNull
     @Email(message = "Your email is incorect")
     private String email;
-
+    @NotEmpty
     @Column(name = "userPassword")
     @Size(max = 60)
 //    @JsonIgnore
     @NotNull(message = "password must be not null")
     private String password;
-
+    @NotNull
     private String firstName;
+    @NotNull
     private String lastName;
+    @NotNull
     private String insertion;
+    @NotNull
     private String sex;
+    @NotNull
     private boolean fourWeekPayOff;
+    @NotNull
     private boolean zeroHours;
+    @NotNull
     private int contractHours;
+    @NotNull
     private boolean enabled;
 
     @Temporal(TemporalType.DATE)
