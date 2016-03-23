@@ -80,11 +80,6 @@ public class UserRestController {
 //        userService.resetPassword(email);
 //    }
 
-    @RequestMapping(value = "password", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.OK)
-    public void resetLink(@RequestBody String email) throws UserNotExistsException {
-        userService.resetLink(email);
-    }
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

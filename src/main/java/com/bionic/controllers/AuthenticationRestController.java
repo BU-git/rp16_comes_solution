@@ -1,6 +1,7 @@
 package com.bionic.controllers;
 
 import com.bionic.exception.auth.impl.UserExistsException;
+import com.bionic.exception.auth.impl.UserNotExistsException;
 import com.bionic.model.User;
 import com.bionic.service.MailService;
 import com.bionic.service.UserService;
@@ -42,5 +43,11 @@ public class AuthenticationRestController {
         User savedUser = userService.findByUserEmail(user.getEmail());
         response.setHeader("Location", "/users/" + savedUser.getId());
         return savedUser;
+    }
+
+    @RequestMapping(value = "password", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public void resetLink(@RequestBody String email) throws UserNotExistsException {
+        userService.resetLink(email);
     }
 }
