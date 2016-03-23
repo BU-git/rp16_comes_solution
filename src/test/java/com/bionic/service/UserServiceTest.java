@@ -3,7 +3,6 @@ package com.bionic.service;
 import com.bionic.config.RootConfig;
 import com.bionic.config.WebConfig;
 import com.bionic.model.User;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = {RootConfig.class, WebConfig.class},
         loader = AnnotationConfigWebContextLoader.class)
 @Transactional
-@Rollback()
+@Rollback
 public class UserServiceTest {
 
     @Autowired

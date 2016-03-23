@@ -29,17 +29,12 @@ public class AuthenticationRestController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED) // HTTP 201 "Created"
-    public User createUser(@Valid @RequestBody User user, BindingResult result, HttpServletResponse response) throws BindException {
+    public User createUser(@Valid @RequestBody User user, BindingResult result, HttpServletResponse response) throws BindException, UserExistsException {
         if (result.hasErrors()) {
             throw new BindException(result);
         }
-
-        try {
-            System.out.println(user);
-            userService.addUser(user);
-        } catch (UserExistsException e) {
-            e.printStackTrace();
-        }
+        System.out.println(user);
+        userService.addUser(user);
         User savedUser = userService.findByUserEmail(user.getEmail());
         response.setHeader("Location", "/users/" + savedUser.getId());
         return savedUser;
