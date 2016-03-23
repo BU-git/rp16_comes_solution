@@ -1,10 +1,12 @@
 package com.bionic;
 
 import com.bionic.config.RootConfig;
+import com.bionic.exception.auth.impl.UserNotExistsException;
 import com.bionic.model.User;
 import com.bionic.service.MailService;
 import com.bionic.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class Main {
 
@@ -12,10 +14,20 @@ public class Main {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(RootConfig.class);
 
+
         UserService userService = context.getBean(UserService.class);
-        MailService mailService = context.getBean(MailService.class);
-        mailService.sendMail("dimonich41@gmail.com","Reset password","Link to input new password");
-        User user = userService.findByUserEmail("dimonich41@gmail.com");
+//        try {
+//            userService.resetLink("dimonich41@gmail.com");
+//        } catch (UserNotExistsException e) {
+//            e.printStackTrace();
+//        }
+      //  userService.resetPassword(1458686955039L);
+
+        BCryptPasswordEncoder encoder = context.getBean(BCryptPasswordEncoder.class);
+        System.out.println(encoder.matches("A88U2kUX8Q",userService.findByUserEmail("dimonich41@gmail.com").getPassword()));
+//        MailService mailService = context.getBean(MailService.class);
+//        mailService.sendMail("dimonich41@gmail.com","Reset password","Link to input new password");
+//        User user = userService.findByUserEmail("dimonich41@gmail.com");
 
 //        User user = userService.findById(7);
 //        for(Job job : user.getJobs()) {

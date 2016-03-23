@@ -56,11 +56,11 @@ public class UserServiceTest {
         assertTrue(list.size() > 0);
     }
 
-    @Ignore
-    @Test
-    public void testResetPassword() throws Exception {
-        userService.resetPassword("boiko.pasha@gmail.com");
-    }
+//    @Ignore
+//    @Test
+//    public void testResetPassword() throws Exception {
+//        userService.resetPassword("boiko.pasha@gmail.com");
+//    }
 
     @Test
     public void testChangePassword() throws Exception {

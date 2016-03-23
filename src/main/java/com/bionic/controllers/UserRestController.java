@@ -55,22 +55,35 @@ public class UserRestController {
         userService.delete(id);
     }
 
-    @RequestMapping(value = "password", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public void resetPassword(@RequestBody String email) throws UserNotExistsException {
-        System.out.println(email);
-        userService.resetPassword(email);
-    }
+//    @RequestMapping(method = RequestMethod.POST)
+//    @ResponseStatus(HttpStatus.CREATED) // HTTP 201 "Created"
+//    public User createUser(@Valid @RequestBody User user, BindingResult result, HttpServletResponse response) throws BindException {
+//        if (result.hasErrors()) {
+//            throw new BindException(result);
+//        }
+//        //System.out.println(user);
+//        try {
+//            System.out.println(user);
+//            userService.addUser(user);
+//        } catch (UserExistsException e) {
+//            e.printStackTrace();
+//        }
+//        User savedUser = userService.findByUserEmail(user.getEmail());
+//        response.setHeader("Location", "/users/" + savedUser.getId());
+//        return savedUser;
+//    }
 
-    @RequestMapping(value = "password", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.OK)
-    public void changePassword(@RequestBody PasswordsDTO input) throws PasswordIncorrectException {
-        userService.changePassword(input.getEmail(), input.getOldPassword(), input.getNewPassword());
-    }
+//    @RequestMapping(value = "password", method = RequestMethod.POST)
+//    @ResponseStatus(HttpStatus.OK)
+//    public void resetPassword(@RequestBody String email) throws UserNotExistsException {
+//        System.out.println(email);
+//        userService.resetPassword(email);
+//    }
+
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public User login() throws UserNotFoundException {
+    public User login () throws UserNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         User user = userService.findByUserEmail(name);
