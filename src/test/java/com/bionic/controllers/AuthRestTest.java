@@ -49,7 +49,7 @@ public class AuthRestTest {
     @Ignore
     @Test
     public void createUser() throws Exception {
-        String request = new String("{\"id\":700,\"password\":\"12345\",\"email\":\"newTester@new.com\",\"firstName\":\"first\",\"lastName\":\"last\",\"insertion\":\"ins\",\"sex\":\"Male\",\"fourWeekPayOff\":true,\"zeroHours\":true,\"contractHours\":20,\"enabled\":true,\"birthDate\":851032800000,\"passwordExpire\":1447978200000,\"workSchedule\":{\"id\":1,\"creationTime\":1420149780000,\"sunday\":\"5\",\"monday\":\"6\",\"tuesday\":\"7\",\"wednesday\":\"8\",\"thursday\":\"9\",\"friday\":\"10\",\"saturday\":\"11\"},\"role\":\"ADMIN\",\"employer\":{\"id\":1,\"name\":\"test\"},\"jobs\":[{\"id\":1,\"jobName\":\"testJob\"}]}");
+        String request = new String("{\"id\":700,\"password\":\"\",\"email\":\"newTesternew.com\",\"firstName\":\"first\",\"lastName\":\"last\",\"insertion\":\"ins\",\"sex\":\"Male\",\"fourWeekPayOff\":true,\"zeroHours\":true,\"contractHours\":20,\"enabled\":true,\"birthDate\":851032800000,\"passwordExpire\":1447978200000,\"workSchedule\":{\"id\":1,\"creationTime\":1420149780000,\"sunday\":\"5\",\"monday\":\"6\",\"tuesday\":\"7\",\"wednesday\":\"8\",\"thursday\":\"9\",\"friday\":\"10\",\"saturday\":\"11\"},\"role\":\"ADMIN\",\"employer\":{\"id\":1,\"name\":\"test\"},\"jobs\":[{\"id\":1,\"jobName\":\"testJob\"}]}");
 
          mockMvc.perform(post("/rest/api/auth/").content(request)
                 .contentType(MediaType.APPLICATION_JSON))

@@ -1,12 +1,17 @@
 package com.bionic;
 
 import com.bionic.config.RootConfig;
+import com.bionic.dto.ValidationErrorDTO;
 import com.bionic.exception.auth.impl.UserNotExistsException;
 import com.bionic.model.User;
 import com.bionic.service.MailService;
 import com.bionic.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 public class Main {
 
@@ -74,6 +79,23 @@ public class Main {
                             System.out.println(d.getId());
                         }
                 );*/
+
+        User user = new User();
+        user.setEmail("asdas");
+        user.setFirstName("as");
+
+        String req="http://localhost:8080/rest/api/auth";
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            ResponseEntity<String> result = restTemplate.postForEntity(req, user, String.class);
+        }catch (HttpClientErrorException e){
+          System.out.println(e.getStatusCode());
+          System.out.println(e.getResponseBodyAsString());
+
+        }
+               //String response = result.getBody();
+
+        //System.out.print(response);
     }
 
 }
