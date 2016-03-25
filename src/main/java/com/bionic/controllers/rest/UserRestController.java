@@ -1,4 +1,4 @@
-package com.bionic.controllers;
+package com.bionic.controllers.rest;
 
 import com.bionic.exception.web.impl.UserNotFoundException;
 import com.bionic.model.User;
