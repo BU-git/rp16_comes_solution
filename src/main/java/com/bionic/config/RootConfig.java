@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
         SecurityConfig.class, SecurityInitializer.class})
 @ComponentScan(basePackages = {"com.bionic.dao", "com.bionic.model",
         "com.bionic.service", "com.bionic.controllers",
-        "com.bionic.config","com.bionic.logging"},
+        "com.bionic.config","com.bionic.logging","com.bionic.exception.handlers"},
         excludeFilters = {
                 @ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)
         })

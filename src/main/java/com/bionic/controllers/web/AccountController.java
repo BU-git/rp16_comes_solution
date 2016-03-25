@@ -1,6 +1,5 @@
 package com.bionic.controllers.web;
 
-import com.bionic.exception.auth.impl.LinkUsedException;
 import com.bionic.exception.web.impl.UserNotFoundException;
 import com.bionic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ public class AccountController {
     UserService userService;
 
     @RequestMapping(value = "verification", method = RequestMethod.GET)
-    public String verifyUser(@RequestParam long key) throws LinkUsedException {
+    public String verifyUser(@RequestParam long key) {
         try {
             userService.enableAccount(key);
         } catch (UserNotFoundException ex) {
@@ -30,9 +29,14 @@ public class AccountController {
     }
 
     @RequestMapping(value = "password", method = RequestMethod.GET)
-    public String passwordReset(@RequestParam long key) throws LinkUsedException {
-        userService.resetPassword(key);
-        return "password_reset";
+    public String passwordReset(@RequestParam long key) {
+        try {
+            userService.resetPassword(key);
+            return "password_reset";
+        } catch (UserNotFoundException ex) {
+            return "verification_fail";
+        }
+
     }
 
 }

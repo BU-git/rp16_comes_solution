@@ -1,9 +1,9 @@
 package com.bionic.service;
 
-import com.bionic.exception.auth.impl.LinkUsedException;
 import com.bionic.exception.auth.impl.PasswordIncorrectException;
 import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.exception.auth.impl.UserNotExistsException;
+import com.bionic.exception.web.impl.UserNotFoundException;
 import com.bionic.model.Job;
 import com.bionic.model.User;
 
@@ -20,7 +20,7 @@ public interface UserService {
     List<User> getAll();
     Job findJobById(int id);
     void resetLink(String email) throws UserNotExistsException;
-    void resetPassword(long key) throws LinkUsedException;
+    void resetPassword(long key);
     void changePassword(String email, String oldPassword, String newPassword) throws PasswordIncorrectException;
     void enableAccount(long key);
 }

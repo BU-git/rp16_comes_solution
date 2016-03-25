@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * @author Pavel Boiko
  */
-@ResponseStatus(HttpStatus.NOT_FOUND)
+
 public class UserNotExistsException extends AuthException {
 
     public UserNotExistsException(){

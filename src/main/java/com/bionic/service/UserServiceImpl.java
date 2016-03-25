@@ -3,7 +3,6 @@ package com.bionic.service;
 import com.bionic.dao.JobDao;
 import com.bionic.dao.UserDao;
 import com.bionic.dao.UserKeyDao;
-import com.bionic.exception.auth.impl.LinkUsedException;
 import com.bionic.exception.auth.impl.PasswordIncorrectException;
 import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.exception.auth.impl.UserNotExistsException;
@@ -127,7 +126,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void resetPassword(long key) throws LinkUsedException {
+    public void resetPassword(long key) {
         UserKey userKey = userKeyDao.findBySecretForResetPass(key);
         if (userKey != null) {
             User user = userDao.findByEmail(userKey.getEmail());
@@ -146,7 +145,7 @@ public class UserServiceImpl implements UserService {
             userDao.saveAndFlush(user);
             userKeyDao.delete(userKey);
         } else {
-            throw new LinkUsedException();
+            throw new UserNotFoundException();
         }
     }
 
