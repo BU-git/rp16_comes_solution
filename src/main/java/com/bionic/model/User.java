@@ -33,7 +33,6 @@ public class User {
     @NotEmpty
     @Column(name = "userPassword")
     @Size(max = 60)
-//    @JsonIgnore
     @NotNull(message = "password must be not null")
     private String password;
     @NotNull
