@@ -4,6 +4,7 @@ import com.bionic.config.RootConfig;
 import com.bionic.config.WebConfig;
 import com.bionic.service.UserService;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class AuthRestTest {
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).dispatchOptions(true).build();
     }
+
     @Ignore
     @Test
     public void createUser() throws Exception {

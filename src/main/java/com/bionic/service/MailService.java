@@ -7,6 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,6 +16,7 @@ import javax.annotation.Resource;
  * @author taras.yaroshchuk
  */
 @Service
+@Async
 @PropertySource("classpath:mail.properties")
 public class MailService {
     @Autowired
@@ -57,6 +59,13 @@ public class MailService {
         String subject = "Password reset";
         String message = "Your link to password reset: " + url + " \n";
         sendMail(email, subject, message);
+
+        try {
+            Thread.sleep(15000);
+        } catch (Exception e) {
+
+        }
+
     }
 
     public void sendTemporaryPassword(String email, String password) {

@@ -1,5 +1,4 @@
-package com.bionic.controllers.validate;
-
+package com.bionic.exception.handlers;
 
 import com.bionic.dto.ValidationErrorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
