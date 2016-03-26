@@ -73,7 +73,7 @@ public class UserRestController {
         return user;
     }
 
-    @RequestMapping(value = "password", method = RequestMethod.POST)
+    @RequestMapping(value = "password", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void changePassword(@RequestBody PasswordsDTO passwordsDTO) throws UserNotExistsException, PasswordIncorrectException {
         userService.changePassword(passwordsDTO.getEmail(), passwordsDTO.getOldPassword(), passwordsDTO.getNewPassword());
