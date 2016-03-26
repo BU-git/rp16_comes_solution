@@ -6,7 +6,6 @@ import com.bionic.dao.UserKeyDao;
 import com.bionic.exception.auth.impl.PasswordIncorrectException;
 import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.exception.auth.impl.UserNotExistsException;
-import com.bionic.exception.web.impl.UserNotFoundException;
 import com.bionic.model.Job;
 import com.bionic.model.User;
 import com.bionic.model.UserKey;
@@ -51,8 +50,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserKeyDao userKeyDao;
 
-    private static final long TEN_YEARS = 315_000_000_000L;
-    private static final int ONE_HOUR = 3_600_000;
 
     @Transactional
     public User addUser(User user) throws UserExistsException {
@@ -126,7 +123,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void resetPassword(long key) {
+    public void resetPassword(long key) throws UserNotExistsException {
         UserKey userKey = userKeyDao.findBySecretForResetPass(key);
         if (userKey != null) {
             User user = userDao.findByEmail(userKey.getEmail());
@@ -145,7 +142,7 @@ public class UserServiceImpl implements UserService {
             userDao.saveAndFlush(user);
             userKeyDao.delete(userKey);
         } else {
-            throw new UserNotFoundException();
+            throw new UserNotExistsException();
         }
     }
 
@@ -165,7 +162,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void enableAccount(long key) {
+    public void enableAccount(long key) throws UserNotExistsException {
         UserKey userKey = userKeyDao.findBySecretForVerification(key);
         if (userKey != null) {
             User user = userDao.findByEmail(userKey.getEmail());
@@ -173,7 +170,7 @@ public class UserServiceImpl implements UserService {
             userDao.saveAndFlush(user);
             userKeyDao.delete(userKey);
         } else {
-            throw new UserNotFoundException();
+            throw new UserNotExistsException();
         }
     }
 }

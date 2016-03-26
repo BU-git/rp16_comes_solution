@@ -1,8 +1,6 @@
 package com.bionic.exception.handlers;
 
-import com.bionic.exception.auth.impl.PasswordIncorrectException;
-import com.bionic.exception.auth.impl.UserExistsException;
-import com.bionic.exception.auth.impl.UserNotExistsException;
+import com.bionic.exception.auth.impl.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -37,4 +35,17 @@ public class AuthExceptionsHandler {
                 .body(e.getMessage());
     }
 
+    @ExceptionHandler(CredentialsExpired.class)
+    public ResponseEntity handleCredentialsExpired(CredentialsExpired e) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(e.getMessage());
+    }
+
+    @ExceptionHandler(TemporaryPassword.class)
+    public ResponseEntity handleTemporaryPassword(TemporaryPassword e) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(e.getMessage());
+    }
 }
