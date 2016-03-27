@@ -46,4 +46,12 @@ public class AuthenticationRestController {
     public void resetLink(@RequestBody String email) throws UserNotExistsException {
         userService.resetLink(email);
     }
+
+    @RequestMapping(value = "exist", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public void isUserExist(@RequestParam String email) throws UserExistsException {
+        System.out.println(email);
+        User user = userService.findByUserEmail(email);
+        if (user != null) throw new UserExistsException();
+    }
 }

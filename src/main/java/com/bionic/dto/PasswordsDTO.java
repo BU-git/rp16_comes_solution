@@ -1,7 +1,7 @@
 package com.bionic.dto;
 
 public class PasswordsDTO {
-    private String email;
+        private String email;
     private String oldPassword;
     private String newPassword;
 

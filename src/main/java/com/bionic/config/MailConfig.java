@@ -27,6 +27,7 @@ public class MailConfig {
     private Environment env;
 
     @Bean
+
     public JavaMailSenderImpl mailSender(){
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost(env.getRequiredProperty(PROP_MAIL_SMPT_HOST));

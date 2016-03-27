@@ -78,4 +78,5 @@ public class UserRestController {
     public void changePassword(@RequestBody PasswordsDTO passwordsDTO) throws UserNotExistsException, PasswordIncorrectException {
         userService.changePassword(passwordsDTO.getEmail(), passwordsDTO.getOldPassword(), passwordsDTO.getNewPassword());
     }
+
 }
