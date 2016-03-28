@@ -21,6 +21,8 @@ import java.util.List;
 public class UserDetailServiceImpl implements UserDetailsService {
     @Autowired
     private UserService userService;
+    @Autowired
+    LoginAttemptService loginAttemptService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -29,7 +31,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         boolean enabled = user.isEnabled();
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
-        boolean accountNonLocked = true;
+        boolean accountNonLocked = true; // !loginAttemptService.isBlocked(username);
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),

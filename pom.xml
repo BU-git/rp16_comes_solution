@@ -297,8 +297,13 @@
             <artifactId>json-path-assert</artifactId>
             <version>2.2.0</version>
         </dependency>
-
-
+        <!-- Google Guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
+        <!-- End Google Guava -->
     </dependencies>
 
     <build>
