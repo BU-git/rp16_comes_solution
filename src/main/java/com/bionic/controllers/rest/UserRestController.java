@@ -1,10 +1,7 @@
 package com.bionic.controllers.rest;
 
 import com.bionic.dto.PasswordsDTO;
-import com.bionic.exception.auth.impl.CredentialsExpired;
-import com.bionic.exception.auth.impl.PasswordIncorrectException;
-import com.bionic.exception.auth.impl.TemporaryPassword;
-import com.bionic.exception.auth.impl.UserNotExistsException;
+import com.bionic.exception.auth.impl.*;
 import com.bionic.model.User;
 import com.bionic.service.MailService;
 import com.bionic.service.UserService;
@@ -62,13 +59,14 @@ public class UserRestController {
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public User login() throws CredentialsExpired, TemporaryPassword, UserNotExistsException {
+    public User login() throws CredentialsExpired, TemporaryPassword, UserNotExistsException, UserNotVerifiedException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         User user = userService.findByUserEmail(name);
 
         if (user.getPasswordExpire().before(new Date())) throw new CredentialsExpired();
         if (user.getPasswordExpire().before(new Date(System.currentTimeMillis() + ONE_HOUR))) throw new TemporaryPassword();
+        if (!user.isVerified()) throw new UserNotVerifiedException();
         if (user == null) throw new UserNotExistsException();
         return user;
     }

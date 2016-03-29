@@ -58,4 +58,11 @@ public class AuthExceptionsHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(e.getMessage());
     }
+
+    @ExceptionHandler(UserNotVerifiedException.class)
+    public ResponseEntity handleCredentialsExpired(UserNotVerifiedException e) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(e.getMessage());
+    }
 }

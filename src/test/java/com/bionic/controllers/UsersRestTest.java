@@ -2,10 +2,14 @@ package com.bionic.controllers;
 
 import com.bionic.config.RootConfig;
 import com.bionic.config.WebConfig;
+import com.bionic.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -33,6 +37,9 @@ public class UsersRestTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private FilterChainProxy springSecurityFilterChain;
@@ -70,10 +77,21 @@ public class UsersRestTest {
                 .andExpect(status().isNotFound());
     }
 
+//    @Test
+//    public void login() throws Exception{
+//
+//    }
+
     @Test
-    public void login() throws Exception{
-        mockMvc.perform(get("/rest/api/users/login").header("Authorization",TOKEN))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$.email",is("test@test.com")));
+    public void notVerified() throws Exception {
+        com.bionic.model.User user = userService.findByUserEmail("test@test.com");
+        if (!user.isVerified()) {
+            mockMvc.perform(get("/rest/api/users/login").header("Authorization", TOKEN))
+                    .andExpect(status().isForbidden());
+        } else {
+            mockMvc.perform(get("/rest/api/users/login").header("Authorization",TOKEN))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.email",is("test@test.com")));
+        }
     }
 }

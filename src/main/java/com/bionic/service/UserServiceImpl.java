@@ -166,7 +166,7 @@ public class UserServiceImpl implements UserService {
         UserKey userKey = userKeyDao.findBySecretForVerification(key);
         if (userKey != null) {
             User user = userDao.findByEmail(userKey.getEmail());
-            user.setEnabled(true);
+            user.setVerified(true);
             userDao.saveAndFlush(user);
             userKeyDao.delete(userKey);
         } else {

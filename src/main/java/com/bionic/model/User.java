@@ -55,6 +55,8 @@ public class User {
     @NotNull
     private boolean enabled;
 
+    private boolean verified;
+
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
@@ -220,6 +222,14 @@ public class User {
 
     public void setWorkSchedule(WorkSchedule workSchedule) {
         this.workSchedule = workSchedule;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 
     @Override
