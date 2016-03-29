@@ -2,26 +2,33 @@
 
 ## Content
 
-* ## [Authentication] (#authentication)
+* ## [Authentication] (#auth)
 
     * ### [Registration] (#registration)
+    
     * ### [Reset Password] (#reset-password)
+    
     * ### [User Exist] (#user-exist)
 
 * ## [Interaction with Users] (#users)
 
     * ### [Get all users] (#get-users)
+    
     * ### [Get user by Id] (#get-user)
-    * ### [Delete user by Id] (#delete-user)
+    
+    * ### [Delete user by Id] (#del-user)
+    
     * ### [Update user] (#update-user)
+    
     * ### [Login user] (#login-user)
+    
     * ### [Change password] (#change-password)
 
 ***
 
 #  TruckDriver App REST API
 
-* ## <a name="authentication"></a> Authentication
+* ## <a name="auth"></a> Authentication
 
 	* ### <a name="registration"></a> Registration
 
@@ -29,11 +36,6 @@
         #### /rest/api/auth
 
         ##### Params:
-
-        Key | Value
-        --- | -----
-        email | email@gmail.com
-        password | secret
 
         <p/>
         
@@ -76,11 +78,12 @@
                 "zeroHours": false
              }               
 
-        Param Name | Required | Description
-        ---------- | -------- | -----------
-        email | true | the user email
-        password | true | the user password
-
+        Param Name | Nullable | Description
+		---------- | -------- | -----------
+        is | true | the user id
+		email | true | email
+        ...|...|...
+        
         ##### Response:
 
         Status | Description
@@ -203,20 +206,14 @@
 		---------- | -------- | -----------
         is | true | the user id
 		email | true | email
-        ...
+        ...|...|...
 
-	* ### <a name="delete-user"></a> Delete user by Id
+	* ### <a name="del-user"></a> Delete user by Id
 
     	#### @DELETE
         #### /rest/api/users/{user_id}
 
 		##### Path Params:
-
-        Path Key | Value
-		-------- | -----
-        user_id | 13
-
-        <p/>
 
         Param Name | Required | Description
 		---------- | -------- | -----------
