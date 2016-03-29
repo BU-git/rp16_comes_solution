@@ -67,8 +67,8 @@ public class UserRestController {
         String name = auth.getName();
         User user = userService.findByUserEmail(name);
 
-       // if (user.getPasswordExpire().before(new Date())) throw new CredentialsExpired();
-        //  if (user.getPasswordExpire().before(new Date(System.currentTimeMillis() + ONE_HOUR))) throw new TemporaryPassword();
+        if (user.getPasswordExpire().before(new Date())) throw new CredentialsExpired();
+        if (user.getPasswordExpire().before(new Date(System.currentTimeMillis() + ONE_HOUR))) throw new TemporaryPassword();
         if (user == null) throw new UserNotExistsException();
         return user;
     }
