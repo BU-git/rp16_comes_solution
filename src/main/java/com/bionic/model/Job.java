@@ -15,11 +15,10 @@ public class Job {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "jobId")
 	private Integer id;
-    @Column()
 	private String jobName;
 
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "jobs")
-    @JsonIgnore
+	@JsonIgnore
 	private List<User> users;
 
 	public Job() {

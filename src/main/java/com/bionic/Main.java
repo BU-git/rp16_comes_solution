@@ -2,10 +2,13 @@ package com.bionic;
 
 import com.bionic.config.RootConfig;
 import com.bionic.dto.ValidationErrorDTO;
+import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.exception.auth.impl.UserNotExistsException;
 import com.bionic.model.User;
+import com.bionic.model.WorkSchedule;
 import com.bionic.service.MailService;
 import com.bionic.service.UserService;
+import com.bionic.service.WorkScheduleService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,7 @@ public class Main {
 
 
         UserService userService = context.getBean(UserService.class);
+
 //        try {
 //            userService.resetLink("dimonich41@gmail.com");
 //        } catch (UserNotExistsException e) {
@@ -28,8 +32,8 @@ public class Main {
 //        }
       //  userService.resetPassword(1458686955039L);
 
-        BCryptPasswordEncoder encoder = context.getBean(BCryptPasswordEncoder.class);
-        System.out.println(encoder.matches("A88U2kUX8Q",userService.findByUserEmail("dimonich41@gmail.com").getPassword()));
+       // BCryptPasswordEncoder encoder = context.getBean(BCryptPasswordEncoder.class);
+       // System.out.println(encoder.matches("A88U2kUX8Q",userService.findByUserEmail("dimonich41@gmail.com").getPassword()));
 //        MailService mailService = context.getBean(MailService.class);
 //        mailService.sendMail("dimonich41@gmail.com","Reset password","Link to input new password");
 //        User user = userService.findByUserEmail("dimonich41@gmail.com");
@@ -80,19 +84,16 @@ public class Main {
                         }
                 );*/
 
-        User user = new User();
-        user.setEmail("asdas");
-        user.setFirstName("as");
 
-        String req="http://localhost:8080/rest/api/auth";
-        RestTemplate restTemplate = new RestTemplate();
-        try {
-            ResponseEntity<String> result = restTemplate.postForEntity(req, user, String.class);
-        }catch (HttpClientErrorException e){
-          System.out.println(e.getStatusCode());
-          System.out.println(e.getResponseBodyAsString());
-
-        }
+//        String req="http://localhost:8080/rest/api/auth";
+//        RestTemplate restTemplate = new RestTemplate();
+//        try {
+//            ResponseEntity<String> result = restTemplate.postForEntity(req, user, String.class);
+//        }catch (HttpClientErrorException e){
+//          System.out.println(e.getStatusCode());
+//          System.out.println(e.getResponseBodyAsString());
+//
+//        }
                //String response = result.getBody();
 
         //System.out.print(response);

@@ -1,6 +1,9 @@
 package com.bionic.model;
 
 import com.bionic.model.dict.UserRoleEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -75,6 +78,7 @@ public class User {
             joinColumns = @JoinColumn(name="userId", referencedColumnName="userId"),
             inverseJoinColumns = @JoinColumn(name="jobId", referencedColumnName="jobId")
     )
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Job> jobs;
 
     public User() {
