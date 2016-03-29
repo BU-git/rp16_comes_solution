@@ -7,12 +7,11 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.stereotype.Component;
 
 /**
  * Created by vitalii.levash on 29.03.2016.
  */
-@Component
+//@Component
 public class LimitLoginAuthenticationProvider  extends DaoAuthenticationProvider {
 
     @Autowired
