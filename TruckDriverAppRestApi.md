@@ -415,29 +415,29 @@
 
     * ### <a name="verify"></a> Verifing user after registration
 
-            #### @GET
-            #### /rest/api/users/verify
+        #### @GET
+        #### /rest/api/users/verify
 
-            ##### Path Params:
+        ##### Path Params:
 
-            Path Key | Value
-            -------- | -----
-            user_id | 3
+        Path Key | Value
+        -------- | -----
+        user_id | 3
 
-            <p/>
+        <p/>
 
-            Param Name | Required | Description
-            ---------- | -------- | -----------
-            user_id | true | the user`s id
+        Param Name | Required | Description
+        ---------- | -------- | -----------
+        user_id | true | the user`s id
 
 
-            ##### Response:
+        ##### Response:
 
-            Status | Description
-            ------ | -----------
-            200 | OK
-            401 | UNAUTHORIZED
-            404 | NOT FOUND
+        Status | Description
+        ------ | -----------
+        200 | OK
+        401 | UNAUTHORIZED
+        404 | NOT FOUND
 
 
 
