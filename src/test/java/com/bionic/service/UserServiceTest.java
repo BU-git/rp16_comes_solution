@@ -3,6 +3,7 @@ package com.bionic.service;
 import com.bionic.config.RootConfig;
 import com.bionic.config.WebConfig;
 import com.bionic.model.User;
+import com.bionic.model.WorkSchedule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class UserServiceTest {
     private UserService userService;
 
     @Autowired
+    private WorkScheduleService workScheduleService;
+
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @Test
@@ -53,6 +57,12 @@ public class UserServiceTest {
         List<User> list = userService.getAll();
         assertNotNull(list);
         assertTrue(list.size() > 0);
+    }
+
+    @Test
+    public void testGetUsersWorkSchedule() throws Exception {
+        WorkSchedule workSchedule = workScheduleService.getByUserId(3);
+        assertNotNull(workSchedule);
     }
 
 //    @Ignore

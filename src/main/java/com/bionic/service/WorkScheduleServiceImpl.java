@@ -40,4 +40,14 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
     public List<WorkSchedule> getAll() {
         return workScheduleDao.findAll();
     }
+
+    @Override
+    public WorkSchedule getByUserId(int user_id) {
+        return workScheduleDao.findByUserId(user_id);
+    }
+
+    @Override
+    public WorkSchedule saveWorkSchedule(WorkSchedule workSchedule) {
+        return workScheduleDao.saveAndFlush(workSchedule);
+    }
 }

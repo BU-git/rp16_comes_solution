@@ -24,6 +24,10 @@
     
     * ### [Change password] (#change-pass)
 
+    * ### [Get user`s Work Schedule] (#get-workschedule)
+
+    * ### [Update user`s Work Schedule] (#put-workschedule)
+
 ***
 
 #  TruckDriver App REST API
@@ -110,7 +114,7 @@
         200 | OK
         400 | Bad Request
         
-    * ### <a name="is-exist"></a> User Exist
+    * ### <a name="isexist"></a> User Exist
         
         #### @GET
         #### /rest/api/auth/exist
@@ -331,3 +335,79 @@
         200 | OK
         404 | Not Found
         400 | Bad Request
+        
+	* ### <a name="get-workschedule"></a> Get user`s Work Schedule
+
+    	#### @GET
+        #### /rest/api/users/{user_id}/workschedule
+
+		##### Path Params:
+
+        Path Key | Value
+		-------- | -----
+        user_id | 3
+
+        <p/>
+
+        Param Name | Required | Description
+		---------- | -------- | -----------
+        user_id | true | the user`s id
+
+
+        ##### Response:
+
+        Status | Description
+		------ | -----------
+        200 | OK
+        401 | UNAUTHORIZED
+        404 | NOT FOUND
+
+			{
+              "id": 1,
+              "creationTime": 1420149780000,
+              "sunday": "5",
+              "monday": "6",
+              "tuesday": "7",
+              "wednesday": "8",
+              "thursday": "9",
+              "friday": "10",
+              "saturday": "11"
+            }
+
+	* ### <a name="put-workschedule"></a> Update user`s Work Schedule
+
+    	#### @PUT
+        #### /rest/api/users/{user_id}/workschedule
+
+		##### Path Params:
+
+        Path Key | Value
+		-------- | -----
+        user_id | 3
+
+        <p/>
+
+        Param Name | Required | Description
+		---------- | -------- | -----------
+        user_id | true | the user`s id
+
+			{
+              "id": 1,
+              "creationTime": 1420149780000,
+              "sunday": "5",
+              "monday": "6",
+              "tuesday": "7",
+              "wednesday": "8",
+              "thursday": "9",
+              "friday": "10",
+              "saturday": "11"
+            }
+
+        ##### Response:
+
+        Status | Description
+		------ | -----------
+        200 | OK
+        401 | UNAUTHORIZED
+        404 | NOT FOUND
+
