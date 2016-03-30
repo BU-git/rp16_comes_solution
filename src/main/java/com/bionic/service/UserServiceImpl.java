@@ -71,6 +71,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
+    public User verifyUser(User user) {
+        long key = System.currentTimeMillis();
+        UserKey userKey = new UserKey(key, user.getEmail(), "verification");
+        userKey.setId(0);
+        userKeyDao.saveAndFlush(userKey);
+        mailService.sendVerification(user.getEmail(), key);
+        return userDao.saveAndFlush(user);
+    }
+
+    @Transactional
     @Override
     public void delete(int id) {
         userDao.delete(id);

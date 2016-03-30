@@ -28,6 +28,7 @@
 
     * ### [Update user`s Work Schedule] (#put-workschedule)
 
+     * ### [Verify user after registration] (#verify)
 ***
 
 #  TruckDriver App REST API
@@ -410,4 +411,33 @@
         200 | OK
         401 | UNAUTHORIZED
         404 | NOT FOUND
+
+
+    * ### <a name="verify"></a> Verifing user after registration
+
+            #### @GET
+            #### /rest/api/users/verify
+
+            ##### Path Params:
+
+            Path Key | Value
+            -------- | -----
+            user_id | 3
+
+            <p/>
+
+            Param Name | Required | Description
+            ---------- | -------- | -----------
+            user_id | true | the user`s id
+
+
+            ##### Response:
+
+            Status | Description
+            ------ | -----------
+            200 | OK
+            401 | UNAUTHORIZED
+            404 | NOT FOUND
+
+
 

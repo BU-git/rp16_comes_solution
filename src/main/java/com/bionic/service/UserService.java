@@ -15,6 +15,7 @@ public interface UserService {
 
     User findById(int id);
     User addUser(User user) throws UserExistsException;
+    public User verifyUser(User user);
     void delete(int id);
     User findByUsername(String name);
     User findByUserEmail(String email);
