@@ -13,4 +13,6 @@ public interface WorkScheduleService {
     WorkSchedule getById(int id);
     WorkSchedule editWorkSchedule(WorkSchedule workSchedule);
     List<WorkSchedule> getAll();
+    WorkSchedule getByUserId(int user_id);
+    WorkSchedule saveWorkSchedule(WorkSchedule workSchedule);
 }

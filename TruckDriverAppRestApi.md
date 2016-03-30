@@ -4,11 +4,11 @@
 
 * ## [Authentication] (#auth)
 
-    * ### [Registration] (#registration)
+    * ### [Registration] (#reg)
     
-    * ### [Reset Password] (#reset-password)
+    * ### [Reset Password] (#reset-pass)
     
-    * ### [User Exist] (#user-exist)
+    * ### [User Exist] (#isexist)
 
 * ## [Interaction with Users] (#users)
 
@@ -18,11 +18,15 @@
     
     * ### [Delete user by Id] (#del-user)
     
-    * ### [Update user] (#update-user)
+    * ### [Update user] (#put-user)
     
-    * ### [Login user] (#login-user)
+    * ### [Login user] (#log-user)
     
-    * ### [Change password] (#change-password)
+    * ### [Change password] (#change-pass)
+
+    * ### [Get user`s Work Schedule] (#get-workschedule)
+
+    * ### [Update user`s Work Schedule] (#put-workschedule)
 
 ***
 
@@ -30,7 +34,7 @@
 
 * ## <a name="auth"></a> Authentication
 
-	* ### <a name="registration"></a> Registration
+	* ### <a name="reg"></a> Registration
 
         #### @POST
         #### /rest/api/auth
@@ -91,7 +95,7 @@
         201 | Created
         400 | Bad Request
         
-    * ### <a name="reset-password"></a> Reset Password
+    * ### <a name="reset-pass"></a> Reset Password
     
         #### @PUT
         #### /rest/api/auth/password
@@ -110,7 +114,7 @@
         200 | OK
         400 | Bad Request
         
-    * ### <a name="user-exist"></a> User Exist
+    * ### <a name="isexist"></a> User Exist
         
         #### @GET
         #### /rest/api/auth/exist
@@ -228,7 +232,7 @@
         401 | UNAUTHORIZED
         404 | NOT FOUND
 
-	* ### <a name="update-user"></a> Update user
+	* ### <a name="put-user"></a> Update user
 
     	#### @PUT
         #### /rest/api/users/{user_id}
@@ -281,7 +285,7 @@
         204 | No content
         401 | UNAUTHORIZED
         
-	* ### <a name="login-user"></a> Login user
+	* ### <a name="log-user"></a> Login user
 
     	#### @GET
         #### /rest/api/users/login
@@ -295,8 +299,9 @@
         403 | Forbidden | You have temporary password
         404 | Not Found | User not found
         409 | Conflict | Password expired
+        412 |Precondition Failed| Account is not verified
         
-    * ### <a name="change-password"></a> Change password
+    * ### <a name="change-pass"></a> Change password
     
         #### @PUT
         #### /rest/api/users/password
@@ -330,3 +335,79 @@
         200 | OK
         404 | Not Found
         400 | Bad Request
+        
+	* ### <a name="get-workschedule"></a> Get user`s Work Schedule
+
+    	#### @GET
+        #### /rest/api/users/{user_id}/workschedule
+
+		##### Path Params:
+
+        Path Key | Value
+		-------- | -----
+        user_id | 3
+
+        <p/>
+
+        Param Name | Required | Description
+		---------- | -------- | -----------
+        user_id | true | the user`s id
+
+
+        ##### Response:
+
+        Status | Description
+		------ | -----------
+        200 | OK
+        401 | UNAUTHORIZED
+        404 | NOT FOUND
+
+			{
+              "id": 1,
+              "creationTime": 1420149780000,
+              "sunday": "5",
+              "monday": "6",
+              "tuesday": "7",
+              "wednesday": "8",
+              "thursday": "9",
+              "friday": "10",
+              "saturday": "11"
+            }
+
+	* ### <a name="put-workschedule"></a> Update user`s Work Schedule
+
+    	#### @PUT
+        #### /rest/api/users/{user_id}/workschedule
+
+		##### Path Params:
+
+        Path Key | Value
+		-------- | -----
+        user_id | 3
+
+        <p/>
+
+        Param Name | Required | Description
+		---------- | -------- | -----------
+        user_id | true | the user`s id
+
+			{
+              "id": 1,
+              "creationTime": 1420149780000,
+              "sunday": "5",
+              "monday": "6",
+              "tuesday": "7",
+              "wednesday": "8",
+              "thursday": "9",
+              "friday": "10",
+              "saturday": "11"
+            }
+
+        ##### Response:
+
+        Status | Description
+		------ | -----------
+        200 | OK
+        401 | UNAUTHORIZED
+        404 | NOT FOUND
+

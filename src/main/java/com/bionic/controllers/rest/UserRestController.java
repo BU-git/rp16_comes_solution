@@ -3,8 +3,10 @@ package com.bionic.controllers.rest;
 import com.bionic.dto.PasswordsDTO;
 import com.bionic.exception.auth.impl.*;
 import com.bionic.model.User;
+import com.bionic.model.WorkSchedule;
 import com.bionic.service.MailService;
 import com.bionic.service.UserService;
+import com.bionic.service.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -26,6 +28,9 @@ public class UserRestController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private WorkScheduleService workScheduleService;
 
     @Autowired
     MailService mailService;
@@ -56,6 +61,20 @@ public class UserRestController {
         userService.delete(id);
     }
 
+    @RequestMapping(value = "{id}/workschedule", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public WorkSchedule getUsersWorkSchedule(@PathVariable int id) throws UserNotExistsException {
+        return workScheduleService.getByUserId(id);
+    }
+
+    @RequestMapping(value = "{id}/workschedule", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT) //204
+    public void putUsersWorkSchedule(@PathVariable int id, @Valid @RequestBody WorkSchedule workSchedule) {
+        User user = userService.findById(id);
+        user.setWorkSchedule(workSchedule);
+        workScheduleService.saveWorkSchedule(workSchedule);
+        userService.saveUser(user);
+    }
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

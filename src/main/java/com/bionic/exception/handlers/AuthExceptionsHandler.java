@@ -3,8 +3,6 @@ package com.bionic.exception.handlers;
 import com.bionic.exception.auth.impl.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AccountStatusException;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -62,7 +60,7 @@ public class AuthExceptionsHandler {
     @ExceptionHandler(UserNotVerifiedException.class)
     public ResponseEntity handleCredentialsExpired(UserNotVerifiedException e) {
         return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)
+                .status(HttpStatus.PRECONDITION_FAILED)
                 .body(e.getMessage());
     }
 }

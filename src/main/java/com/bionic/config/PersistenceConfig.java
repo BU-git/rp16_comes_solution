@@ -1,6 +1,6 @@
 package com.bionic.config;
 
-import org.hibernate.ejb.HibernatePersistence;
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -49,7 +49,7 @@ public class PersistenceConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setPersistenceProviderClass(HibernatePersistence.class);
+        em.setPersistenceProviderClass(HibernatePersistenceProvider.class);
         em.setPackagesToScan(env.getRequiredProperty(PROP_ENTITYMANAGER_PACKAGES_TO_SCAN).split(","));
         em.setDataSource(dataSource());
         em.setPersistenceUnitName("TruckDriverDB");

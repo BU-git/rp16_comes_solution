@@ -77,6 +77,13 @@ public class UsersRestTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    public void findWorkScheduleByUserId() throws Exception{
+        mockMvc.perform(get("/rest/api/users/3/workschedule").header("Authorization",TOKEN))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)));
+    }
+
 //    @Test
 //    public void login() throws Exception{
 //
