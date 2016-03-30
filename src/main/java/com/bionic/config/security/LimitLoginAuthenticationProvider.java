@@ -7,15 +7,27 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by vitalii.levash on 29.03.2016.
  */
-//@Component
+@Service
 public class LimitLoginAuthenticationProvider  extends DaoAuthenticationProvider {
 
     @Autowired
     private LoginAttemptService loginAttemptService;
+
+    @Autowired
+    @Override
+    public void setUserDetailsService(UserDetailsService userDetailsService) {
+        super.setUserDetailsService(userDetailsService);
+    }
+
 
     @Override
     public Authentication authenticate(Authentication authentication)
@@ -34,10 +46,12 @@ public class LimitLoginAuthenticationProvider  extends DaoAuthenticationProvider
             throw e;
 
         } catch (LockedException e) {
+            String error="";
+            if (loginAttemptService.isBlocked(authentication.getName())){
+                error="User is locked"+authentication.getName();
+            }
             throw e;
-           /*
 
-            */
         }
 
     }

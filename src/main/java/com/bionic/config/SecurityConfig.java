@@ -1,8 +1,11 @@
 package com.bionic.config;
 
+import com.bionic.config.security.LimitLoginAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,13 +25,20 @@ import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
+/*
     @Autowired
     private UserDetailsService userDetailService;
+*/
+    @Autowired
+    private LimitLoginAuthenticationProvider limitLoginAuthenticationProvider;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailService).passwordEncoder(getPasswordEncoder());
+    //    limitLoginAuthenticationProvider.setUserDetailsService(userDetailsService());
+        limitLoginAuthenticationProvider.setPasswordEncoder(getPasswordEncoder());
+
+        auth.authenticationProvider(limitLoginAuthenticationProvider);
+       //auth.userDetailsService(userDetailService).passwordEncoder(getPasswordEncoder());
     }
 
     @Override

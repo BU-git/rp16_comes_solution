@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class LoginAttemptService {
 
-    private final int MAX_FAILED_ATTEMPTS=5;
+    private final int MAX_FAILED_ATTEMPTS=15;
     private final int TIME_FOR_LOCK=30;
 
     private LoadingCache<String, Integer> attemptsCache;
