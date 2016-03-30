@@ -295,6 +295,7 @@
         403 | Forbidden | You have temporary password
         404 | Not Found | User not found
         409 | Conflict | Password expired
+        412 |Precondition Failed| Account is not verified
         
     * ### <a name="change-password"></a> Change password
     
