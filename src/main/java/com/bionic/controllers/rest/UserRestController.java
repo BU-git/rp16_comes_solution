@@ -9,6 +9,7 @@ import com.bionic.service.UserService;
 import com.bionic.service.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -77,22 +78,32 @@ public class UserRestController {
     }
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public User login() throws CredentialsExpired, TemporaryPassword, UserNotExistsException, UserNotVerifiedException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        User user = userService.findByUserEmail(name);
+    public ResponseEntity<User> login() {
 
-        if (user.getPasswordExpire().before(new Date())) throw new CredentialsExpired();
-        if (user.getPasswordExpire().before(new Date(System.currentTimeMillis() + ONE_HOUR))) throw new TemporaryPassword();
-        if (!user.isVerified()) throw new UserNotVerifiedException();
-        if (user == null) throw new UserNotExistsException();
-        return user;
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String name = auth.getName();
+            User user = userService.findByUserEmail(name);
+
+            if (user == null)
+                return new ResponseEntity<User>(user, HttpStatus.NOT_FOUND);
+
+            if (user.getPasswordExpire().before(new Date()))
+                return new ResponseEntity<User>(user, HttpStatus.FORBIDDEN);
+
+            if (user.getPasswordExpire().before(new Date(System.currentTimeMillis() + ONE_HOUR)))
+                return new ResponseEntity<User>(user, HttpStatus.CONFLICT);
+
+            if (!user.isVerified())
+                return new ResponseEntity<User>(user, HttpStatus.PRECONDITION_FAILED);
+
+            return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
     @RequestMapping(value = "{id}/password", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changePassword(@PathVariable int id, @RequestBody PasswordsDTO passwordsDTO) throws UserNotExistsException, PasswordIncorrectException {
+
+
         userService.changePassword(id, passwordsDTO.getOldPassword(), passwordsDTO.getNewPassword());
     }
 
