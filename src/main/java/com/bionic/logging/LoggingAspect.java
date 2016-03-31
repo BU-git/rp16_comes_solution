@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class LoggingAspect {
     private static final Logger log = LogManager.getLogger();
 
-    @Pointcut("execution(* com.bionic.service.UserServiceImpl.*(..))")
+    @Pointcut("execution(* com.bionic.service.UserService.*(..))")
     private void allMethods() {
 
     }

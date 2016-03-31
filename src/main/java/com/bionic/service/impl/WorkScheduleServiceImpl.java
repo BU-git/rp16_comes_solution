@@ -1,7 +1,8 @@
-package com.bionic.service;
+package com.bionic.service.impl;
 
 import com.bionic.dao.WorkScheduleDao;
 import com.bionic.model.WorkSchedule;
+import com.bionic.service.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

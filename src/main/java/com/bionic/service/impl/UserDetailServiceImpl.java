@@ -1,7 +1,9 @@
-package com.bionic.service;
+package com.bionic.service.impl;
 
 import com.bionic.model.User;
 import com.bionic.model.dict.UserRoleEnum;
+import com.bionic.service.LoginAttemptService;
+import com.bionic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,6 +21,7 @@ import java.util.List;
  */
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
+
     @Autowired
     private UserService userService;
     @Autowired

@@ -1,4 +1,4 @@
-package com.bionic.service;
+package com.bionic.service.impl;
 
 import com.bionic.dao.JobDao;
 import com.bionic.dao.UserDao;
@@ -10,6 +10,8 @@ import com.bionic.model.Job;
 import com.bionic.model.User;
 import com.bionic.model.UserKey;
 import com.bionic.model.dict.UserRoleEnum;
+import com.bionic.service.MailService;
+import com.bionic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
