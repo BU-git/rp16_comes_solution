@@ -2,6 +2,7 @@ package com.bionic.service;
 
 import com.bionic.config.RootConfig;
 import com.bionic.config.WebConfig;
+import com.bionic.exception.auth.impl.PasswordIncorrectException;
 import com.bionic.model.User;
 import com.bionic.model.WorkSchedule;
 import org.junit.Test;
@@ -73,9 +74,13 @@ public class UserServiceTest {
 
     @Test
     public void testChangePassword() throws Exception {
-        User user = userService.findByUsername("boiko.pasha@gmail.com");
-        user.setPassword(new BCryptPasswordEncoder().encode("1234"));
-        userService.saveUser(user);
-        userService.changePassword(user.getId(), "1234", "345");
+        User user = userService.findByUsername("test@test.com");
+        userService.changePassword(user.getId(), "12345", "345");
+    }
+
+    @Test(expected = PasswordIncorrectException.class)
+    public void testChangeWrongPassword() throws Exception {
+        User user = userService.findByUsername("test@test.com");
+        userService.changePassword(user.getId(), "wrogPassword", "345");
     }
 }
