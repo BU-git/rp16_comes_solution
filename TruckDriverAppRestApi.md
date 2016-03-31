@@ -8,7 +8,7 @@
     
     * ### [Reset Password] (#reset-pass)
     
-    * ### [User Exist] (#isexist)
+    * ### [User Exist] (#u-exist)
 
 * ## [Interaction with Users] (#users)
 
@@ -22,13 +22,13 @@
     
     * ### [Login user] (#log-user)
     
-    * ### [Change password] (#change-pass)
+    * ### [Change password] (#pass-change)
 
     * ### [Get user`s Work Schedule] (#get-workschedule)
 
     * ### [Update user`s Work Schedule] (#put-workschedule)
 
-     * ### [Verify user after registration] (#verify)
+    * ### [Verify user after registration] (#verify)
 ***
 
 #  TruckDriver App REST API
@@ -115,7 +115,7 @@
         200 | OK
         400 | Bad Request
         
-    * ### <a name="isexist"></a> User Exist
+    * ### <a name="u-exist"></a> User Exist
         
         #### @GET
         #### /rest/api/auth/exist
@@ -250,6 +250,8 @@
 		---------- | -------- | -----------
         user_id | true | the user`s id
 
+        ##### Params:
+
 			{
               "id": 13,
               "email": "ivanivan@gmail.com",
@@ -302,30 +304,39 @@
         409 | Conflict | Password expired
         412 |Precondition Failed| Account is not verified
         
-    * ### <a name="change-pass"></a> Change password
+    * ### <a name="pass-change"></a> Change password
     
         #### @PUT
-        #### /rest/api/users/password
+        #### /rest/api/users/{id}/password
+
+		##### Path Params:
+
+        Path Key | Value
+		-------- | -----
+        user_id | 13
+
+        <p/>
+
+        Param Name | Required | Description
+		---------- | -------- | -----------
+        user_id | true | the user`s id
 
         ##### Params:
 
         Key | Value
         --- | -----
-        email | test@test.com
         oldPassword | 12345
         newPassword | qwerty
 
         <p/>
         
             {        
-                "email": "ivan@gmail.com",
                 "oldPassword": 12345,
                 "newPassword": qwerty
              }               
 
         Param Name | Required | Description
         ---------- | -------- | -----------
-        email | true | the user email
         oldPassword | true | the user`s old password
         newPassword | true | the user`s new password
 
@@ -333,7 +344,7 @@
 
         Status | Description
         ------ | -----------
-        200 | OK
+        204 | No Content
         404 | Not Found
         400 | Bad Request
         
@@ -413,7 +424,7 @@
         404 | NOT FOUND
 
 
-    * ### <a name="verify"></a> Verifing user after registration
+    * ### <a name="verify"></a> Verifying user after registration
 
         #### @GET
         #### /rest/api/users/verify

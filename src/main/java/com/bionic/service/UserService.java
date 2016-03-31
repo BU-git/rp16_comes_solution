@@ -24,6 +24,6 @@ public interface UserService {
     Job findJobById(int id);
     void resetLink(String email) throws UserNotExistsException;
     void resetPassword(long key) throws UserNotExistsException;
-    void changePassword(String email, String oldPassword, String newPassword) throws PasswordIncorrectException;
+    void changePassword(int id, String oldPassword, String newPassword) throws PasswordIncorrectException;
     void enableAccount(long key) throws UserNotExistsException;
 }

@@ -158,8 +158,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void changePassword(String email, String oldPassword, String newPassword) throws PasswordIncorrectException {
-        User user = userDao.findByEmail(email);
+    public void changePassword(int id, String oldPassword, String newPassword) throws PasswordIncorrectException {
+        User user = userDao.findOne(id);
 
         if (passwordEncoder.matches(oldPassword, user.getPassword())) {
             user.setPassword(passwordEncoder.encode(newPassword));

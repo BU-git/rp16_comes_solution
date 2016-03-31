@@ -76,6 +76,6 @@ public class UserServiceTest {
         User user = userService.findByUsername("boiko.pasha@gmail.com");
         user.setPassword(new BCryptPasswordEncoder().encode("1234"));
         userService.saveUser(user);
-        userService.changePassword("boiko.pasha@gmail.com", "1234", "345");
+        userService.changePassword(user.getId(), "1234", "345");
     }
 }

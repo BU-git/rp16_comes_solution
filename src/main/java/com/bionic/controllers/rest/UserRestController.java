@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -91,10 +90,10 @@ public class UserRestController {
         return user;
     }
 
-    @RequestMapping(value = "password", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.OK)
-    public void changePassword(@RequestBody PasswordsDTO passwordsDTO) throws UserNotExistsException, PasswordIncorrectException {
-        userService.changePassword(passwordsDTO.getEmail(), passwordsDTO.getOldPassword(), passwordsDTO.getNewPassword());
+    @RequestMapping(value = "{id}/password", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void changePassword(@PathVariable int id, @RequestBody PasswordsDTO passwordsDTO) throws UserNotExistsException, PasswordIncorrectException {
+        userService.changePassword(id, passwordsDTO.getOldPassword(), passwordsDTO.getNewPassword());
     }
 
     @RequestMapping(method = RequestMethod.GET,value = "verify")
