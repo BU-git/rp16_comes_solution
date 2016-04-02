@@ -285,8 +285,9 @@
 
         Status | Description
 		------ | -----------
-        204 | No content
+        200 | OK
         401 | UNAUTHORIZED
+        403 | FORBIDDEN
         
 	* ### <a name="log-user"></a> Login user
 
