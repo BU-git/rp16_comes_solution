@@ -56,7 +56,7 @@ public class UsersRestTest {
                 .build();
     }
     @Test
-    public void accessDenid() throws Exception{
+    public void accessDenied() throws Exception{
         mockMvc.perform(get("/rest/api/users"))
                 .andExpect(status().isUnauthorized());
     }

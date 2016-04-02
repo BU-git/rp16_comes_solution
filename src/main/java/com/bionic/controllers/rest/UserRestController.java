@@ -52,8 +52,13 @@ public class UserRestController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT) //204
-    public void putUser(@PathVariable int id, @Valid @RequestBody User user) {
-        userService.saveUser(user);
+    public void putUser(@PathVariable int id, @Valid @RequestBody User incomingUser) throws UserExistsException {
+        User existingUser = userService.findByUserEmail(incomingUser.getEmail());
+        if (existingUser != null) {
+            throw new UserExistsException();
+        } else {
+            userService.saveUser(incomingUser);
+        }
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
