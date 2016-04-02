@@ -54,7 +54,7 @@ public class UserRestController {
     @ResponseStatus(HttpStatus.OK) //200
     public User putUser(@PathVariable int id, @Valid @RequestBody User incomingUser) throws UserExistsException {
         User existingUser = userService.findByUserEmail(incomingUser.getEmail());
-        if (existingUser != null) throw new UserExistsException();
+        if (existingUser != null && existingUser.getId() != id) throw new UserExistsException();
 
         userService.saveUser(incomingUser);
         User updatedUser = userService.findById(id);
