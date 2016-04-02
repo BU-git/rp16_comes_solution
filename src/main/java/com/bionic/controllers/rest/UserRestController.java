@@ -112,12 +112,12 @@ public class UserRestController {
         userService.changePassword(id, passwordsDTO.getOldPassword(), passwordsDTO.getNewPassword());
     }
 
-    @RequestMapping(method = RequestMethod.GET,value = "verify")
+    @RequestMapping(method = RequestMethod.GET,value = "{id}/verify")
     @ResponseStatus(HttpStatus.OK) // HTTP 200 "OK"
-    public void verifyUser()  {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        User user = userService.findByUserEmail(name);
+    public void verifyUser(@PathVariable int id)  {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        String name = auth.getName();
+        User user = userService.findById(id);
         userService.verifyUser(user);
     }
 

@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
             throw new UserExistsException(email);
         }
         user.setRole(UserRoleEnum.USER);
-        user.setEnabled(false);
+        user.setEnabled(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         long key = System.currentTimeMillis();
