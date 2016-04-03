@@ -56,8 +56,11 @@ public class UserRestController {
         User existingUser = userService.findByUserEmail(incomingUser.getEmail());
         if (existingUser != null && existingUser.getId() != id) throw new UserExistsException();
 
-        WorkSchedule workSchedule = workScheduleService.saveWorkSchedule(incomingUser.getWorkSchedule());
-        incomingUser.setWorkSchedule(workSchedule);
+        if (incomingUser.getWorkSchedule() != null) {
+            WorkSchedule workSchedule = workScheduleService.saveWorkSchedule(incomingUser.getWorkSchedule());
+            incomingUser.setWorkSchedule(workSchedule);
+        }
+
         userService.saveUser(incomingUser);
         User updatedUser = userService.findById(id);
         return updatedUser;

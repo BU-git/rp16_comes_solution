@@ -68,8 +68,10 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        WorkSchedule workSchedule = workScheduleService.saveWorkSchedule(user.getWorkSchedule());
-        user.setWorkSchedule(workSchedule);
+        if (user.getWorkSchedule() != null) {
+            WorkSchedule workSchedule = workScheduleService.saveWorkSchedule(user.getWorkSchedule());
+            user.setWorkSchedule(workSchedule);
+        }
 
         long key = System.currentTimeMillis();
         UserKey userKey = new UserKey(key, email, "verification");
