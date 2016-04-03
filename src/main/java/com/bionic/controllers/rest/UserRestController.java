@@ -56,6 +56,8 @@ public class UserRestController {
         User existingUser = userService.findByUserEmail(incomingUser.getEmail());
         if (existingUser != null && existingUser.getId() != id) throw new UserExistsException();
 
+        WorkSchedule workSchedule = workScheduleService.saveWorkSchedule(incomingUser.getWorkSchedule());
+        incomingUser.setWorkSchedule(workSchedule);
         userService.saveUser(incomingUser);
         User updatedUser = userService.findById(id);
         return updatedUser;
@@ -74,7 +76,7 @@ public class UserRestController {
     }
 
     @RequestMapping(value = "{id}/workschedule", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.NO_CONTENT) //204
+    @ResponseStatus(HttpStatus.OK) //200
     public void putUsersWorkSchedule(@PathVariable int id, @Valid @RequestBody WorkSchedule workSchedule) {
         User user = userService.findById(id);
         user.setWorkSchedule(workSchedule);
