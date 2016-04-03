@@ -9,9 +9,11 @@ import com.bionic.exception.auth.impl.UserNotExistsException;
 import com.bionic.model.Job;
 import com.bionic.model.User;
 import com.bionic.model.UserKey;
+import com.bionic.model.WorkSchedule;
 import com.bionic.model.dict.UserRoleEnum;
 import com.bionic.service.MailService;
 import com.bionic.service.UserService;
+import com.bionic.service.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -50,6 +52,9 @@ public class UserServiceImpl implements UserService {
     private MailService mailService;
 
     @Autowired
+    private WorkScheduleService workScheduleService;
+
+    @Autowired
     private UserKeyDao userKeyDao;
 
 
@@ -62,6 +67,9 @@ public class UserServiceImpl implements UserService {
         user.setRole(UserRoleEnum.USER);
         user.setEnabled(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        WorkSchedule workSchedule = workScheduleService.saveWorkSchedule(user.getWorkSchedule());
+        user.setWorkSchedule(workSchedule);
 
         long key = System.currentTimeMillis();
         UserKey userKey = new UserKey(key, email, "verification");
