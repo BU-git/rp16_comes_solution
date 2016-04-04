@@ -17,7 +17,7 @@ import java.util.List;
  * 
  * @author vitalii.levash
  * @author Dima Budko
- * @version 0.4
+ * @version 0.5
  */
 
 @Entity
@@ -82,6 +82,8 @@ public class User {
     )
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Job> jobs;
+
+    private String postalCode;
 
     public User() {
     }
@@ -232,6 +234,14 @@ public class User {
         this.verified = verified;
     }
 
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -252,6 +262,7 @@ public class User {
                 ", role=" + role +
                 ", employer=" + employer +
                 ", jobs=" + jobs +
+                ", postalCode=" + postalCode +
                 "}";
     }
 }

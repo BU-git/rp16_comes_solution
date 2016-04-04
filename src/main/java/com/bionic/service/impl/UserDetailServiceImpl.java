@@ -34,7 +34,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         boolean enabled = user.isEnabled();
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
-        boolean accountNonLocked =  !loginAttemptService.isBlocked(username);
+        boolean accountNonLocked = !loginAttemptService.isBlocked(username);
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
