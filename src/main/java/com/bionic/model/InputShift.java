@@ -26,7 +26,12 @@ public class InputShift {
     @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="inputShift",fetch = FetchType.EAGER)
+    @NotNull
+    @OneToOne()
+    @JoinColumn(name = "userId")
+    private User user;
+
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy="inputShift",fetch = FetchType.EAGER)
     private List<InputRide> inputRides;
 
     public InputShift() {
@@ -62,5 +67,13 @@ public class InputShift {
 
     public void setInputRides(List<InputRide> inputRides) {
         this.inputRides = inputRides;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

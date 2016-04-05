@@ -21,7 +21,7 @@ public class InputRide {
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "inputShiftId")
     private InputShift inputShift;
 
