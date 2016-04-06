@@ -1,40 +1,33 @@
 package com.bionic.model;
 
-import org.springframework.data.repository.cdi.Eager;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * author Dima Budko
  * v.0.1
  */
 @Entity
-public class InputShift {
+public class Ride {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "shiftId")
+    @Column(name = "rideId")
     private Integer id;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
+
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
 
-    @NotNull
-    @OneToOne()
-    @JoinColumn(name = "userId")
-    private User user;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "shiftId")
+    private Shift shift;
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy="inputShift",fetch = FetchType.EAGER)
-    private List<InputRide> inputRides;
-
-    public InputShift() {
+    public Ride() {
     }
 
     public Integer getId() {
@@ -61,19 +54,11 @@ public class InputShift {
         this.endTime = endTime;
     }
 
-    public List<InputRide> getInputRides() {
-        return inputRides;
+    public Shift getShift() {
+        return shift;
     }
 
-    public void setInputRides(List<InputRide> inputRides) {
-        this.inputRides = inputRides;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public void setShift(Shift shift) {
+        this.shift = shift;
     }
 }

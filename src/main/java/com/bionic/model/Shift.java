@@ -3,29 +3,36 @@ package com.bionic.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 /**
  * author Dima Budko
  * v.0.1
  */
 @Entity
-public class InputRide {
+public class Shift {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "rideId")
+    @Column(name = "shiftId")
     private Integer id;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
+
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "inputShiftId")
-    private InputShift inputShift;
 
-    public InputRide() {
+    @NotNull
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
+
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "shift", fetch = FetchType.EAGER)
+    private List<Ride> rides;
+
+    public Shift() {
     }
 
     public Integer getId() {
@@ -52,11 +59,19 @@ public class InputRide {
         this.endTime = endTime;
     }
 
-    public InputShift getInputShift() {
-        return inputShift;
+    public List<Ride> getRides() {
+        return rides;
     }
 
-    public void setInputShift(InputShift inputShift) {
-        this.inputShift = inputShift;
+    public void setRides(List<Ride> rides) {
+        this.rides = rides;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

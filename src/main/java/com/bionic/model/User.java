@@ -63,7 +63,7 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private Date passwordExpire;
 
-    @OneToOne()
+    @OneToOne
     @JoinColumn(name="workScheduleId")
     private WorkSchedule workSchedule;
 
@@ -82,6 +82,10 @@ public class User {
     )
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Job> jobs;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Shift> shifts;
 
     private String postalCode;
 
@@ -240,6 +244,14 @@ public class User {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public List<Shift> getShifts() {
+        return shifts;
+    }
+
+    public void setShifts(List<Shift> shifts) {
+        this.shifts = shifts;
     }
 
     @Override
