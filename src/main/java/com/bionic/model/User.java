@@ -63,7 +63,7 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private Date passwordExpire;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="workScheduleId")
     private WorkSchedule workSchedule;
 
