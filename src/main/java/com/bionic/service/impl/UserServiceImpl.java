@@ -17,6 +17,8 @@ import com.bionic.service.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -194,5 +196,18 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new UserNotExistsException();
         }
+    }
+
+    /**
+     *
+     * @return Authentication User
+     */
+    @Override
+    public User getAuthUser()  {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+
+        User user=userDao.findByName(name);
+        return user;
     }
 }

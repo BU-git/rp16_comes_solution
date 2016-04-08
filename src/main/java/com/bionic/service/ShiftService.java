@@ -11,7 +11,7 @@ public interface ShiftService {
 
     Shift addShift(Shift shift);
 
-    void delete(int id);
+    void delete(int id) ;
 
     Shift getById(int id);
 

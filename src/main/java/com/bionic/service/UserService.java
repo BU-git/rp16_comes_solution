@@ -26,4 +26,6 @@ public interface UserService {
     void resetPassword(long key) throws UserNotExistsException;
     void changePassword(int id, String oldPassword, String newPassword) throws PasswordIncorrectException;
     void enableAccount(long key) throws UserNotExistsException;
+
+    User getAuthUser() ;
 }
