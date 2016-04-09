@@ -61,8 +61,12 @@ public class UserServiceTest {
 
     @Test
     public void testGetUsersWorkSchedule() throws Exception {
+        User user = userService.findById(3);
         WorkSchedule workSchedule = workScheduleService.getByUserId(3);
-        assertNotNull(workSchedule);
+
+        if (user.isZeroHours()) 
+            assertNull(workSchedule);
+        else assertNotNull(workSchedule);
     }
 
 //    @Ignore

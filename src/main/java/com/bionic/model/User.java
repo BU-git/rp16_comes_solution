@@ -57,9 +57,6 @@ public class User {
 
     private boolean verified;
 
-    @Temporal(TemporalType.DATE)
-    private Date birthDate;
-
     @Temporal(TemporalType.TIMESTAMP)
     private Date passwordExpire;
 
@@ -87,7 +84,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Shift> shifts;
 
-    @JsonIgnore
     private String postalCode;
 
     public User() {
@@ -195,14 +191,6 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
     public Date getPasswordExpire() {
         return passwordExpire;
     }
@@ -269,7 +257,6 @@ public class User {
                 ", zeroHours=" + zeroHours +
                 ", contractHours=" + contractHours +
                 ", enabled=" + enabled +
-                ", birthDate=" + birthDate +
                 ", passwordExpire=" + passwordExpire +
                 ", workSchedule=" + workSchedule +
                 ", role=" + role +
