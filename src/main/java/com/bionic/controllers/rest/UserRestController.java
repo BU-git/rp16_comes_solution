@@ -61,7 +61,7 @@ public class UserRestController {
             incomingUser.setWorkSchedule(workSchedule);
         }
         if (incomingUser.isZeroHours() && !existingUser.isZeroHours())
-            workScheduleService.delete(existingUser.getWorkSchedule().getId());
+            workScheduleService.delete(existingUser.getWorkSchedule());
 
         userService.saveUser(incomingUser);
         User updatedUser = userService.findById(id);

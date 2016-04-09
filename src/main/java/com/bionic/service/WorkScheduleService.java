@@ -13,6 +13,8 @@ public interface WorkScheduleService {
 
     void delete(int id);
 
+    void delete(WorkSchedule workSchedule);
+
     WorkSchedule getById(int id);
 
     WorkSchedule editWorkSchedule(WorkSchedule workSchedule);

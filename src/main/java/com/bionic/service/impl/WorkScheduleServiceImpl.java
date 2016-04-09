@@ -28,6 +28,11 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
     }
 
     @Override
+    public void delete(WorkSchedule workSchedule) {
+        workScheduleDao.delete(workSchedule.getId());
+    }
+
+    @Override
     public WorkSchedule getById(int id) {
         return workScheduleDao.findOne(id);
     }
