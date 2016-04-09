@@ -4,6 +4,6 @@
     <title>Password reset</title>
 </head>
 <body>
-    <h1>Password successfuly changed</h1>>
+    <h1>Password successfuly changed</h1>
 </body>
 </html>

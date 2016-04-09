@@ -9,6 +9,7 @@ import java.util.Date;
  * v.0.1
  */
 @Entity
+@Table(name = "rides")
 public class Ride {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
