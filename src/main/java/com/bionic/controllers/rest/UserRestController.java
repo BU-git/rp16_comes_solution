@@ -42,19 +42,19 @@ public class UserRestController {
         return userService.getAll();
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "{user_id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public User getUser(@PathVariable int id) throws UserNotExistsException {
-        User user = userService.findById(id);
+    public User getUser(@PathVariable int user_id) throws UserNotExistsException {
+        User user = userService.findById(user_id);
         if (user == null) throw new UserNotExistsException();
         return user;
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "{user_id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK) //200
-    public User putUser(@PathVariable int id, @Valid @RequestBody User incomingUser) throws UserExistsException {
+    public User putUser(@PathVariable int user_id, @Valid @RequestBody User incomingUser) throws UserExistsException {
         User existingUser = userService.findByUserEmail(incomingUser.getEmail());
-        if (existingUser != null && existingUser.getId() != id) throw new UserExistsException();
+        if (existingUser != null && existingUser.getId() != user_id) throw new UserExistsException();
 
         if (incomingUser.getWorkSchedule() != null) {
             WorkSchedule workSchedule = workScheduleService.saveWorkSchedule(incomingUser.getWorkSchedule());
@@ -64,67 +64,48 @@ public class UserRestController {
             workScheduleService.delete(existingUser.getWorkSchedule());
 
         userService.saveUser(incomingUser);
-        User updatedUser = userService.findById(id);
+        User updatedUser = userService.findById(user_id);
         return updatedUser;
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "{user_id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT) //204
-    public void deleteUser(@PathVariable int id) {
-        userService.delete(id);
-    }
-
-    @RequestMapping(value = "{id}/workschedule", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public WorkSchedule getUsersWorkSchedule(@PathVariable int id) throws UserNotExistsException {
-        return workScheduleService.getByUserId(id);
-    }
-
-    @RequestMapping(value = "{id}/workschedule", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.OK) //200
-    public void putUsersWorkSchedule(@PathVariable int id, @Valid @RequestBody WorkSchedule workSchedule) {
-        User user = userService.findById(id);
-        user.setWorkSchedule(workSchedule);
-        workScheduleService.saveWorkSchedule(workSchedule);
-        userService.saveUser(user);
+    public void deleteUser(@PathVariable int user_id) {
+        userService.delete(user_id);
     }
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     public ResponseEntity<User> login() {
 
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String name = auth.getName();
-            User user = userService.findByUserEmail(name);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        User user = userService.findByUserEmail(name);
 
-            if (user == null)
-                return new ResponseEntity<User>(user, HttpStatus.NOT_FOUND);
+        if (user == null)
+            return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
 
-            if (user.getPasswordExpire().before(new Date()))
-                return new ResponseEntity<User>(user, HttpStatus.FORBIDDEN);
+        if (user.getPasswordExpire().before(new Date()))
+            return new ResponseEntity<>(user, HttpStatus.FORBIDDEN);
 
-            if (user.getPasswordExpire().before(new Date(System.currentTimeMillis() + ONE_HOUR)))
-                return new ResponseEntity<User>(user, HttpStatus.CONFLICT);
+        if (user.getPasswordExpire().before(new Date(System.currentTimeMillis() + ONE_HOUR)))
+            return new ResponseEntity<>(user, HttpStatus.CONFLICT);
 
-            if (!user.isVerified())
-                return new ResponseEntity<User>(user, HttpStatus.PRECONDITION_FAILED);
+        if (!user.isVerified())
+            return new ResponseEntity<>(user, HttpStatus.PRECONDITION_FAILED);
 
-            return new ResponseEntity<User>(user, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "{id}/password", method = RequestMethod.PUT)
+    @RequestMapping(value = "{user_id}/password", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void changePassword(@PathVariable int id, @RequestBody PasswordsDTO passwordsDTO) throws UserNotExistsException, PasswordIncorrectException {
-
-
-        userService.changePassword(id, passwordsDTO.getOldPassword(), passwordsDTO.getNewPassword());
+    public void changePassword(@PathVariable int user_id, @RequestBody PasswordsDTO passwordsDTO) throws UserNotExistsException, PasswordIncorrectException {
+        userService.changePassword(user_id, passwordsDTO.getOldPassword(), passwordsDTO.getNewPassword());
     }
 
-    @RequestMapping(method = RequestMethod.GET,value = "{id}/verify")
+    @RequestMapping(method = RequestMethod.GET, value = "{user_id}/verify")
     @ResponseStatus(HttpStatus.OK) // HTTP 200 "OK"
-    public void verifyUser(@PathVariable int id)  {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        String name = auth.getName();
-        User user = userService.findById(id);
+    public void verifyUser(@PathVariable int user_id) {
+        User user = userService.findById(user_id);
         userService.verifyUser(user);
     }
 
