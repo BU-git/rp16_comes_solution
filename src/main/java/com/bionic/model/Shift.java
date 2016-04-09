@@ -1,5 +1,7 @@
 package com.bionic.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -24,7 +26,8 @@ public class Shift {
     @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
 
-    @NotNull
+    @JsonIgnore
+//    @NotNull
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
@@ -74,4 +77,5 @@ public class Shift {
     public void setUser(User user) {
         this.user = user;
     }
+
 }

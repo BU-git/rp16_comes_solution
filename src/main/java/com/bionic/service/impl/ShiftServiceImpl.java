@@ -25,13 +25,7 @@ public class ShiftServiceImpl implements ShiftService {
 
 
     @Override
-    public void delete(int id)  {
-
-
-            shiftDao.delete(id);
-
-
-
+    public void delete(int id)  {         shiftDao.delete(id);
     }
 
     @Override
@@ -47,5 +41,10 @@ public class ShiftServiceImpl implements ShiftService {
     @Override
     public List<Shift> getByUserId(int user_id) {
         return shiftDao.getByUserId(user_id);
+    }
+
+    @Override
+    public void deleteByUser(int user_id) {
+        shiftDao.deleteByUser(user_id);
     }
 }

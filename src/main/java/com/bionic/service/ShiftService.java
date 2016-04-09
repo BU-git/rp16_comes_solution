@@ -18,4 +18,6 @@ public interface ShiftService {
     Shift editShift(Shift shift);
 
     List<Shift> getByUserId(int user_id);
+
+    void deleteByUser(int user_id);
 }

@@ -35,7 +35,7 @@ public class ShiftController {
         return shiftService.getByUserId(user);
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void createShift(@Valid @RequestBody Shift inputShift){
         User user= userService.getAuthUser();
@@ -58,7 +58,7 @@ public class ShiftController {
 
     }
 
-    @RequestMapping(value = "/edit/{id}",method = RequestMethod.PUT)
+    @RequestMapping(value = "{id}",method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void editShift(@PathVariable final int id, @Valid @RequestBody Shift inputShift) throws ShiftNoExistsException{
         Integer user = userService.getAuthUser().getId();
