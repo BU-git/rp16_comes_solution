@@ -5,8 +5,9 @@ import com.bionic.config.WebConfig;
 import com.bionic.model.Shift;
 import com.bionic.service.ShiftService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Date;
+import java.util.List;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,11 +59,6 @@ public class ShiftRestTest {
     }
 
     @Test
-    public void getUserShifts() throws Exception{
-        mockMvc.perform(get("/rest/api/shift").header("Authorization",TOKEN))
-                .andExpect(status().isOk());
-    }
-    @Test
     public void addShift() throws Exception{
         Shift shift= new Shift();
 
@@ -71,22 +70,64 @@ public class ShiftRestTest {
 
         System.out.println(json);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/rest/api/shift")
+        mockMvc.perform(MockMvcRequestBuilders.post("/rest/api/users/3/shifts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization",TOKEN)
                 .content(json)
          ).andDo(print()).andExpect(status().isCreated());
 
-         //shiftService.deleteByUser(3);
+     //    List<Shift> list = shiftService.getByUserId(3);
+     //    shiftService.delete(list.get(0).getId());
     }
-    @Ignore
+
+    @Test
+    public void getUserShifts() throws Exception{
+        mockMvc.perform(get("/rest/api/users/3/shifts").header("Authorization",TOKEN))
+                .andExpect(status().isOk());
+    }
+
     @Test
     public void editShift() throws Exception{
+        List<Shift> list = shiftService.getByUserId(3);
+        int id = list.get(0).getId();
 
+        String json = "{\"id\":"+id+",\"startTime\":851032800000,\"endTime\":881032800000}";
+
+        System.out.println(json);
+        mockMvc.perform(put("/rest/api/users/3/shifts/"+id)
+                .header("Authorization",TOKEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json)
+        )
+        .andDo(print())
+        .andExpect(status().isOk());
     }
-    @Ignore
+
     @Test
     public void deleteShift() throws Exception{
+        List<Shift> list = shiftService.getByUserId(3);
+        int id = list.get(0).getId();
+
+        mockMvc.perform(delete("/rest/api/users/3/shifts/" + id)
+                .header("Authorization", TOKEN)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+         .andExpect(status().isOk());
+    }
+
+    @Test
+    public void editShiftDenid() throws Exception{
+        int id=15;
+        String json = "{\"id\":"+id+",\"startTime\":851032800000,\"endTime\":881032800000}";
+
+        System.out.println(json);
+        mockMvc.perform(put("/rest/api/users/3/shifts/"+id)
+                        .header("Authorization",TOKEN)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+        )
+                .andDo(print())
+                .andExpect(status().isForbidden());
 
     }
 }

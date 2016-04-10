@@ -6,6 +6,7 @@ import com.bionic.model.Shift;
 import com.bionic.service.ShiftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -44,6 +45,7 @@ public class ShiftServiceImpl implements ShiftService {
     }
 
     @Override
+    @Transactional
     public void deleteByUser(int user_id) {
         shiftDao.deleteByUser(user_id);
     }

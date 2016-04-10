@@ -28,7 +28,7 @@ public class Shift {
 
     @JsonIgnore
 //    @NotNull
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "userId")
     private User user;
 

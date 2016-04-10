@@ -30,13 +30,13 @@ public class ShiftRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Shift> getUserShifts(@PathVariable("user_id") int user_id) {
+    public List<Shift> getUserShifts(@PathVariable("user_id") final int user_id) {
         return shiftService.getByUserId(user_id);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void createShift(@Valid @RequestBody Shift inputShift, @PathVariable("user_id") int user_id) {
+    public void createShift(@Valid @RequestBody Shift inputShift, @PathVariable("user_id") final int user_id) {
         User user = userService.findById(user_id);
         inputShift.setUser(user);
         shiftService.addShift(inputShift);
@@ -44,7 +44,7 @@ public class ShiftRestController {
 
     @RequestMapping(value = "{shift_id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public void deleteShift(@PathVariable final int shift_id, @PathVariable("user_id") int user_id) throws ShiftNoExistsException {
+    public void deleteShift(@PathVariable final int shift_id, @PathVariable("user_id") final int user_id) throws ShiftNoExistsException {
         Integer user = userService.getAuthUser().getId();
         Shift ushift = ofNullable(shiftService.getById(shift_id))
                 .orElseThrow(() -> new ShiftNoExistsException(shift_id));
@@ -59,11 +59,12 @@ public class ShiftRestController {
 
     @RequestMapping(value = "{shift_id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public void editShift(@PathVariable final int shift_id, @Valid @RequestBody Shift inputShift, @PathVariable("user_id") int user_id) throws ShiftNoExistsException {
+    public void editShift(@PathVariable final int shift_id, @Valid @RequestBody Shift inputShift, @PathVariable("user_id") final int user_id) throws ShiftNoExistsException {
         Integer user = userService.getAuthUser().getId();
         Shift ushift = ofNullable(shiftService.getById(shift_id))
                 .orElseThrow(() -> new ShiftNoExistsException(shift_id));
         if (user.equals(ushift.getUser().getId())) {
+            inputShift.setUser(ushift.getUser());
             shiftService.editShift(inputShift);
         } else {
             throw new AccessDeniedException("You Do not Have Permission to Edit Not YOURS Shift");
