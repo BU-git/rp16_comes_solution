@@ -25,6 +25,7 @@ public class Shift {
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
+    private Long pause;
 
     @JsonIgnore
 //    @NotNull
@@ -61,6 +62,10 @@ public class Shift {
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
+
+    public Long getPause() { return pause; }
+
+    public void setPause(Long pause) { this.pause = pause; }
 
     public List<Ride> getRides() {
         return rides;
