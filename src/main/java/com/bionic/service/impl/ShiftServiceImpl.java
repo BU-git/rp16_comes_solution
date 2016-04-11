@@ -14,6 +14,7 @@ import java.util.List;
  * @author taras.yaroshchuk
  */
 @Service
+@Transactional
 public class ShiftServiceImpl implements ShiftService {
 
     @Autowired
