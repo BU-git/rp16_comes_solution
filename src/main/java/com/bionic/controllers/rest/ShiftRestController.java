@@ -1,6 +1,7 @@
 package com.bionic.controllers.rest;
 
 import com.bionic.exception.shift.impl.ShiftNoExistsException;
+import com.bionic.model.Ride;
 import com.bionic.model.Shift;
 import com.bionic.model.User;
 import com.bionic.service.ShiftService;
@@ -39,6 +40,9 @@ public class ShiftRestController {
     public void createShift(@Valid @RequestBody Shift inputShift, @PathVariable("user_id") final int user_id) {
         User user = userService.findById(user_id);
         inputShift.setUser(user);
+        for (Ride ride : inputShift.getRides()) {
+            ride.setShift(inputShift);
+        }
         shiftService.addShift(inputShift);
     }
 

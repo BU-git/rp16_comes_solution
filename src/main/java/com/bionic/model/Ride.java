@@ -23,7 +23,7 @@ public class Ride {
     @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shiftId")
     private Shift shift;
 
