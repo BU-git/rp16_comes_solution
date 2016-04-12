@@ -2,6 +2,7 @@ package com.bionic.controllers;
 
 import com.bionic.config.RootConfig;
 import com.bionic.config.WebConfig;
+import com.bionic.model.Ride;
 import com.bionic.model.Shift;
 import com.bionic.service.ShiftService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,6 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -64,6 +66,21 @@ public class ShiftRestTest {
 
         shift.setStartTime(new Date(851032800000L));
         shift.setEndTime(new Date(851032800000L));
+        shift.setPause(851032800000L);
+
+        Ride ride=new Ride();
+        ride.setStartTime(new Date(851032800000L));
+        ride.setEndTime(new Date(851032800000L));
+
+        Ride ride_end= new Ride();
+        ride_end.setStartTime(new Date(821032800000L));
+        ride_end.setEndTime(new Date(851032800000L));
+
+        List<Ride> list =new ArrayList<Ride>();
+        list.add(ride);
+        list.add(ride_end);
+
+        shift.setRides(list);
 
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(shift);
@@ -91,9 +108,9 @@ public class ShiftRestTest {
         List<Shift> list = shiftService.getByUserId(3);
         int id = list.get(0).getId();
 
-        String json = "{\"id\":"+id+",\"startTime\":851032800000,\"endTime\":881032800000}";
+        String json = "{\"id\":"+id+",\"startTime\":851032800000,\"endTime\":881032800000,\"pause\":881032800000}";
 
-        System.out.println(json);
+       // System.out.println(json);
         mockMvc.perform(put("/rest/api/users/3/shifts/"+id)
                 .header("Authorization",TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -107,6 +124,8 @@ public class ShiftRestTest {
     public void deleteShift() throws Exception{
         List<Shift> list = shiftService.getByUserId(3);
         int id = list.get(0).getId();
+
+        System.out.println("Id to delete:"+id);
 
         mockMvc.perform(delete("/rest/api/users/3/shifts/" + id)
                 .header("Authorization", TOKEN)

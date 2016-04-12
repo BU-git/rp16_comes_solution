@@ -1,5 +1,7 @@
 package com.bionic.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -22,8 +24,8 @@ public class Ride {
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL,fetch=FetchType.LAZY)
     @JoinColumn(name = "shiftId")
     private Shift shift;
 

@@ -25,11 +25,12 @@ public class Shift {
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
+    @NotNull
     private Long pause;
 
     @JsonIgnore
 //    @NotNull
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
 

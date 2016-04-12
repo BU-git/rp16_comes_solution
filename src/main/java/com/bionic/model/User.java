@@ -60,7 +60,7 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private Date passwordExpire;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,fetch=FetchType.LAZY)
     @JoinColumn(name="workScheduleId")
     private WorkSchedule workSchedule;
 
@@ -68,7 +68,7 @@ public class User {
     @Enumerated(EnumType.ORDINAL)
     private UserRoleEnum role;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch=FetchType.LAZY)
     @JoinColumn(name = "employerId")
     private Employer employer;
 
@@ -77,7 +77,7 @@ public class User {
             joinColumns = @JoinColumn(name="userId", referencedColumnName="userId"),
             inverseJoinColumns = @JoinColumn(name="jobId", referencedColumnName="jobId")
     )
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @LazyCollection(LazyCollectionOption.TRUE)
     private List<Job> jobs;
 
     @JsonIgnore

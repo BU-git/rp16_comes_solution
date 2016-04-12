@@ -41,7 +41,7 @@ public class ShiftRestController {
         User user = userService.findById(user_id);
         inputShift.setUser(user);
         for (Ride ride : inputShift.getRides()) {
-            ride.setShift(inputShift);
+           ride.setShift(inputShift);
         }
         shiftService.addShift(inputShift);
     }

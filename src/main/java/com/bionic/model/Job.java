@@ -17,7 +17,7 @@ public class Job {
 	private Integer id;
 	private String jobName;
 
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "jobs")
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "jobs")
 	@JsonIgnore
 	private List<User> users;
 

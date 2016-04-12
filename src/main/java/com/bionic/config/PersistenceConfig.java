@@ -29,10 +29,13 @@ public class PersistenceConfig {
     private static final String PROP_DATABASE_URL = "db.url";
     private static final String PROP_DATABASE_USERNAME = "db.username";
     private static final String PROP_HIBERNATE_DIALECT = "db.hibernate.dialect";
-    private static final String PROP_HIBERNATE_SHOW_SQL = "db.hibernate.show_sql";
+    private static final String PROP_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
     private static final String PROP_ENTITYMANAGER_PACKAGES_TO_SCAN = "db.entitymanager.packages.to.scan";
     private static final String PROP_HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
     private static final String PROP_LAZY_LOAD="hibernate.enable_lazy_load_no_trans";
+
+    private static final String PROP_FORMAT_SQL="hibernate.format_sql";
+    private static final String PROP_SHOW_SQL_COMENT="hibernate.use_sql_comments";
 
     @Resource
     private Environment env;
@@ -72,6 +75,8 @@ public class PersistenceConfig {
         properties.put(PROP_HIBERNATE_SHOW_SQL, env.getRequiredProperty(PROP_HIBERNATE_SHOW_SQL));
         properties.put(PROP_HIBERNATE_HBM2DDL_AUTO, env.getRequiredProperty(PROP_HIBERNATE_HBM2DDL_AUTO));
         properties.put(PROP_LAZY_LOAD,env.getRequiredProperty(PROP_LAZY_LOAD));
+        properties.put(PROP_FORMAT_SQL,env.getRequiredProperty(PROP_FORMAT_SQL));
+        properties.put(PROP_SHOW_SQL_COMENT,env.getRequiredProperty(PROP_SHOW_SQL_COMENT));
 
         return properties;
     }
