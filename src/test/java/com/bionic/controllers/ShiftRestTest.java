@@ -137,7 +137,7 @@ public class ShiftRestTest {
     @Test
     public void editShiftDenid() throws Exception{
         int id=15;
-        String json = "{\"id\":"+id+",\"startTime\":851032800000,\"endTime\":881032800000}";
+        String json = "{\"id\":"+id+",\"startTime\":851032800000,\"endTime\":881032800000,\"pause\":881032800000}";
 
         System.out.println(json);
         mockMvc.perform(put("/rest/api/users/3/shifts/"+id)
