@@ -74,20 +74,6 @@ public class UserRestController {
         userService.delete(id);
     }
 
-    @RequestMapping(value = "{id}/workschedule", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public WorkSchedule getUsersWorkSchedule(@PathVariable int id) throws UserNotExistsException {
-        return workScheduleService.getByUserId(id);
-    }
-
-    @RequestMapping(value = "{id}/workschedule", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.OK) //200
-    public void putUsersWorkSchedule(@PathVariable int id, @Valid @RequestBody WorkSchedule workSchedule) {
-        User user = userService.findById(id);
-        user.setWorkSchedule(workSchedule);
-        workScheduleService.saveWorkSchedule(workSchedule);
-        userService.saveUser(user);
-    }
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     public ResponseEntity<User> login() {

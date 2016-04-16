@@ -136,11 +136,11 @@ public class ShiftRestTest {
 
     @Test
     public void editShiftDenid() throws Exception{
-        int id=15;
-        String json = "{\"id\":"+id+",\"startTime\":851032800000,\"endTime\":881032800000,\"pause\":881032800000}";
+        int id=4;
+        String json = "{\"id\":"+id+",\"startTime\":851032800000,\"endTime\":881032800000,\"pause\":881032899}";
 
         System.out.println(json);
-        mockMvc.perform(put("/rest/api/users/3/shifts/"+id)
+        mockMvc.perform(put("/rest/api/users/4/shifts/"+id)
                         .header("Authorization",TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)

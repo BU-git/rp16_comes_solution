@@ -40,4 +40,10 @@ public class WorkScheduleServiceTest {
     public void testDelete() throws Exception {
         workScheduleService.delete(1);
     }
+
+    @Test
+    public void testGetByUserId() throws Exception {
+        WorkSchedule workSchedule = workScheduleService.getByUserId(3);
+        assertTrue(workSchedule.getId().equals(1));
+    }
 }

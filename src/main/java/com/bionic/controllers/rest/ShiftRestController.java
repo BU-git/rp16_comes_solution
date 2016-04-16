@@ -64,10 +64,10 @@ public class ShiftRestController {
     @RequestMapping(value = "{shift_id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void editShift(@PathVariable final int shift_id, @Valid @RequestBody Shift inputShift, @PathVariable("user_id") final int user_id) throws ShiftNoExistsException {
-        Integer user = userService.getAuthUser().getId();
+        Integer userId = userService.getAuthUser().getId();
         Shift ushift = ofNullable(shiftService.getById(shift_id))
                 .orElseThrow(() -> new ShiftNoExistsException(shift_id));
-        if (user.equals(ushift.getUser().getId())) {
+        if (userId.equals(user_id)) {
             inputShift.setUser(ushift.getUser());
             shiftService.editShift(inputShift);
         } else {

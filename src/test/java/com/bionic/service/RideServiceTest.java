@@ -34,19 +34,19 @@ public class RideServiceTest {
 
     @Test
     public void testFindById() throws Exception {
-        Ride ride = rideService.getById(1);
+        Ride ride = rideService.getById(9);
         assertNotNull(ride);
-        assertTrue(ride.getId().equals(1));
+        assertTrue(ride.getId().equals(9));
     }
 
     @Test
     public void testDelete() throws Exception {
-        rideService.delete(1);
+        rideService.delete(9);
     }
 
     @Test
     public void testGetByShiftId() throws Exception {
-        List<Ride> rides = rideService.getByShiftId(1);
+        List<Ride> rides = rideService.getByShiftId(6);
         assertTrue(rides.size() > 1);
     }
 }
