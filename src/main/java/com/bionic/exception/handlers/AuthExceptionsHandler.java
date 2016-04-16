@@ -66,7 +66,7 @@ public class AuthExceptionsHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity handleDenidException(AccessDeniedException e){
+    public ResponseEntity handleDeniedException(AccessDeniedException e){
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(e.getMessage());

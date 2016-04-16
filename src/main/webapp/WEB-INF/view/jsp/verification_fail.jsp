@@ -4,6 +4,6 @@
     <title>Verification</title>
 </head>
 <body>
-<h1>Something wrong with your URL!</h1>>
+<h1>Something wrong with your URL!</h1>
 </body>
 </html>

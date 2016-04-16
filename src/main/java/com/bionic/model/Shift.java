@@ -12,6 +12,7 @@ import java.util.List;
  * v.0.1
  */
 @Entity
+@Table(name = "shifts")
 public class Shift {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
