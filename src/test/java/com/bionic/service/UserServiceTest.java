@@ -4,6 +4,7 @@ import com.bionic.config.RootConfig;
 import com.bionic.config.WebConfig;
 import com.bionic.model.User;
 import com.bionic.model.WorkSchedule;
+import com.bionic.model.dict.Job;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -27,7 +30,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = {RootConfig.class, WebConfig.class},
         loader = AnnotationConfigWebContextLoader.class)
 @Transactional
-@Rollback
+@Rollback(true)
 public class UserServiceTest {
 
     @Autowired
@@ -38,6 +41,31 @@ public class UserServiceTest {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Test
+    public void testAddUser() throws Exception {
+        List<Job> jobs = new ArrayList<Job>();
+        jobs.add(Job.DRIVER);
+        jobs.add(Job.OPERATOR);
+
+        User user = new User();
+        user.setEmail("ccc@c.com");
+        user.setPassword("12345");
+        user.setFirstName("test");
+        user.setLastName("test");
+        user.setSex("Male");
+        user.setFourWeekPayOff(true);
+        user.setZeroHours(true);
+        user.setContractHours(0);
+        user.setEnabled(true);
+        user.setVerified(true);
+        user.setPasswordExpire(new Date(System.currentTimeMillis()*2));
+        user.setJobs(jobs);
+
+        User savedUser = userService.addUser(user);
+
+        assertTrue(passwordEncoder.matches("12345", savedUser.getPassword()));
+    }
 
     @Test
     public void testFindByUsername() throws Exception {

@@ -1,9 +1,8 @@
 package com.bionic.model;
 
+import com.bionic.model.dict.Job;
 import com.bionic.model.dict.UserRoleEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -42,7 +41,7 @@ public class User {
     private String firstName;
     @NotNull
     private String lastName;
-    @NotNull
+
     private String insertion;
     @NotNull
     private String sex;
@@ -72,12 +71,10 @@ public class User {
     @JoinColumn(name = "employerId")
     private Employer employer;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name="users_to_jobs",
-            joinColumns = @JoinColumn(name="userId", referencedColumnName="userId"),
-            inverseJoinColumns = @JoinColumn(name="jobId", referencedColumnName="jobId")
-    )
-    @LazyCollection(LazyCollectionOption.TRUE)
+    @ElementCollection
+    @CollectionTable(name = "users_jobs",
+        joinColumns = @JoinColumn(name = "userId"))
+    @Column(name = "jobId")
     private List<Job> jobs;
 
     @JsonIgnore
