@@ -59,7 +59,7 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private Date passwordExpire;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
     @JoinColumn(name="workScheduleId")
     private WorkSchedule workSchedule;
 
@@ -71,7 +71,7 @@ public class User {
     @JoinColumn(name = "employerId")
     private Employer employer;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "users_jobs",
         joinColumns = @JoinColumn(name = "userId"))
     @Column(name = "jobId")

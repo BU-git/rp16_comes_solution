@@ -5,6 +5,7 @@ import com.bionic.config.WebConfig;
 import com.bionic.model.User;
 import com.bionic.model.WorkSchedule;
 import com.bionic.model.dict.Job;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,8 +77,10 @@ public class UserServiceTest {
 
     @Test
     public void testFindById() throws Exception {
-        User user = userService.findById(3);
-        assertTrue(passwordEncoder.matches("12345", user.getPassword()));
+        User user = userService.findById(25);
+        System.out.println(user);
+        ObjectMapper mapper = new ObjectMapper();
+        System.out.println(mapper.writeValueAsString(user));
     }
 
     @Test
