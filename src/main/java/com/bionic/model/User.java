@@ -1,10 +1,13 @@
 package com.bionic.model;
 
+import com.bionic.model.dict.Job;
 import com.bionic.model.dict.UserRoleEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +16,7 @@ import java.util.List;
  * 
  * @author vitalii.levash
  * @author Dima Budko
- * @version 0.3
+ * @version 0.5
  */
 
 @Entity
@@ -26,30 +29,37 @@ public class User {
     private Integer id;
 
     @Column(name = "userEmail")
+    @NotNull
     @Email(message = "Your email is incorect")
     private String email;
-
+    @NotEmpty
     @Column(name = "userPassword")
     @Size(max = 60)
-    @JsonIgnore
+    @NotNull(message = "password must be not null")
     private String password;
-
+    @NotNull
     private String firstName;
+    @NotNull
     private String lastName;
+
     private String insertion;
+    @NotNull
     private String sex;
+    @NotNull
     private boolean fourWeekPayOff;
+    @NotNull
     private boolean zeroHours;
+    @NotNull
     private int contractHours;
+    @NotNull
     private boolean enabled;
 
-    @Temporal(TemporalType.DATE)
-    private Date birthDate;
+    private boolean verified;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date passwordExpire;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
     @JoinColumn(name="workScheduleId")
     private WorkSchedule workSchedule;
 
@@ -57,16 +67,21 @@ public class User {
     @Enumerated(EnumType.ORDINAL)
     private UserRoleEnum role;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch=FetchType.LAZY)
     @JoinColumn(name = "employerId")
     private Employer employer;
 
-    @ManyToMany
-    @JoinTable(name="users_to_jobs",
-            joinColumns = @JoinColumn(name="userId", referencedColumnName="userId"),
-            inverseJoinColumns = @JoinColumn(name="jobId", referencedColumnName="jobId")
-    )
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "users_jobs",
+        joinColumns = @JoinColumn(name = "userId"))
+    @Column(name = "jobId")
     private List<Job> jobs;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Shift> shifts;
+
+    private String postalCode;
 
     public User() {
     }
@@ -173,14 +188,6 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
     public Date getPasswordExpire() {
         return passwordExpire;
     }
@@ -209,6 +216,30 @@ public class User {
         this.workSchedule = workSchedule;
     }
 
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public List<Shift> getShifts() {
+        return shifts;
+    }
+
+    public void setShifts(List<Shift> shifts) {
+        this.shifts = shifts;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -223,12 +254,12 @@ public class User {
                 ", zeroHours=" + zeroHours +
                 ", contractHours=" + contractHours +
                 ", enabled=" + enabled +
-                ", birthDate=" + birthDate +
                 ", passwordExpire=" + passwordExpire +
                 ", workSchedule=" + workSchedule +
                 ", role=" + role +
                 ", employer=" + employer +
                 ", jobs=" + jobs +
+                ", postalCode=" + postalCode +
                 "}";
     }
 }

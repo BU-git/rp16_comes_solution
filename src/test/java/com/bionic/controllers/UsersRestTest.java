@@ -2,10 +2,17 @@ package com.bionic.controllers;
 
 import com.bionic.config.RootConfig;
 import com.bionic.config.WebConfig;
+import com.bionic.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -35,6 +42,9 @@ public class UsersRestTest {
     private WebApplicationContext webApplicationContext;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private FilterChainProxy springSecurityFilterChain;
 
     private final static String TOKEN="Basic dGVzdEB0ZXN0LmNvbToxMjM0NQ==";
@@ -46,7 +56,7 @@ public class UsersRestTest {
                 .build();
     }
     @Test
-    public void accessDenid() throws Exception{
+    public void accessDenied() throws Exception{
         mockMvc.perform(get("/rest/api/users"))
                 .andExpect(status().isUnauthorized());
     }
@@ -71,9 +81,27 @@ public class UsersRestTest {
     }
 
     @Test
-    public void login() throws Exception{
-        mockMvc.perform(get("/rest/api/users/login").header("Authorization",TOKEN))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$.email",is("test@test.com")));
+    public void findWorkScheduleByUserId() throws Exception{
+        mockMvc.perform(get("/rest/api/users/3/workschedule").header("Authorization",TOKEN))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)));
+    }
+
+//    @Test
+//    public void login() throws Exception{
+//
+//    }
+
+    @Test
+    public void notVerified() throws Exception {
+        com.bionic.model.User user = userService.findByUserEmail("test@test.com");
+        if (!user.isVerified()) {
+            mockMvc.perform(get("/rest/api/users/login").header("Authorization", TOKEN))
+                    .andExpect(status().isForbidden());
+        } else {
+            mockMvc.perform(get("/rest/api/users/login").header("Authorization",TOKEN))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.email",is("test@test.com")));
+        }
     }
 }

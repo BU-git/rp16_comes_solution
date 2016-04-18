@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * @author vitalii.levash
  */
-@ResponseStatus(HttpStatus.FORBIDDEN)
+
 public class UserExistsException extends AuthException {
     public UserExistsException(){
         super("Email for user exists");
