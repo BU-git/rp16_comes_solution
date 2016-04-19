@@ -1,7 +1,7 @@
 package com.bionic.service;
 
 import com.bionic.config.RootConfig;
-import com.bionic.config.WebConfig;
+import com.bionic.config.TestPersistenceConfig;
 import com.bionic.model.User;
 import com.bionic.model.WorkSchedule;
 import com.bionic.model.dict.Job;
@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,9 +27,10 @@ import static org.junit.Assert.*;
 /**
  * @author taras.yaroshchuk
  */
+@DirtiesContext
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {RootConfig.class, WebConfig.class},
+@ContextConfiguration(classes = {RootConfig.class, TestPersistenceConfig.class},
         loader = AnnotationConfigWebContextLoader.class)
 @Transactional
 @Rollback(true)
@@ -72,6 +74,7 @@ public class UserServiceTest {
     public void testFindByUsername() throws Exception {
         String name = "test@test.com";
         User user = userService.findByUsername(name);
+        System.out.println(user);
         assertEquals(user.getEmail(), name);
     }
 
