@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="19042016-0" author="taras.yaroshchuk">
+        <comment>
+            Create employers table
+        </comment>
+        <sql>
+            CREATE TABLE `employers` (
+            `employerId` int (11) NOT NULL AUTO_INCREMENT,
+            `employerName` varchar (255) DEFAULT NULL,
+            PRIMARY KEY (`employerId`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+        </sql>
+        <rollback>
+            DROP TABLE employers;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="19042016-1" author="taras.yaroshchuk">
+        <comment>
+            Create workschedules table
+        </comment>
+        <sql>
+            CREATE TABLE `workschedules` (
+            `workScheduleId` int (11) NOT NULL AUTO_INCREMENT,
+            `creationTime` datetime DEFAULT NULL,
+            `friday` varchar (255) DEFAULT NULL,
+            `monday` varchar (255) DEFAULT NULL,
+            `saturday` varchar (255) DEFAULT NULL,
+            `sunday` varchar (255) DEFAULT NULL,
+            `thursday` varchar (255) DEFAULT NULL,
+            `tuesday` varchar (255) DEFAULT NULL,
+            `wednesday` varchar (255) DEFAULT NULL,
+            PRIMARY KEY (`workScheduleId`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+        </sql>
+        <rollback>
+            DROP TABLE workschedules;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="19042016-2" author="taras.yaroshchuk">
+        <comment>
+            Create users table
+        </comment>
+        <sql>
+            CREATE TABLE `users` (
+            `userId` INT (11) NOT NULL AUTO_INCREMENT,
+            `contractHours` INT (11) NOT NULL,
+            `userEmail` VARCHAR (255) NOT NULL,
+            `enabled` BIT (1) NOT NULL,
+            `firstName` VARCHAR (255) NOT NULL,
+            `fourWeekPayOff` BIT (1) NOT NULL,
+            `insertion` VARCHAR (255) DEFAULT NULL,
+            `lastName` VARCHAR (255) NOT NULL,
+            `userPassword` VARCHAR (60) NOT NULL,
+            `passwordExpire` datetime DEFAULT NULL,
+            `postalCode` VARCHAR (255) DEFAULT NULL,
+            `ROLE` INT (11) DEFAULT NULL,
+            `sex` VARCHAR (255) NOT NULL,
+            `verified` BIT (1) NOT NULL,
+            `zeroHours` BIT (1) NOT NULL,
+            `employerId` INT (11) DEFAULT NULL,
+            `workScheduleId` INT (11) DEFAULT NULL,
+            PRIMARY KEY (`userId`),
+            KEY `FKcu6agb1dvtvc7tcd0a8bdjrx0` (`employerId`),
+            KEY `FKkegc6eoae3nhupkfatqx6b7c1` (`workScheduleId`),
+            CONSTRAINT `FKcu6agb1dvtvc7tcd0a8bdjrx0` FOREIGN KEY (`employerId`) REFERENCES `employers` (`employerId`),
+            CONSTRAINT `FKkegc6eoae3nhupkfatqx6b7c1` FOREIGN KEY (`workScheduleId`) REFERENCES `workschedules` (`workScheduleId`)
+            ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8
+        </sql>
+        <rollback>
+            DROP TABLE users;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="19042016-8" author="taras.yaroshchuk">
+        <comment>
+            Create shifts table
+        </comment>
+        <sql>
+            CREATE TABLE `shifts` (
+            `shiftId` int (11) NOT NULL AUTO_INCREMENT,
+            `endTime` datetime NOT NULL,
+            `pause` bigint (20) NOT NULL,
+            `startTime` datetime NOT NULL,
+            `userId` int (11) DEFAULT NULL,
+            PRIMARY KEY (`shiftId`),
+            KEY `FK7rfj352a65xb08u3n12edycaa` (`userId`),
+            CONSTRAINT `FK7rfj352a65xb08u3n12edycaa` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+        </sql>
+        <rollback>
+            DROP TABLE shifts;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="19042016-9" author="taras.yaroshchuk">
+        <comment>
+            Create rides table
+        </comment>
+        <sql>
+            CREATE TABLE `rides` (
+            `rideId` int (11) NOT NULL AUTO_INCREMENT,
+            `endTime` datetime NOT NULL,
+            `startTime` datetime NOT NULL,
+            `shiftId` int (11) DEFAULT NULL,
+            PRIMARY KEY (`rideId`),
+            KEY `FKjcxw2mpbw875ycdl9jqmnlf4c` (`shiftId`),
+            CONSTRAINT `FKjcxw2mpbw875ycdl9jqmnlf4c` FOREIGN KEY (`shiftId`) REFERENCES `shifts` (`shiftId`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        </sql>
+        <rollback>
+            DROP TABLE rides;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="19042016-3" author="taras.yaroshchuk">
+        <comment>
+            Insert test employer
+        </comment>
+        <sql>
+            INSERT INTO employers (employerId, employerName) VALUES (1, "First Employer");
+        </sql>
+        <rollback>
+            DELETE FROM employers
+            WHERE employerId = 1;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="19042016-4" author="taras.yaroshchuk">
+        <comment>
+            Insert test WorkSchedule
+        </comment>
+        <sql>
+            INSERT INTO workschedules (workScheduleId, creationTime, friday, monday, saturday, sunday, thursday, tuesday,
+            wednesday)
+            VALUES (1, "2016-04-19 19:01:04", 4, 4, 0, 0, 4, 4, 4);
+        </sql>
+        <rollback>
+            DELETE FROM workschedules
+            WHERE workScheduleId = 1;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="19042016-5" author="taras.yaroshchuk">
+        <comment>
+            Insert test user
+        </comment>
+        <sql>
+            INSERT INTO users (userId, contractHours, userEmail, enabled, firstName, fourWeekPayOff,
+                               insertion, lastName, userPassword, passwordExpire, postalCode,
+                               role, sex, verified, zeroHours, employerId, workScheduleId)
+            VALUES (1, 40, "test@test.com", TRUE, "FirstName", FALSE, "von", "LastName",
+                       "$2a$10$wKTmEEWVAtPZXOipCGFCFu3R1apbTypfMafPQ4GR/hIgIiM5fpiCC", "2016-04-19 19:01:04", "9999ss",
+                    1, "Male", TRUE, FALSE, 1, 1);
+            INSERT INTO users (userId, contractHours, userEmail, enabled, firstName, fourWeekPayOff,
+                               insertion, lastName, userPassword, passwordExpire, postalCode,
+                               role, sex, verified, zeroHours, employerId, workScheduleId)
+            VALUES (2, 40, "zerohours@test.com", TRUE, "FirstName", FALSE, "von", "LastName",
+                       "$2a$10$wKTmEEWVAtPZXOipCGFCFu3R1apbTypfMafPQ4GR/hIgIiM5fpiCC", "2016-04-19 19:01:04", "9999ss",
+                    1, "Male", TRUE, TRUE, 1, NULL);
+        </sql>
+        <rollback>
+            DELETE FROM users
+            WHERE userId IN (1, 2);
+        </rollback>
+    </changeSet>
+
+    <changeSet id="19042016-6" author="taras.yaroshchuk">
+        <comment>
+            Insert test shift
+        </comment>
+        <sql>
+            INSERT INTO shifts (shiftId, endTime, pause, startTime, userId)
+            VALUES (1, "2016-04-19 19:01:04", 30, "2016-04-19 15:01:04", 1);
+        </sql>
+        <rollback>
+            DELETE FROM shifts
+            WHERE shiftId = 1;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="19042016-7" author="taras.yaroshchuk">
+        <comment>
+            Insert test rides
+        </comment>
+        <sql>
+            INSERT INTO rides (rideId, endTime, startTime, shiftId)
+            VALUES (1, "2016-04-19 17:00:00", "2016-04-19 15:05:00", 1);
+            INSERT INTO rides (rideId, endTime, startTime, shiftId)
+            VALUES (2, "2016-04-19 19:00:00", "2016-04-19 17:05:00", 1);
+        </sql>
+        <rollback>
+            DELETE FROM rides
+            WHERE rideId IN (1, 2);
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
