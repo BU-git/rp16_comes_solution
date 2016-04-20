@@ -2,6 +2,7 @@ package com.bionic.controllers;
 
 import com.bionic.config.RootConfig;
 import com.bionic.config.TestPersistenceConfig;
+import com.bionic.config.WebConfig;
 import com.bionic.service.UserService;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -26,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {RootConfig.class, TestPersistenceConfig.class},
+@ContextConfiguration(classes = {RootConfig.class, TestPersistenceConfig.class, WebConfig.class},
         loader = AnnotationConfigWebContextLoader.class)
 public class AuthRestTest {
     private MockMvc mockMvc;

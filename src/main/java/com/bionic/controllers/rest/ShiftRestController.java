@@ -37,13 +37,14 @@ public class ShiftRestController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void createShift(@Valid @RequestBody Shift inputShift, @PathVariable("user_id") final int user_id) {
+    public int createShift(@Valid @RequestBody Shift inputShift, @PathVariable("user_id") final int user_id) {
         User user = userService.findById(user_id);
         inputShift.setUser(user);
         for (Ride ride : inputShift.getRides()) {
            ride.setShift(inputShift);
         }
         shiftService.addShift(inputShift);
+        return inputShift.getId();
     }
 
     @RequestMapping(value = "{shift_id}", method = RequestMethod.DELETE)

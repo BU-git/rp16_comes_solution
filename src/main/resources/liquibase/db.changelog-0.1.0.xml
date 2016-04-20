@@ -159,13 +159,13 @@
                                insertion, lastName, userPassword, passwordExpire, postalCode,
                                role, sex, verified, zeroHours, employerId, workScheduleId)
             VALUES (1, 40, "test@test.com", TRUE, "FirstName", FALSE, "von", "LastName",
-                       "$2a$10$wKTmEEWVAtPZXOipCGFCFu3R1apbTypfMafPQ4GR/hIgIiM5fpiCC", "2016-04-19 19:01:04", "9999ss",
+                       "$2a$10$wKTmEEWVAtPZXOipCGFCFu3R1apbTypfMafPQ4GR/hIgIiM5fpiCC", "2046-04-19 19:01:04", "9999ss",
                     1, "Male", TRUE, FALSE, 1, 1);
             INSERT INTO users (userId, contractHours, userEmail, enabled, firstName, fourWeekPayOff,
                                insertion, lastName, userPassword, passwordExpire, postalCode,
                                role, sex, verified, zeroHours, employerId, workScheduleId)
             VALUES (2, 40, "zerohours@test.com", TRUE, "FirstName", FALSE, "von", "LastName",
-                       "$2a$10$wKTmEEWVAtPZXOipCGFCFu3R1apbTypfMafPQ4GR/hIgIiM5fpiCC", "2016-04-19 19:01:04", "9999ss",
+                       "$2a$10$wKTmEEWVAtPZXOipCGFCFu3R1apbTypfMafPQ4GR/hIgIiM5fpiCC", "2046-04-19 19:01:04", "9999ss",
                     1, "Male", TRUE, TRUE, 1, NULL);
         </sql>
         <rollback>
@@ -181,10 +181,12 @@
         <sql>
             INSERT INTO shifts (shiftId, endTime, pause, startTime, userId)
             VALUES (1, "2016-04-19 19:01:04", 30, "2016-04-19 15:01:04", 1);
+            INSERT INTO shifts (shiftId, endTime, pause, startTime, userId)
+            VALUES (2, "2016-04-19 19:01:04", 30, "2016-04-19 15:01:04", 2);
         </sql>
         <rollback>
             DELETE FROM shifts
-            WHERE shiftId = 1;
+            WHERE shiftId IN (1, 2);
         </rollback>
     </changeSet>
 

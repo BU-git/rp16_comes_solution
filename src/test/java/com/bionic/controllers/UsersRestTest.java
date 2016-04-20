@@ -33,8 +33,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {RootConfig.class, TestPersistenceConfig.class},
+@ContextConfiguration(classes = {RootConfig.class, TestPersistenceConfig.class, WebConfig.class},
         loader = AnnotationConfigWebContextLoader.class)
+
 public class UsersRestTest {
 
     private MockMvc mockMvc;
@@ -71,20 +72,20 @@ public class UsersRestTest {
 
     @Test
     public void findUserById() throws Exception {
-        mockMvc.perform(get("/rest/api/users/1").header("Authorization", TOKEN))
+        mockMvc.perform(get("/rest/api/users/{id}", 1).header("Authorization", TOKEN))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)));
     }
 
     @Test
     public void findUserByIdNotFound() throws Exception {
-        mockMvc.perform(get("/rest/api/users/1000").header("Authorization", TOKEN))
+        mockMvc.perform(get("/rest/api/users/{id}", 1000).header("Authorization", TOKEN))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void findWorkScheduleByUserId() throws Exception {
-        mockMvc.perform(get("/rest/api/users/1/workschedule").header("Authorization", TOKEN))
+        mockMvc.perform(get("/rest/api/users/{id}/workschedule", 1).header("Authorization", TOKEN))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)));
     }
