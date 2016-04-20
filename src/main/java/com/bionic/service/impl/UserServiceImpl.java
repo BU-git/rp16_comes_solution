@@ -188,15 +188,14 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *
      * @return Authentication User
      */
     @Override
-    public User getAuthUser()  {
+    public User getAuthUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
 
-        User user=userDao.findByName(name);
+        User user = userDao.findByName(name);
         return user;
     }
 }

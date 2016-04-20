@@ -1,13 +1,11 @@
 package com.bionic.controllers;
 
 import com.bionic.config.RootConfig;
-import com.bionic.config.WebConfig;
+import com.bionic.config.TestPersistenceConfig;
 import com.bionic.model.Ride;
 import com.bionic.model.Shift;
 import com.bionic.service.ShiftService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,9 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {RootConfig.class, WebConfig.class},
+@ContextConfiguration(classes = {RootConfig.class, TestPersistenceConfig.class},
         loader = AnnotationConfigWebContextLoader.class)
 public class ShiftRestTest {
     private MockMvc mockMvc;
@@ -51,7 +47,7 @@ public class ShiftRestTest {
     @Autowired
     private ShiftService shiftService;
 
-    private final static String TOKEN="Basic dGVzdEB0ZXN0LmNvbToxMjM0NQ==";
+    private final static String TOKEN = "Basic dGVzdEB0ZXN0LmNvbToxMjM0NQ==";
 
     @Before
     public void setup() {
@@ -61,22 +57,22 @@ public class ShiftRestTest {
     }
 
     @Test
-    public void addShift() throws Exception{
-        Shift shift= new Shift();
+    public void addShift() throws Exception {
+        Shift shift = new Shift();
 
         shift.setStartTime(new Date(851032800000L));
         shift.setEndTime(new Date(851032800000L));
         shift.setPause(851032800000L);
 
-        Ride ride=new Ride();
+        Ride ride = new Ride();
         ride.setStartTime(new Date(851032800000L));
         ride.setEndTime(new Date(851032800000L));
 
-        Ride ride_end= new Ride();
+        Ride ride_end = new Ride();
         ride_end.setStartTime(new Date(821032800000L));
         ride_end.setEndTime(new Date(851032800000L));
 
-        List<Ride> list =new ArrayList<Ride>();
+        List<Ride> list = new ArrayList<Ride>();
         list.add(ride);
         list.add(ride_end);
 
@@ -89,61 +85,61 @@ public class ShiftRestTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/rest/api/users/3/shifts")
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization",TOKEN)
+                .header("Authorization", TOKEN)
                 .content(json)
-         ).andDo(print()).andExpect(status().isCreated());
+        ).andDo(print()).andExpect(status().isCreated());
 
-     //    List<Shift> list = shiftService.getByUserId(3);
-     //    shiftService.delete(list.get(0).getId());
+        //    List<Shift> list = shiftService.getByUserId(3);
+        //    shiftService.delete(list.get(0).getId());
     }
 
     @Test
-    public void getUserShifts() throws Exception{
-        mockMvc.perform(get("/rest/api/users/3/shifts").header("Authorization",TOKEN))
+    public void getUserShifts() throws Exception {
+        mockMvc.perform(get("/rest/api/users/1/shifts").header("Authorization", TOKEN))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void editShift() throws Exception{
+    public void editShift() throws Exception {
         List<Shift> list = shiftService.getByUserId(3);
         int id = list.get(0).getId();
 
-        String json = "{\"id\":"+id+",\"startTime\":851032800000,\"endTime\":881032800000,\"pause\":881032800000}";
+        String json = "{\"id\":" + id + ",\"startTime\":851032800000,\"endTime\":881032800000,\"pause\":881032800000}";
 
-       // System.out.println(json);
-        mockMvc.perform(put("/rest/api/users/3/shifts/"+id)
-                .header("Authorization",TOKEN)
+        // System.out.println(json);
+        mockMvc.perform(put("/rest/api/users/3/shifts/" + id)
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json)
         )
-        .andDo(print())
-        .andExpect(status().isOk());
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
-    public void deleteShift() throws Exception{
+    public void deleteShift() throws Exception {
         List<Shift> list = shiftService.getByUserId(3);
         int id = list.get(0).getId();
 
-        System.out.println("Id to delete:"+id);
+        System.out.println("Id to delete:" + id);
 
         mockMvc.perform(delete("/rest/api/users/3/shifts/" + id)
                 .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andDo(print())
-         .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     @Test
-    public void editShiftDenid() throws Exception{
-        int id=4;
-        String json = "{\"id\":"+id+",\"startTime\":851032800000,\"endTime\":881032800000,\"pause\":881032899}";
+    public void editShiftDenid() throws Exception {
+        int id = 4;
+        String json = "{\"id\":" + id + ",\"startTime\":851032800000,\"endTime\":881032800000,\"pause\":881032899}";
 
         System.out.println(json);
-        mockMvc.perform(put("/rest/api/users/4/shifts/"+id)
-                        .header("Authorization",TOKEN)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json)
+        mockMvc.perform(put("/rest/api/users/4/shifts/" + id)
+                .header("Authorization", TOKEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json)
         )
                 .andDo(print())
                 .andExpect(status().isForbidden());

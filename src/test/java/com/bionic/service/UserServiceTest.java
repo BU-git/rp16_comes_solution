@@ -2,10 +2,10 @@ package com.bionic.service;
 
 import com.bionic.config.RootConfig;
 import com.bionic.config.TestPersistenceConfig;
+import com.bionic.exception.auth.impl.PasswordIncorrectException;
 import com.bionic.model.User;
 import com.bionic.model.WorkSchedule;
 import com.bionic.model.dict.Job;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = {RootConfig.class, TestPersistenceConfig.class},
         loader = AnnotationConfigWebContextLoader.class)
 @Transactional
-@Rollback(true)
+@Rollback
 public class UserServiceTest {
 
     @Autowired
@@ -45,6 +45,10 @@ public class UserServiceTest {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    static final Integer TEST_USERID = 1;
+    static final String TEST_USERNAME = "test@test.com";
+    static final String TEST_PASSWORD = "12345";
+
     @Test
     public void testAddUser() throws Exception {
         List<Job> jobs = new ArrayList<Job>();
@@ -52,7 +56,7 @@ public class UserServiceTest {
         jobs.add(Job.OPERATOR);
 
         User user = new User();
-        user.setEmail("ccc@c.com");
+        user.setEmail("cscc@c.com");
         user.setPassword("12345");
         user.setFirstName("test");
         user.setLastName("test");
@@ -62,7 +66,8 @@ public class UserServiceTest {
         user.setContractHours(0);
         user.setEnabled(true);
         user.setVerified(true);
-        user.setPasswordExpire(new Date(System.currentTimeMillis()*2));
+        user.setInsertion("lol");
+        user.setPasswordExpire(new Date(System.currentTimeMillis() * 2));
         user.setJobs(jobs);
 
         User savedUser = userService.addUser(user);
@@ -72,48 +77,63 @@ public class UserServiceTest {
 
     @Test
     public void testFindByUsername() throws Exception {
-        String name = "test@test.com";
-        User user = userService.findByUsername(name);
-        System.out.println(user);
-        assertEquals(user.getEmail(), name);
+        User user = userService.findByUsername(TEST_USERNAME);
+
+        assertEquals(user.getEmail(), TEST_USERNAME);
     }
 
     @Test
     public void testFindById() throws Exception {
-        User user = userService.findById(25);
+        User user = userService.findById(1);
         System.out.println(user);
-        ObjectMapper mapper = new ObjectMapper();
-        System.out.println(mapper.writeValueAsString(user));
+
+        assertTrue(user.getEmail().equals(TEST_USERNAME));
     }
 
     @Test
     public void testGetAll() throws Exception {
         List<User> list = userService.getAll();
-        assertNotNull(list);
-        assertTrue(list.size() > 0);
+        User firstUser = list.get(0);
+
+        assertTrue(firstUser.getEmail().equals(TEST_USERNAME));
+        assertFalse(list.isEmpty());
     }
 
     @Test
-    public void testGetUsersWorkSchedule() throws Exception {
-        User user = userService.findById(3);
-        WorkSchedule workSchedule = workScheduleService.getByUserId(3);
+    public void testGetWorkScheduleOfUser() throws Exception {
+        User user = userService.findById(1);
+        WorkSchedule workSchedule = workScheduleService.getByUserId(1);
 
-        if (user.isZeroHours()) 
-            assertNull(workSchedule);
-        else assertNotNull(workSchedule);
+        assertNotNull(workSchedule);
+        assertEquals(user.getWorkSchedule().getId(), workSchedule.getId());
     }
 
-//    @Ignore
-//    @Test
-//    public void testResetPassword() throws Exception {
-//        userService.resetPassword("boiko.pasha@gmail.com");
-//    }
+    @Test
+    public void testGetWorkScheduleOfZeroHoursUser() throws Exception {
+        User user = userService.findById(2);
+        WorkSchedule workSchedule = workScheduleService.getByUserId(2);
+
+        assertNull(workSchedule);
+        assertNull(user.getWorkSchedule());
+    }
+
+    @Test(expected = PasswordIncorrectException.class)
+    public void testChangeWrongPassword() throws Exception {
+        User user = userService.findByUsername(TEST_USERNAME);
+        userService.changePassword(user.getId(), "WRONG PASSWORD", "newPassword");
+    }
 
     @Test
     public void testChangePassword() throws Exception {
-        User user = userService.findByUsername("boiko.pasha@gmail.com");
-        user.setPassword(new BCryptPasswordEncoder().encode("1234"));
-        userService.saveUser(user);
-        userService.changePassword(user.getId(), "1234", "12345");
+        User user = userService.findByUsername(TEST_USERNAME);
+        userService.changePassword(user.getId(), TEST_PASSWORD, "newPassword");
+
+        assertTrue(passwordEncoder.matches("newPassword", user.getPassword()));
     }
+
+    @Test
+    public void testDelete() throws Exception {
+        userService.delete(1);
+    }
+
 }

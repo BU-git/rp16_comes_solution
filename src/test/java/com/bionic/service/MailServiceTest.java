@@ -1,7 +1,7 @@
 package com.bionic.service;
 
 import com.bionic.config.RootConfig;
-import com.bionic.config.WebConfig;
+import com.bionic.config.TestPersistenceConfig;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,7 @@ import java.util.Random;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {RootConfig.class, WebConfig.class},
+@ContextConfiguration(classes = {RootConfig.class, TestPersistenceConfig.class},
         loader = AnnotationConfigWebContextLoader.class)
 public class MailServiceTest {
 

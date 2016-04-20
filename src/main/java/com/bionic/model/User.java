@@ -13,14 +13,13 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 
  * @author vitalii.levash
  * @author Dima Budko
  * @version 0.5
  */
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -32,25 +31,33 @@ public class User {
     @NotNull
     @Email(message = "Your email is incorect")
     private String email;
+
     @NotEmpty
     @Column(name = "userPassword")
     @Size(max = 60)
     @NotNull(message = "password must be not null")
     private String password;
+
     @NotNull
     private String firstName;
+
     @NotNull
     private String lastName;
 
     private String insertion;
+
     @NotNull
     private String sex;
+
     @NotNull
     private boolean fourWeekPayOff;
+
     @NotNull
     private boolean zeroHours;
+
     @NotNull
     private int contractHours;
+
     @NotNull
     private boolean enabled;
 
@@ -59,21 +66,21 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private Date passwordExpire;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
-    @JoinColumn(name="workScheduleId")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "workScheduleId")
     private WorkSchedule workSchedule;
 
     @Column(name = "role")
     @Enumerated(EnumType.ORDINAL)
     private UserRoleEnum role;
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "employerId")
     private Employer employer;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "users_jobs",
-        joinColumns = @JoinColumn(name = "userId"))
+            joinColumns = @JoinColumn(name = "userId"))
     @Column(name = "jobId")
     private List<Job> jobs;
 
@@ -106,7 +113,9 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) { this.password = password; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getFirstName() {
         return firstName;

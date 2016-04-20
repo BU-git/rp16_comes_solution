@@ -1,6 +1,7 @@
 package com.bionic.controllers;
 
 import com.bionic.config.RootConfig;
+import com.bionic.config.TestPersistenceConfig;
 import com.bionic.config.WebConfig;
 import com.bionic.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {RootConfig.class, WebConfig.class},
+@ContextConfiguration(classes = {RootConfig.class, TestPersistenceConfig.class},
         loader = AnnotationConfigWebContextLoader.class)
 public class UsersRestTest {
 
@@ -47,7 +48,7 @@ public class UsersRestTest {
     @Autowired
     private FilterChainProxy springSecurityFilterChain;
 
-    private final static String TOKEN="Basic dGVzdEB0ZXN0LmNvbToxMjM0NQ==";
+    private final static String TOKEN = "Basic dGVzdEB0ZXN0LmNvbToxMjM0NQ==";
 
     @Before
     public void setup() {
@@ -55,42 +56,38 @@ public class UsersRestTest {
                 .addFilter(springSecurityFilterChain)
                 .build();
     }
+
     @Test
-    public void accessDenied() throws Exception{
+    public void accessDenied() throws Exception {
         mockMvc.perform(get("/rest/api/users"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
-    public void findAllUsersRest() throws Exception{
-        mockMvc.perform(get("/rest/api/users").header("Authorization",TOKEN))
+    public void findAllUsersRest() throws Exception {
+        mockMvc.perform(get("/rest/api/users").header("Authorization", TOKEN))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void findUserById() throws Exception{
-        mockMvc.perform(get("/rest/api/users/7").header("Authorization",TOKEN))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id",is(7)));
-    }
-
-    @Test
-    public void findUserByIdNotFound() throws Exception{
-        mockMvc.perform(get("/rest/api/users/1000").header("Authorization",TOKEN))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
-    public void findWorkScheduleByUserId() throws Exception{
-        mockMvc.perform(get("/rest/api/users/3/workschedule").header("Authorization",TOKEN))
+    public void findUserById() throws Exception {
+        mockMvc.perform(get("/rest/api/users/1").header("Authorization", TOKEN))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)));
     }
 
-//    @Test
-//    public void login() throws Exception{
-//
-//    }
+    @Test
+    public void findUserByIdNotFound() throws Exception {
+        mockMvc.perform(get("/rest/api/users/1000").header("Authorization", TOKEN))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void findWorkScheduleByUserId() throws Exception {
+        mockMvc.perform(get("/rest/api/users/1/workschedule").header("Authorization", TOKEN))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)));
+    }
 
     @Test
     public void notVerified() throws Exception {
@@ -99,9 +96,9 @@ public class UsersRestTest {
             mockMvc.perform(get("/rest/api/users/login").header("Authorization", TOKEN))
                     .andExpect(status().isForbidden());
         } else {
-            mockMvc.perform(get("/rest/api/users/login").header("Authorization",TOKEN))
+            mockMvc.perform(get("/rest/api/users/login").header("Authorization", TOKEN))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.email",is("test@test.com")));
+                    .andExpect(jsonPath("$.email", is("test@test.com")));
         }
     }
 }

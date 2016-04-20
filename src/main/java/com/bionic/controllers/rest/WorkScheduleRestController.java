@@ -24,14 +24,14 @@ public class WorkScheduleRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public WorkSchedule getUsersWorkSchedule(@PathVariable("user_id") int user_id) throws UserNotExistsException {
+    public WorkSchedule getUsersWorkSchedule(@PathVariable("user_id") final int user_id) throws UserNotExistsException {
         return workScheduleService.getByUserId(user_id);
     }
 
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK) //200
-    public void putUsersWorkSchedule(@PathVariable int id, @Valid @RequestBody WorkSchedule workSchedule, @PathVariable("user_id") int user_id) {
-        User user = userService.findById(id);
+    public void putUsersWorkSchedule(@Valid @RequestBody WorkSchedule workSchedule, @PathVariable("user_id") final int user_id) {
+        User user = userService.findById(user_id);
         user.setWorkSchedule(workSchedule);
         workScheduleService.saveWorkSchedule(workSchedule);
         userService.saveUser(user);

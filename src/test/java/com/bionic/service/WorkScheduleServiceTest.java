@@ -1,7 +1,7 @@
 package com.bionic.service;
 
 import com.bionic.config.RootConfig;
-import com.bionic.config.WebConfig;
+import com.bionic.config.TestPersistenceConfig;
 import com.bionic.model.WorkSchedule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +13,7 @@ import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.bionic.service.UserServiceTest.TEST_USERID;
 import static org.junit.Assert.assertTrue;
 
 
@@ -21,7 +22,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {RootConfig.class, WebConfig.class},
+@ContextConfiguration(classes = {RootConfig.class, TestPersistenceConfig.class},
         loader = AnnotationConfigWebContextLoader.class)
 @Transactional
 @Rollback
@@ -33,7 +34,7 @@ public class WorkScheduleServiceTest {
     @Test
     public void testFindById() throws Exception {
         WorkSchedule workSchedule = workScheduleService.getById(1);
-        assertTrue(workSchedule.getMonday().equals("6"));
+        assertTrue(workSchedule.getId().equals(1));
     }
 
     @Test
@@ -43,7 +44,7 @@ public class WorkScheduleServiceTest {
 
     @Test
     public void testGetByUserId() throws Exception {
-        WorkSchedule workSchedule = workScheduleService.getByUserId(3);
+        WorkSchedule workSchedule = workScheduleService.getByUserId(TEST_USERID);
         assertTrue(workSchedule.getId().equals(1));
     }
 }
