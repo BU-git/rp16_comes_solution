@@ -10,6 +10,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.List;
@@ -45,6 +46,11 @@ public class RootConfig extends WebMvcConfigurerAdapter {
         //Here we add our custom-configured HttpMessageConverter
         converters.add(jacksonMessageConverter());
         super.configureMessageConverters(converters);
+    }
+
+    @Override
+    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
 
 }
