@@ -12,16 +12,17 @@
 
     <title>Track drivers login</title>
 
-    <link href="<c:url value="/resources/vendor/css/semantic.min.css" />" rel="stylesheet" type="text/css">
-    <script src="<c:url value="/resources/vendor/js/semantic.min.js" />"></script>
     <script src="<c:url value="/resources/vendor/js/jquery-2.2.1.js" />"></script>
+    <link href="<c:url value="/resources/dist/semantic.min.css" />" rel="stylesheet" type="text/css">
+    <script src="<c:url value="/resources/dist/semantic.min.js" />"></script>
+
 
     <script>
-        $(function() {
-            $('#submit').click(function () {
-                $(".ui.page.dimmer").addClass("active");
-            });
-        });
+//        $(function() {
+//            $('#submit').click(function () {
+//                $(".ui.page.dimmer").addClass("active");
+//            });
+//        });
 
     </script>
     <style type="text/css">
@@ -64,13 +65,13 @@
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="user icon"></i>
-                        <input type="text" name="j_username" placeholder="E-mail address">
+                        <input type="email" name="j_username" placeholder="E-mail address" required>
                     </div>
                 </div>
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="lock icon"></i>
-                        <input type="password" name="j_password" placeholder="Password">
+                        <input type="password" name="j_password" placeholder="Password" required>
                     </div>
                 </div>
                 <button class="ui fluid large teal button" id="submit">Submit</button>
