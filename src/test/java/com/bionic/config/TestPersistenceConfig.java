@@ -29,7 +29,7 @@ public class TestPersistenceConfig {
         ds.setDriverClassName(env.getRequiredProperty(PROP_DATABASE_DRIVER));
         ds.setUrl("jdbc:mysql://localhost:3306/tdalocal");
         ds.setUsername("root");
-        ds.setPassword("");
+        ds.setPassword("root");
         return ds;
     }
 

@@ -451,5 +451,17 @@
         401 | UNAUTHORIZED
         404 | NOT FOUND
 
+* ## <a name="summary"></a> Getting the Summary of shifts
 
+	* ### <a name="get-summary"></a> Get Summary for indicated period
 
+    	#### @GET
+        #### /rest/api/users/{user_id}/summary/{year}/{period}
+
+        ##### Response:
+
+        Status | Description
+        ------ | -----------
+        200 | OK
+        400 | BAD REQUEST
+        404 | NOT FOUND

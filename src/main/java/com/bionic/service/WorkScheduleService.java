@@ -24,4 +24,6 @@ public interface WorkScheduleService {
     WorkSchedule getByUserId(int user_id);
 
     WorkSchedule saveWorkSchedule(WorkSchedule workSchedule);
+
+    int getContractHours(WorkSchedule workSchedule);
 }

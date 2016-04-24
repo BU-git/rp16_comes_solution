@@ -55,14 +55,6 @@ public class ControllerValidationHandler {
         Locale currentLocale = LocaleContextHolder.getLocale();
         String localizedErrorMessage = messageSource.getMessage(fieldError, currentLocale);
 
-        //If a message was not found, return the most accurate field error code instead.
-        //You can remove this check if you prefer to get the default error message.
-        /*
-        if (localizedErrorMessage.equals(fieldError.getDefaultMessage())) {
-            String[] fieldErrorCodes = fieldError.getCodes();
-            localizedErrorMessage = fieldErrorCodes[0];
-        }
-        */
         return localizedErrorMessage;
     }
 }

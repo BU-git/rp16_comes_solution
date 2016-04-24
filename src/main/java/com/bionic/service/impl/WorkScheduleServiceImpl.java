@@ -56,4 +56,17 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
     public WorkSchedule saveWorkSchedule(WorkSchedule workSchedule) {
         return workScheduleDao.saveAndFlush(workSchedule);
     }
+
+    public int getContractHours(WorkSchedule workSchedule) {
+        int hours = 0;
+        if (workSchedule.getSunday() != null) hours += workSchedule.getSunday();
+        if (workSchedule.getMonday() != null) hours += workSchedule.getMonday();
+        if (workSchedule.getTuesday() != null) hours += workSchedule.getTuesday();
+        if (workSchedule.getWednesday() != null) hours += workSchedule.getWednesday();
+        if (workSchedule.getThursday() != null) hours += workSchedule.getThursday();
+        if (workSchedule.getFriday() != null) hours += workSchedule.getFriday();
+        if (workSchedule.getSaturday() != null) hours += workSchedule.getSaturday();
+
+        return hours;
+    }
 }

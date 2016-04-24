@@ -4,18 +4,22 @@ import com.bionic.model.Shift;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.access.method.P;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * author Dima Budko
- * v.0.1
  */
 public interface ShiftDao extends JpaRepository<Shift,Integer>{
-    @Query("select u.shifts from User u where u.id =:user_id")
-    List<Shift> getByUserId(@Param("user_id") int user_id);
 
-    @Query("DELETE FROM Shift s where s.user.id=:user_id")
-    void deleteByUser(@Param("user_id") int user_id);
+    @Query("select u.shifts from User u where u.id =:userId")
+    List<Shift> getByUserId(@Param("userId") int userId);
+
+    @Query("select s from Shift s where s.user.id = :userId and s.endTime >= :startDate and s.startTime <= :endDate")
+    List<Shift> getForPeriod(@Param("userId") int userId,
+                             @Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+    @Query("DELETE FROM Shift s where s.user.id=:userId")
+    void deleteByUser(@Param("userId") int userId);
 }

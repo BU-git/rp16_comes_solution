@@ -16,13 +16,13 @@ public class WorkSchedule {
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationTime;
 
-    private String sunday;
-    private String monday;
-    private String tuesday;
-    private String wednesday;
-    private String thursday;
-    private String friday;
-    private String saturday;
+    private Integer sunday;
+    private Integer monday;
+    private Integer tuesday;
+    private Integer wednesday;
+    private Integer thursday;
+    private Integer friday;
+    private Integer saturday;
 
     public WorkSchedule() {
     }
@@ -43,59 +43,59 @@ public class WorkSchedule {
         this.creationTime = creationTime;
     }
 
-    public String getSunday() {
+    public Integer getSunday() {
         return sunday;
     }
 
-    public void setSunday(String sunday) {
+    public void setSunday(Integer sunday) {
         this.sunday = sunday;
     }
 
-    public String getMonday() {
+    public Integer getMonday() {
         return monday;
     }
 
-    public void setMonday(String monday) {
+    public void setMonday(Integer monday) {
         this.monday = monday;
     }
 
-    public String getTuesday() {
+    public Integer getTuesday() {
         return tuesday;
     }
 
-    public void setTuesday(String tuesday) {
+    public void setTuesday(Integer tuesday) {
         this.tuesday = tuesday;
     }
 
-    public String getWednesday() {
+    public Integer getWednesday() {
         return wednesday;
     }
 
-    public void setWednesday(String wednesday) {
+    public void setWednesday(Integer wednesday) {
         this.wednesday = wednesday;
     }
 
-    public String getThursday() {
+    public Integer getThursday() {
         return thursday;
     }
 
-    public void setThursday(String thurthday) {
+    public void setThursday(Integer thurthday) {
         this.thursday = thurthday;
     }
 
-    public String getFriday() {
+    public Integer getFriday() {
         return friday;
     }
 
-    public void setFriday(String friday) {
+    public void setFriday(Integer friday) {
         this.friday = friday;
     }
 
-    public String getSaturday() {
+    public Integer getSaturday() {
         return saturday;
     }
 
-    public void setSaturday(String saturday) {
+    public void setSaturday(Integer saturday) {
         this.saturday = saturday;
     }
 
