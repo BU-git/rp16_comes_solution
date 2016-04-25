@@ -34,4 +34,9 @@ public class WorkingWeekDTO {
     public void setOverTime(int overTime) {
         this.overTime = overTime;
     }
+
+    public String toString() {
+        return "weekNumber = " + weekNumber + ", contractTime = " +
+                contractTime + ", overTime = " + overTime;
+    }
 }

@@ -3,16 +3,16 @@ package com.bionic.service.util;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.bionic.service.util.PeriodCalculator.NUMBER_OF_WEEKS_IN_PERIOD;
+
 /**
  * @author Pavel Boiko
  */
-public class PeriodCalculator {
+public class WeekCalculator {
 
-    public static final int NUMBER_OF_WEEKS_IN_PERIOD = 4;
+    public static Date getWeekStartTime(int year, int period, int week) {
 
-    public static Date getPeriodStartTime(int year, int period) {
-
-        int startWeek = period * NUMBER_OF_WEEKS_IN_PERIOD + 1;
+        int startWeek = period * NUMBER_OF_WEEKS_IN_PERIOD + week;
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, Calendar.JANUARY, 0, 0, 0, 0);
@@ -26,10 +26,9 @@ public class PeriodCalculator {
         return startDate;
     }
 
-    public static Date getPeriodEndTime(int year, int period) {
+    public static Date getWeekEndTime(int year, int period, int week) {
 
-        int startWeek = period * NUMBER_OF_WEEKS_IN_PERIOD + 1;
-        int endWeek = startWeek + NUMBER_OF_WEEKS_IN_PERIOD - 1;
+        int endWeek = period * NUMBER_OF_WEEKS_IN_PERIOD + week;
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, Calendar.JANUARY, 0, 23, 59, 59);
@@ -43,4 +42,18 @@ public class PeriodCalculator {
         return endDate;
     }
 
+    public static int getWeekOfYear(int year, int period, int week) {
+
+        int startWeek = period * NUMBER_OF_WEEKS_IN_PERIOD + week;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, Calendar.JANUARY, 0, 0, 0, 0);
+        calendar.set(Calendar.WEEK_OF_YEAR, startWeek);
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+
+        int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+
+        return weekOfYear;
+    }
 }
