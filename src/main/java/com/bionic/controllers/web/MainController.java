@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Dima Budko
@@ -53,14 +54,14 @@ public class MainController {
             System.out.println(bindingResult.getAllErrors());
             return "registration";
         }
-        Employer employer = new Employer();
-        employer.setName("Employer1");
-        user.setEmployer(employer);
-        WorkSchedule workSchedule = new WorkSchedule();
-        workSchedule.setCreationTime(new Date());
-        user.setWorkSchedule(workSchedule);
-        user.setJobs(new ArrayList<>());
         user.setPasswordExpire(new Date(new Date().getTime() * 2));
+        if (user.isZeroHours()) {
+            user.setWorkSchedule(null);
+        }
+        if (user.getWorkSchedule() != null) {
+            user.getWorkSchedule().setCreationTime(new Date());
+        }
+        System.out.println(user);
         try {
             System.out.println(user);
             userService.addUser(user);

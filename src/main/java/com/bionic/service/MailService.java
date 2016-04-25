@@ -13,4 +13,5 @@ public interface MailService {
     void sendResetPasswordLink(String email, long key);
 
     void sendTemporaryPassword(String email, String password);
+
 }
