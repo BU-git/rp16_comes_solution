@@ -5,15 +5,7 @@
 
 <t:layout title="Registration">
     <jsp:attribute name="head_area">
-            <style>
-                #schedule label {
-                    min-width: 100px;
-                }
 
-                .grid.main {
-                    padding: 20px
-                }
-            </style>
     </jsp:attribute>
 
     <jsp:attribute name="body_area">
@@ -24,31 +16,7 @@
             </div>
         </div>
         <div class="ui center aligned grid main">
-            <div>
-                <div class="eight wide column">
-                    <div class="ui tree steps">
-                        <div class="step">
-                            <i class="truck icon"></i>
-                            <div class="content">
-                                <div class="title">Shipping</div>
-                                <div class="description">Choose your shipping options</div>
-                            </div>
-                        </div>
-                        <div class="active step">
-                            <i class="payment icon"></i>
-                            <div class="content">
-                                <div class="title">Billing</div>
-                                <div class="description">Enter billing information</div>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <i class="info icon"></i>
-                            <div class="content">
-                                <div class="title">Confirm Order</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="sixteen wide column centered">
                     <cf:form id="registration-form" onsubmit="return checkForm(this)" class="ui large form"
                              action="/addUser" method="POST"
@@ -144,7 +112,11 @@
                         <br>
                         <br>
                         <div id="schedule">
-                            <h3 class="header">Schedule</h3>
+                            <h3 class="header">Schedule
+                                <div id="help-icon" class="ui icon button">
+                                    <i class="help icon"></i>
+                                </div>
+                            </h3>
                             <div class="two fields">
                                 <div class="field">
                                     <label>Monday</label>
@@ -265,9 +237,15 @@
                 $("#schedule input").val('');
             });
 
-            var $registrationForm = $("#registration-button");
-            $registrationForm.click(function () {
+            var $registrationForm = $("#registration-form");
+            $registrationForm.submit(function () {
                 $("#page-dimmer").dimmer("show");
+            });
+
+            $("#help-icon").popup({
+                on: "hover",
+                title: "Schedule tip",
+                content: "In this work schedule you fill in the number of hours you work each day"
             });
 
         </script>
