@@ -30,8 +30,8 @@ public class SummaryRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<WorkingWeekDTO> getSummary(@PathVariable("user_id") int userId,
-                                           @PathVariable("year") int year, @PathVariable("period") int period)
+    public List<WorkingWeekDTO> getSummaryForPeriod(@PathVariable("user_id") int userId,
+                                                    @PathVariable("year") int year, @PathVariable("period") int period)
                                             throws ShiftsNotFoundException, ShiftsFromFuturePeriodException {
 
         List<WorkingWeekDTO> summary = summaryService.getSummary(userId, year, period);

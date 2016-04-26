@@ -1,6 +1,5 @@
 package com.bionic.dao;
 
-import com.bionic.model.UserKey;
 import com.bionic.model.WorkSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

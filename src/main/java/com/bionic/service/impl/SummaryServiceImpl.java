@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static com.bionic.service.util.PeriodCalculator.*;
-import static com.bionic.service.util.WeekCalculator.getWeekEndTime;
-import static com.bionic.service.util.WeekCalculator.getWeekOfYear;
-import static com.bionic.service.util.WeekCalculator.getWeekStartTime;
+import static com.bionic.service.util.WeekCalculator.*;
 
 /**
  * @author Pavel Boiko
@@ -65,6 +63,7 @@ public class SummaryServiceImpl implements SummaryService {
             Date weekEndTime = getWeekEndTime(year, period, week);
             workingWeek.setWeekNumber(getWeekOfYear(year, period, week));
             workingWeek.setContractTime(contractTime);
+            Set<Integer> shiftIdList = new HashSet<>();
 
             Collections.sort(shifts, (l, r) -> (int)(l.getStartTime().getTime() - r.getStartTime().getTime()));
             int workingTime = 0;
@@ -79,6 +78,7 @@ public class SummaryServiceImpl implements SummaryService {
                     if (r.getEndTime().getTime() >= weekStartTime.getTime()) {
                         if (r.getEndTime().getTime() > weekEndTime.getTime()) break shift;
                         workingTime += r.getEndTime().getTime() - r.getStartTime().getTime();
+                        shiftIdList.add(s.getId());
                         if (r.equals(rides.get(0))) workingTime += r.getStartTime().getTime() - s.getStartTime().getTime();
                         if (r.equals(rides.get(rides.size()-1))) workingTime += s.getEndTime().getTime() - r.getEndTime().getTime();
                     }
@@ -88,6 +88,7 @@ public class SummaryServiceImpl implements SummaryService {
             int overTime = 0;
             if (workingTime >= contractTime) overTime = workingTime - contractTime;
             workingWeek.setOverTime(overTime);
+            workingWeek.setShiftIdList(shiftIdList);
             summary.add(workingWeek);
         }
 
