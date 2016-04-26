@@ -41,8 +41,6 @@ public class AuthenticationRestController {
         return savedUser;
     }
 
-
-
     @RequestMapping(value = "password", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void resetLink(@RequestBody String email) throws UserNotExistsException {

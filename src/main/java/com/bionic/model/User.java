@@ -30,18 +30,21 @@ public class User {
     @Column(name = "userEmail")
     @NotNull
     @Email(message = "Your email is incorect")
+    @NotEmpty(message = "Email can't be empty")
     private String email;
 
-    @NotEmpty
+    @NotEmpty(message = "Password can't be empty")
     @Column(name = "userPassword")
     @Size(max = 60)
     @NotNull(message = "password must be not null")
     private String password;
 
     @NotNull
+    @NotEmpty(message = "First name can't be empty")
     private String firstName;
 
     @NotNull
+    @NotEmpty(message = "Last name can't be empty")
     private String lastName;
 
     private String insertion;
