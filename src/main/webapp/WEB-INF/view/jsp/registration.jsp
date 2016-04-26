@@ -1,55 +1,50 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="cf" %>
-<html>
-<head>
-    <title>Registration</title>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="cf" uri="http://www.springframework.org/tags/form" %>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-    <link href="<c:url value="/resources/dist/semantic.min.css" />" rel="stylesheet" type="text/css">
-    <script src="<c:url value="/resources/vendor/js/jquery-2.2.1.js" />"></script>
-    <script src="<c:url value="/resources/dist/semantic.min.js" />"></script>
+<t:layout title="Registration">
+    <jsp:attribute name="head_area">
+            <style>
+                #schedule label {
+                    min-width: 100px;
+                }
 
-    <style>
-        #schedule label {
-            min-width: 100px;
-        }
+                .grid.main {
+                    padding: 20px
+                }
+            </style>
+    </jsp:attribute>
 
-        .grid.main {
-            padding: 20px
-        }
-    </style>
-
-</head>
-<body>
-<div class="ui center aligned grid main">
-    <div>
-        <div class="eight wide column">
-            <div class="ui tree steps">
-                <div class="step">
-                    <i class="truck icon"></i>
-                    <div class="content">
-                        <div class="title">Shipping</div>
-                        <div class="description">Choose your shipping options</div>
+    <jsp:attribute name="body_area">
+        <div class="ui center aligned grid main">
+            <div>
+                <div class="eight wide column">
+                    <div class="ui tree steps">
+                        <div class="step">
+                            <i class="truck icon"></i>
+                            <div class="content">
+                                <div class="title">Shipping</div>
+                                <div class="description">Choose your shipping options</div>
+                            </div>
+                        </div>
+                        <div class="active step">
+                            <i class="payment icon"></i>
+                            <div class="content">
+                                <div class="title">Billing</div>
+                                <div class="description">Enter billing information</div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <i class="info icon"></i>
+                            <div class="content">
+                                <div class="title">Confirm Order</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="active step">
-                    <i class="payment icon"></i>
-                    <div class="content">
-                        <div class="title">Billing</div>
-                        <div class="description">Enter billing information</div>
-                    </div>
-                </div>
-                <div class="step">
-                    <i class="info icon"></i>
-                    <div class="content">
-                        <div class="title">Confirm Order</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="sixteen wide column centered">
-            <cf:form onsubmit="return checkForm(this)" class="ui large form" action="/addUser" method="POST"
+                <div class="sixteen wide column centered">
+            <cf:form id="registration-form" onsubmit="return checkForm(this)" class="ui large form" action="/addUser" method="POST"
                      modelAttribute="user">
                 <br class="ui stacked segment">
                 <div class="field">
@@ -191,7 +186,10 @@
                 </div>
 
             </cf:form>
+                </div>
+            </div>
         </div>
+
 
 
         <script>
@@ -218,13 +216,20 @@
             $("#days").click(function () {
                 $("#schedule").show();
                 $("#days-count").removeClass("disabled");
-            })
+            });
+
             $("#0-days").click(function () {
                 $("#schedule").hide();
                 $("#days-count").addClass("disabled");
                 $("#days-count").val('0');
                 $("#schedule input").val('');
-            })
+            });
+
+            var $loginForm = $("#registration-form");
+            $loginForm.submit(function () {
+                $("#page-dimmer").dimmer("show");
+            });
+
         </script>
-</body>
-</html>
+    </jsp:attribute>
+</t:layout>

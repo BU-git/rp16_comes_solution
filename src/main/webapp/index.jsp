@@ -1,42 +1,75 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="cf" uri="http://www.springframework.org/tags/form" %>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<t:layout title="tda">
+    <jsp:attribute name="head_area">
 
-    <title>Spring Security</title>
+    </jsp:attribute>
 
-    <link href="<c:url value="/resources/dist/semantic.min.css" />" rel="stylesheet" type="text/css">
-    <script src="<c:url value="/resources/dist/semantic.min.js" />"></script>
+    <jsp:attribute name="body_area">
+        <div class="pusher">
 
-</head>
+            <div class="ui vertical stripe segment">
+                <div class="ui middle aligned stackable grid container">
+                    <div class="row">
+                        <div class="eight wide column">
+                            <h3 class="ui header">We Help Companies and Companions</h3>
+                            <p>We can give your company superpowers to do things that they never thought possible. Let
+                                us delight your customers and empower your needs...through pure data analytics.</p>
+                            <h3 class="ui header">We Make Bananas That Can Dance</h3>
+                            <p>Yes that's right, you thought it was the stuff of dreams, but even bananas can be
+                                bioengineered.</p>
+                        </div>
+                        <div class="six wide right floated column">
+                            <i class="large bordered rounded truck icon"></i>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="center aligned column">
+                            <a class="ui huge button">Check Them Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<body>
-<button class="ui button">Test button</button>
 
-<div>
+            <div class="ui vertical stripe quote segment">
+                <div class="ui equal width stackable internally celled grid">
+                    <div class="center aligned row">
+                        <div class="column">
+                            <h3>"What a Company"</h3>
+                            <p>That is what they all say about us</p>
+                        </div>
+                        <div class="column">
+                            <h3>"I shouldn't have gone with their competitor."</h3>
+                            <p>
+                                <i class="large truck icon"></i> <b>Nan</b> Chief Fun
+                                Officer Acme Toys
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <div style="margin-top: 20px;">
-
-        <sec:authorize access="!isAuthenticated()">
-            <p><a href="<c:url value="/login" />" role="button">Войти</a></p>
-        </sec:authorize>
-        <sec:authorize access="isAuthenticated()">
-            <p>Ваш логин: <sec:authentication property="principal.username" /></p>
-            <p><a href="<c:url value="/logout" />" role="button">Выйти</a></p>
-        </sec:authorize>
-    </div>
-    <div class="footer">
-        <p>Truck drivers application</p>
-    </div>
-
-</div>
-</body>
-</html>
+            <div class="ui vertical stripe segment">
+                <div class="ui text container">
+                    <h3 class="ui header">Breaking The Grid, Grabs Your Attention</h3>
+                    <p>Instead of focusing on content creation and hard work, we have learned how to master the art of
+                        doing nothing by providing massive amounts of whitespace and generic content that can seem
+                        massive, monolithic and worth your attention.</p>
+                    <a class="ui large button">Read More</a>
+                    <h4 class="ui horizontal header divider">
+                        <a href="#">Case Studies</a>
+                    </h4>
+                    <h3 class="ui header">Did We Tell You About Our Bananas?</h3>
+                    <p>Yes I know you probably disregarded the earlier boasts as non-sequitor filler content, but its
+                        really true. It took years of gene splicing and combinatory DNA research, but our bananas can
+                        really dance.</p>
+                    <a class="ui large button">I'm Still Quite Interested</a>
+                </div>
+            </div>
+        </div>
+    </jsp:attribute>
+</t:layout>

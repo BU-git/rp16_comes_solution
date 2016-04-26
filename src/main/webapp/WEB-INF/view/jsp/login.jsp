@@ -18,23 +18,26 @@
 
 
     <script>
-//        $(function() {
-//            $('#submit').click(function () {
-//                $(".ui.page.dimmer").addClass("active");
-//            });
-//        });
-
+        $(function () {
+            var $loginForm = $("#login-form");
+            $loginForm.submit(function () {
+                $("#page-dimmer").dimmer("show");
+            });
+        });
     </script>
     <style type="text/css">
         body {
             background-color: #DADADA;
         }
+
         body > .grid {
             height: 100%;
         }
+
         .image {
             margin-top: -100px;
         }
+
         .column {
             max-width: 450px;
         }
@@ -42,7 +45,7 @@
 </head>
 <body>
 
-<div class="ui page dimmer">
+<div class="ui page dimmer" id="page-dimmer">
     <div class="content">
         <div class="ui loader"></div>
     </div>
@@ -58,7 +61,7 @@
         </h2>
 
         <c:url value="/j_spring_security_check" var="loginUrl"/>
-        <form class="ui large form" action="${loginUrl}" method="post">
+        <form id="login-form" class="ui large form" action="${loginUrl}" method="post">
 
 
             <div class="ui stacked segment">
