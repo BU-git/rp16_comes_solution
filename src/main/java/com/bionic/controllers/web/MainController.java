@@ -1,10 +1,7 @@
 package com.bionic.controllers.web;
 
 import com.bionic.exception.auth.impl.UserExistsException;
-import com.bionic.model.Employer;
 import com.bionic.model.User;
-import com.bionic.model.WorkSchedule;
-import com.bionic.model.dict.Job;
 import com.bionic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,13 +10,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author Dima Budko
