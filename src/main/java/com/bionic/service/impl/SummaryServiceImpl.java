@@ -63,7 +63,7 @@ public class SummaryServiceImpl implements SummaryService {
             Date weekEndTime = getWeekEndTime(year, period, week);
             workingWeek.setWeekNumber(getWeekOfYear(year, period, week));
             workingWeek.setContractTime(contractTime);
-            Set<Integer> shiftIdList = new HashSet<>();
+            Set<Shift> shiftList = new HashSet<>();
 
             Collections.sort(shifts, (l, r) -> (int)(l.getStartTime().getTime() - r.getStartTime().getTime()));
             int workingTime = 0;
@@ -78,7 +78,7 @@ public class SummaryServiceImpl implements SummaryService {
                     if (r.getEndTime().getTime() >= weekStartTime.getTime()) {
                         if (r.getEndTime().getTime() > weekEndTime.getTime()) break shift;
                         workingTime += r.getEndTime().getTime() - r.getStartTime().getTime();
-                        shiftIdList.add(s.getId());
+                        shiftList.add(s);
                         if (r.equals(rides.get(0))) workingTime += r.getStartTime().getTime() - s.getStartTime().getTime();
                         if (r.equals(rides.get(rides.size()-1))) workingTime += s.getEndTime().getTime() - r.getEndTime().getTime();
                     }
@@ -88,7 +88,7 @@ public class SummaryServiceImpl implements SummaryService {
             int overTime = 0;
             if (workingTime >= contractTime) overTime = workingTime - contractTime;
             workingWeek.setOverTime(overTime);
-            workingWeek.setShiftIdList(shiftIdList);
+            workingWeek.setShiftList(shiftList);
             summary.add(workingWeek);
         }
 

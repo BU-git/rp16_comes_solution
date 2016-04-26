@@ -1,5 +1,7 @@
 package com.bionic.dto;
 
+import com.bionic.model.Shift;
+
 import java.util.Set;
 
 /**
@@ -13,7 +15,7 @@ public class WorkingWeekDTO {
 
     private int overTime;
 
-    private Set<Integer> shiftIdList;
+    private Set<Shift> shiftList;
 
     public int getWeekNumber() {
         return weekNumber;
@@ -39,12 +41,12 @@ public class WorkingWeekDTO {
         this.overTime = overTime;
     }
 
-    public Set<Integer> getShiftIdList() { return shiftIdList; }
+    public Set<Shift> getShiftList() { return shiftList; }
 
-    public void setShiftIdList(Set<Integer> shiftIdList) { this.shiftIdList = shiftIdList; }
+    public void setShiftList(Set<Shift> shiftList) { this.shiftList = shiftList; }
 
     public String toString() {
         return "weekNumber = " + weekNumber + ", contractTime = " +
-                contractTime + ", overTime = " + overTime + ", shiftIdList = " + shiftIdList;
+                contractTime + ", overTime = " + overTime + ", shiftList = " + shiftList;
     }
 }
