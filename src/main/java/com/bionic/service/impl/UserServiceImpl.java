@@ -64,10 +64,7 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        if (user.getWorkSchedule() != null) {
-            WorkSchedule workSchedule = workScheduleService.saveWorkSchedule(user.getWorkSchedule());
-            user.setWorkSchedule(workSchedule);
-        }
+        saveUserWorkSchedule(user);
 
         long key = System.currentTimeMillis();
         UserKey userKey = new UserKey(key, email, "verification");
@@ -106,7 +103,24 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User saveUser(User user) {
+
+        saveUserWorkSchedule(user);
+
         return userDao.saveAndFlush(user);
+    }
+
+    @Transactional
+    public void saveUserWorkSchedule(User user) {
+
+        if (user.getWorkSchedule() != null) {
+            WorkSchedule workSchedule = workScheduleService.saveWorkSchedule(user.getWorkSchedule());
+            user.setWorkSchedule(workSchedule);
+        } else {
+            WorkSchedule workSchedule = new WorkSchedule();
+            workSchedule.setCreationTime(new Date());
+            workScheduleService.saveWorkSchedule(workSchedule);
+            user.setWorkSchedule(workSchedule);
+        }
     }
 
     @Override

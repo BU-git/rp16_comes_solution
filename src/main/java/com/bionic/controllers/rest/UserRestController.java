@@ -1,9 +1,10 @@
 package com.bionic.controllers.rest;
 
 import com.bionic.dto.PasswordsDTO;
-import com.bionic.exception.auth.impl.*;
+import com.bionic.exception.auth.impl.PasswordIncorrectException;
+import com.bionic.exception.auth.impl.UserExistsException;
+import com.bionic.exception.auth.impl.UserNotExistsException;
 import com.bionic.model.User;
-import com.bionic.model.WorkSchedule;
 import com.bionic.service.MailService;
 import com.bionic.service.UserService;
 import com.bionic.service.WorkScheduleService;
@@ -55,13 +56,6 @@ public class UserRestController {
     public User putUser(@PathVariable int id, @Valid @RequestBody User incomingUser) throws UserExistsException {
         User existingUser = userService.findByUserEmail(incomingUser.getEmail());
         if (existingUser != null && existingUser.getId() != id) throw new UserExistsException();
-
-        if (incomingUser.getWorkSchedule() != null) {
-            WorkSchedule workSchedule = workScheduleService.saveWorkSchedule(incomingUser.getWorkSchedule());
-            incomingUser.setWorkSchedule(workSchedule);
-        }
-        if (incomingUser.isZeroHours() && !existingUser.isZeroHours())
-            workScheduleService.delete(existingUser.getWorkSchedule());
 
         userService.saveUser(incomingUser);
         User updatedUser = userService.findById(id);

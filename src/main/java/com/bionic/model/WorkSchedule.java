@@ -16,13 +16,13 @@ public class WorkSchedule {
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationTime;
 
-    private Integer sunday;
-    private Integer monday;
-    private Integer tuesday;
-    private Integer wednesday;
-    private Integer thursday;
-    private Integer friday;
-    private Integer saturday;
+    private Integer sunday = 0;
+    private Integer monday = 0;
+    private Integer tuesday = 0;
+    private Integer wednesday = 0;
+    private Integer thursday = 0;
+    private Integer friday = 0;
+    private Integer saturday = 0;
 
     public WorkSchedule() {
     }

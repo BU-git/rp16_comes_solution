@@ -14,13 +14,14 @@ public interface UserService {
 
     User findById(int id);
     User addUser(User user) throws UserExistsException;
-    public User verifyUser(User user);
+    User verifyUser(User user);
     void delete(int id);
     User findByUsername(String name);
     User findByUserEmail(String email);
     User saveUser(User user);
+    void saveUserWorkSchedule(User user);
     List<User> getAll();
-//    Job findJobById(int id);
+
     void resetLink(String email) throws UserNotExistsException;
     void resetPassword(long key) throws UserNotExistsException;
     void changePassword(int id, String oldPassword, String newPassword) throws PasswordIncorrectException;
