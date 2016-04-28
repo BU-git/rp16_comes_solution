@@ -12,7 +12,7 @@ public class WeekCalculator {
 
     public static Date getWeekStartTime(int year, int period, int week) {
 
-        int startWeek = period * NUMBER_OF_WEEKS_IN_PERIOD + week;
+        int startWeek = (period - 1) * NUMBER_OF_WEEKS_IN_PERIOD + week;
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, Calendar.JANUARY, 0, 0, 0, 0);
@@ -28,7 +28,7 @@ public class WeekCalculator {
 
     public static Date getWeekEndTime(int year, int period, int week) {
 
-        int endWeek = period * NUMBER_OF_WEEKS_IN_PERIOD + week;
+        int endWeek = (period - 1) * NUMBER_OF_WEEKS_IN_PERIOD + week;
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, Calendar.JANUARY, 0, 23, 59, 59);
@@ -44,7 +44,7 @@ public class WeekCalculator {
 
     public static int getWeekOfYear(int year, int period, int week) {
 
-        int startWeek = period * NUMBER_OF_WEEKS_IN_PERIOD + week;
+        int startWeek = (period - 1) * NUMBER_OF_WEEKS_IN_PERIOD + week;
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, Calendar.JANUARY, 0, 0, 0, 0);

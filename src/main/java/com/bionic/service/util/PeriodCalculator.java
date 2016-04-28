@@ -12,7 +12,7 @@ public class PeriodCalculator {
 
     public static Date getPeriodStartTime(int year, int period) {
 
-        int startWeek = period * NUMBER_OF_WEEKS_IN_PERIOD + 1;
+        int startWeek = (period - 1) * NUMBER_OF_WEEKS_IN_PERIOD + 1;
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, Calendar.JANUARY, 0, 0, 0, 0);
@@ -28,7 +28,7 @@ public class PeriodCalculator {
 
     public static Date getPeriodEndTime(int year, int period) {
 
-        int startWeek = period * NUMBER_OF_WEEKS_IN_PERIOD + 1;
+        int startWeek = (period - 1) * NUMBER_OF_WEEKS_IN_PERIOD + 1;
         int endWeek = startWeek + NUMBER_OF_WEEKS_IN_PERIOD - 1;
 
         Calendar calendar = Calendar.getInstance();

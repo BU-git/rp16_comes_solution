@@ -59,7 +59,7 @@ public class SummaryServiceTest {
 
     @Test
     public void getTestSummary() throws Exception {
-        List<WorkingWeekDTO> summary = summaryService.getSummary(35, 2016, 4);
+        List<WorkingWeekDTO> summary = summaryService.getSummary(35, 2016, 5);
         System.out.println(summary);
     }
 }
