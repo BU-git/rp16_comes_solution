@@ -35,7 +35,7 @@ public class Shift {
     @JoinColumn(name = "userId")
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shift", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shift", fetch = FetchType.EAGER)
     private List<Ride> rides;
 
     public Shift() {

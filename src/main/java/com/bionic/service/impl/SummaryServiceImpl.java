@@ -43,7 +43,7 @@ public class SummaryServiceImpl implements SummaryService {
         if (periodStartTime.after(currentTime)) throw new ShiftsFromFuturePeriodException();
 
         List<Shift> shifts = shiftDao.getForPeriod(userId, periodStartTime, periodEndTime);
-        if (shifts == null) throw new ShiftsNotFoundException();
+        if (shifts == null || shifts.size() == 0) throw new ShiftsNotFoundException();
 
         int contractHours = 0;
         User user = userDao.findOne(userId);
