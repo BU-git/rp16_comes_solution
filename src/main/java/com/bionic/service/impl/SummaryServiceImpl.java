@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static com.bionic.service.util.MonthCalculator.getMonthEndTime;
+import static com.bionic.service.util.MonthCalculator.getMonthStartTime;
 import static com.bionic.service.util.PeriodCalculator.*;
 import static com.bionic.service.util.WeekCalculator.*;
 
@@ -33,16 +35,16 @@ public class SummaryServiceImpl implements SummaryService {
     @Autowired
     private WorkScheduleService workScheduleService;
 
-    public List<WorkingWeekDTO> getSummary(int userId, int year, int period)
+    public List<WorkingWeekDTO> getSummaryForMonth(int userId, int year, int month)
                                     throws ShiftsNotFoundException, ShiftsFromFuturePeriodException {
 
-        Date periodStartTime = getPeriodStartTime(year, period);
-        Date periodEndTime = getPeriodEndTime(year, period);
+        Date monthStartTime = getMonthStartTime(year, month);
+        Date monthEndTime = getMonthEndTime(year, month);
         Date currentTime = Calendar.getInstance().getTime();
 
-        if (periodStartTime.after(currentTime)) throw new ShiftsFromFuturePeriodException();
+        if (monthStartTime.after(currentTime)) throw new ShiftsFromFuturePeriodException();
 
-        List<Shift> shifts = shiftDao.getForPeriod(userId, periodStartTime, periodEndTime);
+        List<Shift> shifts = shiftDao.getForPeriod(userId, monthStartTime, monthEndTime);
         if (shifts == null || shifts.size() == 0) throw new ShiftsNotFoundException();
 
         int contractHours = 0;
@@ -56,12 +58,13 @@ public class SummaryServiceImpl implements SummaryService {
 
         int contractTime = contractHours * 60 * 60 * 1000;
         List<WorkingWeekDTO> summary = new ArrayList<>();
+        int numberOfWeeks = getWeeksBetween(monthStartTime, monthEndTime);
 
-        for (int week = 1; week <= NUMBER_OF_WEEKS_IN_PERIOD; week++) {
+        for (int week = 1; week <= numberOfWeeks; week++) {
             WorkingWeekDTO workingWeek = new WorkingWeekDTO();
-            Date weekStartTime = getWeekStartTime(year, period, week);
-            Date weekEndTime = getWeekEndTime(year, period, week);
-            workingWeek.setWeekNumber(getWeekOfYear(year, period, week));
+            Date weekStartTime = getMonthWeekStartTime(year, month, week);
+            Date weekEndTime = getMonthWeekEndTime(year, month, week);
+            workingWeek.setWeekNumber(getMonthWeekOfYear(year, month, week));
             workingWeek.setContractTime(contractTime);
             Set<Shift> shiftList = new HashSet<>();
 
@@ -94,4 +97,68 @@ public class SummaryServiceImpl implements SummaryService {
 
         return summary;
     }
+
+    public List<WorkingWeekDTO> getSummaryForPeriod(int userId, int year, int period)
+                                    throws ShiftsNotFoundException, ShiftsFromFuturePeriodException {
+
+        Date periodStartTime = getPeriodStartTime(year, period);
+        Date periodEndTime = getPeriodEndTime(year, period);
+        Date currentTime = Calendar.getInstance().getTime();
+
+        if (periodStartTime.after(currentTime)) throw new ShiftsFromFuturePeriodException();
+
+        List<Shift> shifts = shiftDao.getForPeriod(userId, periodStartTime, periodEndTime);
+        if (shifts == null || shifts.size() == 0) throw new ShiftsNotFoundException();
+
+        int contractHours = 0;
+        User user = userDao.findOne(userId);
+
+        if (user.isZeroHours() == true) {
+            contractHours = 40;
+        } else {
+            contractHours = workScheduleService.getContractHours(user.getWorkSchedule());
+        }
+
+        int contractTime = contractHours * 60 * 60 * 1000;
+        List<WorkingWeekDTO> summary = new ArrayList<>();
+
+        for (int week = 1; week <= NUMBER_OF_WEEKS_IN_PERIOD; week++) {
+            WorkingWeekDTO workingWeek = new WorkingWeekDTO();
+            Date weekStartTime = getPeriodWeekStartTime(year, period, week);
+            Date weekEndTime = getPeriodWeekEndTime(year, period, week);
+            workingWeek.setWeekNumber(getPeriodWeekOfYear(year, period, week));
+            workingWeek.setContractTime(contractTime);
+            Set<Shift> shiftList = new HashSet<>();
+
+            Collections.sort(shifts, (l, r) -> (int)(l.getStartTime().getTime() - r.getStartTime().getTime()));
+            int workingTime = 0;
+
+            shift:
+            for (Shift s : shifts) {
+
+                List<Ride> rides = s.getRides();
+                Collections.sort(rides, (l, r) -> (int)(l.getStartTime().getTime() - r.getStartTime().getTime()));
+
+                for (Ride r : rides) {
+                    if (r.getEndTime().getTime() >= weekStartTime.getTime()) {
+                        if (r.getEndTime().getTime() > weekEndTime.getTime()) break shift;
+                        workingTime += r.getEndTime().getTime() - r.getStartTime().getTime();
+                        shiftList.add(s);
+                        if (r.equals(rides.get(0))) workingTime += r.getStartTime().getTime() - s.getStartTime().getTime();
+                        if (r.equals(rides.get(rides.size()-1))) workingTime += s.getEndTime().getTime() - r.getEndTime().getTime();
+                    }
+                }
+            }
+            System.out.println("working time for week " + week + " = " + workingTime);
+            int overTime = 0;
+            if (workingTime >= contractTime) overTime = workingTime - contractTime;
+            workingWeek.setOverTime(overTime);
+            workingWeek.setShiftList(shiftList);
+            summary.add(workingWeek);
+        }
+
+        return summary;
+    }
+
+
 }

@@ -85,4 +85,8 @@ public class Shift {
         this.user = user;
     }
 
+    public String toString() {
+        return "shiftId = " + id + ", startTime = " + startTime + ", endTime = " + endTime;
+    }
+
 }

@@ -11,6 +11,10 @@ import java.util.List;
  */
 public interface SummaryService {
 
-    List<WorkingWeekDTO> getSummary(int userId, int year, int period)
+    List<WorkingWeekDTO> getSummaryForPeriod(int userId, int year, int period)
                                 throws ShiftsNotFoundException, ShiftsFromFuturePeriodException;
+
+    List<WorkingWeekDTO> getSummaryForMonth(int userId, int year, int month)
+            throws ShiftsNotFoundException, ShiftsFromFuturePeriodException;
+
 }
