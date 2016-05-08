@@ -43,9 +43,9 @@ public class SummaryServiceTest {
 
     @Test
     public void testPeriodGetStartEndDate() {
-        Date firstDate = getPeriodStartTime(2016, 1);
-        Date secondDate = getPeriodEndTime(2016, 1);
-        Date thirdDate = getPeriodStartTime(2016, 2);
+        Date firstDate = getPeriodStartTime(2016, 0);
+        Date secondDate = getPeriodEndTime(2016, 0);
+        Date thirdDate = getPeriodStartTime(2016, 1);
         System.out.println();
         getPeriodWeekStartTime(2016, 1, 1);
         getPeriodWeekEndTime(2016, 1, 1);
@@ -68,7 +68,7 @@ public class SummaryServiceTest {
         Date secondDate = getMonthEndTime(2016, month1);
         Date thirdDate = getMonthStartTime(2016, month2);
         int numberOfWeeks = getWeeksBetween(firstDate, secondDate);
-        for (int i = month1; i <= numberOfWeeks; i++) {
+        for (int i = 1; i <= numberOfWeeks; i++) {
             getMonthWeekStartTime(2016, month1, i);
             getMonthWeekEndTime(2016, month1, i);
         }
@@ -79,7 +79,7 @@ public class SummaryServiceTest {
 
     @Test
     public void getTestSummary() throws Exception {
-        List<WorkingWeekDTO> summary = summaryService.getSummaryForMonth(61, 2016, 1);
+        List<WorkingWeekDTO> summary = summaryService.getSummaryForPeriod(61, 2016, 1);
         System.out.println(summary);
     }
 }

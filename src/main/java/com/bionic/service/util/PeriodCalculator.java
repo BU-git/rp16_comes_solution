@@ -12,11 +12,21 @@ public class PeriodCalculator {
 
     public static Date getPeriodStartTime(int year, int period) {
 
-        int startWeek = (period - 1) * NUMBER_OF_WEEKS_IN_PERIOD + 1;
+        int startWeek = period * NUMBER_OF_WEEKS_IN_PERIOD + 1;
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, Calendar.JANUARY, 0, 0, 0, 0);
-        calendar.set(Calendar.WEEK_OF_YEAR, startWeek);
+
+        Calendar offsetCalendar = Calendar.getInstance();
+        offsetCalendar.set(Calendar.YEAR, year);
+        offsetCalendar.set(Calendar.DAY_OF_YEAR, 1);
+
+        if (offsetCalendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+            calendar.set(Calendar.WEEK_OF_YEAR, startWeek);
+        } else {
+            calendar.set(Calendar.WEEK_OF_YEAR, startWeek + 1);
+        }
+
         calendar.setFirstDayOfWeek(Calendar.MONDAY);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
@@ -28,12 +38,22 @@ public class PeriodCalculator {
 
     public static Date getPeriodEndTime(int year, int period) {
 
-        int startWeek = (period - 1) * NUMBER_OF_WEEKS_IN_PERIOD + 1;
+        int startWeek = period * NUMBER_OF_WEEKS_IN_PERIOD + 1;
         int endWeek = startWeek + NUMBER_OF_WEEKS_IN_PERIOD - 1;
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, Calendar.JANUARY, 0, 23, 59, 59);
-        calendar.set(Calendar.WEEK_OF_YEAR, endWeek);
+
+        Calendar offsetCalendar = Calendar.getInstance();
+        offsetCalendar.set(Calendar.YEAR, year);
+        offsetCalendar.set(Calendar.DAY_OF_YEAR, 1);
+
+        if (offsetCalendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+            calendar.set(Calendar.WEEK_OF_YEAR, endWeek);
+        } else {
+            calendar.set(Calendar.WEEK_OF_YEAR, endWeek + 1);
+        }
+
         calendar.setFirstDayOfWeek(Calendar.MONDAY);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 

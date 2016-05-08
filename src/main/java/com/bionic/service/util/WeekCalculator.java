@@ -60,11 +60,21 @@ public class WeekCalculator {
 
     public static Date getPeriodWeekStartTime(int year, int period, int week) {
 
-        int startWeek = (period - 1) * NUMBER_OF_WEEKS_IN_PERIOD + week;
+        int startWeek = period * NUMBER_OF_WEEKS_IN_PERIOD + week;
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, Calendar.JANUARY, 0, 0, 0, 0);
-        calendar.set(Calendar.WEEK_OF_YEAR, startWeek);
+
+        Calendar offsetCalendar = Calendar.getInstance();
+        offsetCalendar.set(Calendar.YEAR, year);
+        offsetCalendar.set(Calendar.DAY_OF_YEAR, 1);
+
+        if (offsetCalendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+            calendar.set(Calendar.WEEK_OF_YEAR, startWeek);
+        } else {
+            calendar.set(Calendar.WEEK_OF_YEAR, startWeek + 1);
+        }
+
         calendar.setFirstDayOfWeek(Calendar.MONDAY);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
@@ -76,11 +86,21 @@ public class WeekCalculator {
 
     public static Date getPeriodWeekEndTime(int year, int period, int week) {
 
-        int endWeek = (period - 1) * NUMBER_OF_WEEKS_IN_PERIOD + week;
+        int endWeek = period * NUMBER_OF_WEEKS_IN_PERIOD + week;
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, Calendar.JANUARY, 0, 23, 59, 59);
-        calendar.set(Calendar.WEEK_OF_YEAR, endWeek);
+
+        Calendar offsetCalendar = Calendar.getInstance();
+        offsetCalendar.set(Calendar.YEAR, year);
+        offsetCalendar.set(Calendar.DAY_OF_YEAR, 1);
+
+        if (offsetCalendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+            calendar.set(Calendar.WEEK_OF_YEAR, endWeek);
+        } else {
+            calendar.set(Calendar.WEEK_OF_YEAR, endWeek + 1);
+        }
+
         calendar.setFirstDayOfWeek(Calendar.MONDAY);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 
@@ -100,9 +120,15 @@ public class WeekCalculator {
         calendar.setFirstDayOfWeek(Calendar.MONDAY);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
-        int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+        Calendar offsetCalendar = Calendar.getInstance();
+        offsetCalendar.set(Calendar.YEAR, year);
+        offsetCalendar.set(Calendar.DAY_OF_YEAR, 1);
 
-        return weekOfYear;
+        if (offsetCalendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+            return calendar.get(Calendar.WEEK_OF_YEAR);
+        } else {
+            return calendar.get(Calendar.WEEK_OF_YEAR) - 1;
+        }
     }
 
     public static int getMonthWeekOfYear(int year, int month, int week) {
@@ -113,8 +139,15 @@ public class WeekCalculator {
             calendar.add(Calendar.DATE, 1);
         }
         calendar.add(Calendar.WEEK_OF_YEAR, week - 1);
-        int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
 
-        return weekOfYear;
+        Calendar offsetCalendar = Calendar.getInstance();
+        offsetCalendar.set(Calendar.YEAR, year);
+        offsetCalendar.set(Calendar.DAY_OF_YEAR, 1);
+
+        if (offsetCalendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+            return calendar.get(Calendar.WEEK_OF_YEAR);
+        } else {
+            return calendar.get(Calendar.WEEK_OF_YEAR) - 1;
+        }
     }
 }
