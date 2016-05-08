@@ -112,23 +112,9 @@ public class WeekCalculator {
 
     public static int getPeriodWeekOfYear(int year, int period, int week) {
 
-        int startWeek = (period - 1) * NUMBER_OF_WEEKS_IN_PERIOD + week;
+        int weekOfYear = period * NUMBER_OF_WEEKS_IN_PERIOD + week;
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, Calendar.JANUARY, 0, 0, 0, 0);
-        calendar.set(Calendar.WEEK_OF_YEAR, startWeek);
-        calendar.setFirstDayOfWeek(Calendar.MONDAY);
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-
-        Calendar offsetCalendar = Calendar.getInstance();
-        offsetCalendar.set(Calendar.YEAR, year);
-        offsetCalendar.set(Calendar.DAY_OF_YEAR, 1);
-
-        if (offsetCalendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
-            return calendar.get(Calendar.WEEK_OF_YEAR);
-        } else {
-            return calendar.get(Calendar.WEEK_OF_YEAR) - 1;
-        }
+            return weekOfYear;
     }
 
     public static int getMonthWeekOfYear(int year, int month, int week) {
