@@ -19,7 +19,7 @@
 
                 <div class="sixteen wide column centered">
                     <cf:form id="registration-form" onsubmit="return checkForm(this)" class="ui large form"
-                             action="/addUser" method="POST"
+                             action="addUser" method="POST"
                              modelAttribute="user">
                         <br class="ui stacked segment">
                         <div class="field">
