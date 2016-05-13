@@ -11,7 +11,7 @@ public class WorkingWeekDTO {
 
     private int weekNumber;
 
-    private int contractTime;
+    private int workedTime;
 
     private int overTime;
 
@@ -25,12 +25,12 @@ public class WorkingWeekDTO {
         this.weekNumber = weekNumber;
     }
 
-    public int getContractTime() {
-        return contractTime;
+    public int getWorkedTime() {
+        return workedTime;
     }
 
-    public void setContractTime(int contractTime) {
-        this.contractTime = contractTime;
+    public void setWorkedTime(int workedTime) {
+        this.workedTime = workedTime;
     }
 
     public int getOverTime() {
@@ -46,7 +46,7 @@ public class WorkingWeekDTO {
     public void setShiftList(Set<Shift> shiftList) { this.shiftList = shiftList; }
 
     public String toString() {
-        return "weekNumber = " + weekNumber + ", contractTime = " +
-                contractTime + ", overTime = " + overTime + ", shiftList = " + shiftList;
+        return "weekNumber = " + weekNumber + ", workedTime = " +
+                workedTime + ", overTime = " + overTime + ", shiftList = " + shiftList;
     }
 }
