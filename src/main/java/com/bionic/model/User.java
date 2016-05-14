@@ -3,10 +3,14 @@ package com.bionic.model;
 import com.bionic.model.dict.Job;
 import com.bionic.model.dict.UserRoleEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -85,6 +89,7 @@ public class User {
     @CollectionTable(name = "users_jobs",
             joinColumns = @JoinColumn(name = "userId"))
     @Column(name = "jobId")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Job> jobs;
 
     @JsonIgnore

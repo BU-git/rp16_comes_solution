@@ -23,8 +23,10 @@ public class ShiftServiceImpl implements ShiftService {
 
     @Override
     public Shift addShift(Shift shift) {
-        for (Ride ride : shift.getRides()) {
-            ride.setShift(shift);
+        if (shift.getRides() != null) {
+            for (Ride ride : shift.getRides()) {
+                ride.setShift(shift);
+            }
         }
         return shiftDao.saveAndFlush(shift);
     }
@@ -40,8 +42,10 @@ public class ShiftServiceImpl implements ShiftService {
 
     @Override
     public Shift editShift(Shift shift) {
-        for (Ride ride : shift.getRides()) {
-            ride.setShift(shift);
+        if (shift.getRides() != null) {
+            for (Ride ride : shift.getRides()) {
+                ride.setShift(shift);
+            }
         }
         return shiftDao.saveAndFlush(shift);
     }
