@@ -2,6 +2,7 @@ package com.bionic.service.impl;
 
 import com.bionic.dao.ShiftDao;
 
+import com.bionic.model.Ride;
 import com.bionic.model.Shift;
 import com.bionic.service.ShiftService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,15 @@ public class ShiftServiceImpl implements ShiftService {
 
     @Override
     public Shift addShift(Shift shift) {
+        for (Ride ride : shift.getRides()) {
+            ride.setShift(shift);
+        }
         return shiftDao.saveAndFlush(shift);
     }
 
 
     @Override
-    public void delete(int id)  {         shiftDao.delete(id);
-    }
+    public void delete(int id)  { shiftDao.delete(id); }
 
     @Override
     public Shift getById(int id) {
@@ -37,6 +40,9 @@ public class ShiftServiceImpl implements ShiftService {
 
     @Override
     public Shift editShift(Shift shift) {
+        for (Ride ride : shift.getRides()) {
+            ride.setShift(shift);
+        }
         return shiftDao.saveAndFlush(shift);
     }
 

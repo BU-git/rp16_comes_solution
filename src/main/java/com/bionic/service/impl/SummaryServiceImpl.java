@@ -10,7 +10,6 @@ import com.bionic.model.Shift;
 import com.bionic.model.User;
 import com.bionic.service.SummaryService;
 import com.bionic.service.WorkScheduleService;
-import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,48 +61,17 @@ public class SummaryServiceImpl implements SummaryService {
         int numberOfWeeks = getWeeksBetween(monthStartTime, monthEndTime);
 
         for (int week = 1; week <= numberOfWeeks; week++) {
-            WorkingWeekDTO workingWeek = new WorkingWeekDTO();
             Date weekStartTime = getMonthWeekStartTime(year, month, week);
             Date weekEndTime = getMonthWeekEndTime(year, month, week);
-            workingWeek.setWeekNumber(getMonthWeekOfYear(year, month, week));
+            int weekNumber = getMonthWeekOfYear(year, month, week);
 
-            Pair<Integer, Set<Shift>> weekSummary = getSummaryForWeek(shifts, weekStartTime, weekEndTime);
-            int workedTime = weekSummary.getKey();
-            Set<Shift> shiftSet = weekSummary.getValue();
-            System.out.println("worked time for week " + week + " = " + workedTime);
-            int overTime = 0;
-            if (workedTime >= contractTime) overTime = workedTime - contractTime;
-            workingWeek.setWorkedTime(workedTime);
-            workingWeek.setOverTime(overTime);
-            workingWeek.setShiftList(shiftSet);
+            WorkingWeekDTO workingWeek = getSummaryForWeek(shifts, weekStartTime, weekEndTime, contractTime);
+            workingWeek.setWeekNumber(weekNumber);
+            System.out.println("worked time for week " + weekNumber + " = " + workingWeek.getWorkedTime());
             summary.add(workingWeek);
         }
 
         return summary;
-    }
-
-    public Pair<Integer, Set<Shift>> getSummaryForWeek(List<Shift> shifts, Date weekStartTime, Date weekEndTime) {
-        Set<Shift> shiftList = new HashSet<>();
-        int workingTime = 0;
-        Collections.sort(shifts, (l, r) -> (int)(l.getStartTime().getTime() - r.getStartTime().getTime()));
-
-        shift:
-        for (Shift s : shifts) {
-
-            List<Ride> rides = s.getRides();
-            Collections.sort(rides, (l, r) -> (int)(l.getStartTime().getTime() - r.getStartTime().getTime()));
-
-            for (Ride r : rides) {
-                if (r.getEndTime().getTime() >= weekStartTime.getTime()) {
-                    if (r.getEndTime().getTime() > weekEndTime.getTime()) break shift;
-                    workingTime += r.getEndTime().getTime() - r.getStartTime().getTime();
-                    shiftList.add(s);
-                    if (r.equals(rides.get(0))) workingTime += r.getStartTime().getTime() - s.getStartTime().getTime();
-                    if (r.equals(rides.get(rides.size()-1))) workingTime += s.getEndTime().getTime() - r.getEndTime().getTime();
-                }
-            }
-        }
-        return new Pair<>(workingTime, shiftList);
     }
 
     public List<WorkingWeekDTO> getSummaryForPeriod(int userId, int year, int period)
@@ -131,26 +99,49 @@ public class SummaryServiceImpl implements SummaryService {
         List<WorkingWeekDTO> summary = new ArrayList<>();
 
         for (int week = 1; week <= NUMBER_OF_WEEKS_IN_PERIOD; week++) {
-            WorkingWeekDTO workingWeek = new WorkingWeekDTO();
             Date weekStartTime = getPeriodWeekStartTime(year, period, week);
             Date weekEndTime = getPeriodWeekEndTime(year, period, week);
-            workingWeek.setWeekNumber(getPeriodWeekOfYear(year, period, week));
+            int weekNumber = getPeriodWeekOfYear(year, period, week);
 
-            Pair<Integer, Set<Shift>> weekSummary = getSummaryForWeek(shifts, weekStartTime, weekEndTime);
-            int workedTime = weekSummary.getKey();
-            Set<Shift> shiftSet = weekSummary.getValue();
-            System.out.println("worked time for week " + week + " = " + workedTime);
-            int overTime = 0;
-            if (workedTime >= contractTime) overTime = workedTime - contractTime;
-            workingWeek.setWorkedTime(workedTime);
-            workingWeek.setOverTime(overTime);
-            workingWeek.setShiftList(shiftSet);
+            WorkingWeekDTO workingWeek = getSummaryForWeek(shifts, weekStartTime, weekEndTime, contractTime);
+            workingWeek.setWeekNumber(weekNumber);
+            System.out.println("worked time for week " + weekNumber + " = " + workingWeek.getWorkedTime());
             summary.add(workingWeek);
-
         }
 
         return summary;
     }
 
+    public WorkingWeekDTO getSummaryForWeek(List<Shift> shifts, Date weekStartTime, Date weekEndTime, int contractTime) {
 
+        WorkingWeekDTO workingWeek = new WorkingWeekDTO();
+        Set<Shift> shiftSet = new HashSet<>();
+        int workedTime = 0;
+        Collections.sort(shifts, (l, r) -> (int)(l.getStartTime().getTime() - r.getStartTime().getTime()));
+
+        shift:
+        for (Shift s : shifts) {
+
+            List<Ride> rides = s.getRides();
+            Collections.sort(rides, (l, r) -> (int)(l.getStartTime().getTime() - r.getStartTime().getTime()));
+
+            for (Ride r : rides) {
+                if (r.getEndTime().getTime() >= weekStartTime.getTime()) {
+                    if (r.getEndTime().getTime() > weekEndTime.getTime()) break shift;
+                    workedTime += r.getEndTime().getTime() - r.getStartTime().getTime();
+                    shiftSet.add(s);
+                    if (r.equals(rides.get(0))) workedTime += r.getStartTime().getTime() - s.getStartTime().getTime();
+                    if (r.equals(rides.get(rides.size()-1))) workedTime += s.getEndTime().getTime() - r.getEndTime().getTime();
+                }
+            }
+        }
+
+        int overTime = 0;
+        if (workedTime >= contractTime) overTime = workedTime - contractTime;
+        workingWeek.setWorkedTime(workedTime);
+        workingWeek.setOverTime(overTime);
+        workingWeek.setShiftList(shiftSet);
+
+        return workingWeek;
+    }
 }
