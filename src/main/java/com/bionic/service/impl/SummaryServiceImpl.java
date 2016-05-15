@@ -117,6 +117,8 @@ public class SummaryServiceImpl implements SummaryService {
         WorkingWeekDTO workingWeek = new WorkingWeekDTO();
         Set<Shift> shiftSet = new HashSet<>();
         int workedTime = 0;
+        //TODO add pause calculation for sequential rides
+        int pauseTime = 0;
         Collections.sort(shifts, (l, r) -> (int)(l.getStartTime().getTime() - r.getStartTime().getTime()));
 
         shift:
@@ -128,17 +130,34 @@ public class SummaryServiceImpl implements SummaryService {
             for (Ride r : rides) {
                 if (r.getEndTime().getTime() >= weekStartTime.getTime()) {
                     if (r.getEndTime().getTime() > weekEndTime.getTime()) break shift;
-                    workedTime += r.getEndTime().getTime() - r.getStartTime().getTime();
+                    long tempWorkedTime = r.getEndTime().getTime() - r.getStartTime().getTime();
+                    workedTime += tempWorkedTime;
                     shiftSet.add(s);
-                    if (r.equals(rides.get(0))) workedTime += r.getStartTime().getTime() - s.getStartTime().getTime();
-                    if (r.equals(rides.get(rides.size()-1))) workedTime += s.getEndTime().getTime() - r.getEndTime().getTime();
+                    System.out.println("temp worked time = " + tempWorkedTime);
+                    if (r.equals(rides.get(0))) {
+                        tempWorkedTime += r.getStartTime().getTime() - s.getStartTime().getTime();
+                        System.out.println("temp worked time first = " + tempWorkedTime);
+                        workedTime += r.getStartTime().getTime() - s.getStartTime().getTime();
+                    }
+                    if (r.equals(rides.get(rides.size()-1))) {
+                        tempWorkedTime += s.getEndTime().getTime() - r.getEndTime().getTime();
+                        System.out.println("temp worked time last = " + tempWorkedTime);
+                        workedTime += s.getEndTime().getTime() - r.getEndTime().getTime();
+                    }
+                    int tempPauseTime = getPauseTime(tempWorkedTime);
+                    pauseTime += tempPauseTime;
                 }
             }
         }
 
         int overTime = 0;
-        if (workedTime >= contractTime) overTime = workedTime - contractTime;
-        workingWeek.setWorkedTime(workedTime);
+        int actualWorkedTime = workedTime - pauseTime;
+        if (actualWorkedTime >= contractTime) overTime = actualWorkedTime - contractTime;
+        System.out.println("worked time = " + workedTime);
+        System.out.println("pause time = " + pauseTime);
+        System.out.println("actual worked time = " + actualWorkedTime);
+        System.out.println("contract time = " + contractTime);
+        workingWeek.setWorkedTime(actualWorkedTime);
         workingWeek.setOverTime(overTime);
         workingWeek.setShiftList(shiftSet);
 

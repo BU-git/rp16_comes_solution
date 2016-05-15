@@ -64,4 +64,11 @@ public class Ride {
     public void setShift(Shift shift) {
         this.shift = shift;
     }
+
+    public boolean equals(Object obj){
+        if (this == obj) return true;
+        Ride ride = (Ride) obj;
+        if (this.getId().equals(ride.getId())) return true;
+        return false;
+    }
 }

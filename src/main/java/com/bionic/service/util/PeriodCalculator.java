@@ -63,4 +63,15 @@ public class PeriodCalculator {
         return endDate;
     }
 
+    public static int getPauseTime(long workedTime){
+
+        if(workedTime >= 270 * 60 * 1000 && workedTime < 450 * 60 * 1000 ) return 30 * 60 * 1000 ;
+        if(workedTime >= 450 * 60 * 1000 && workedTime < 630 * 60 * 1000) return 60 * 60 * 1000;
+        if(workedTime >= 630 * 60 * 1000 && workedTime < 810 * 60 * 1000) return 90 * 60 * 1000;
+        if(workedTime >= 810 * 60 * 1000 && workedTime < 990 * 60 * 1000) return 120 * 60 * 1000;
+        if(workedTime >= 990 * 60 * 1000) return 150 * 60 * 1000;
+
+        return 0;
+    }
+
 }
