@@ -1,7 +1,6 @@
 package com.bionic.service.impl;
 
 import com.bionic.dao.ShiftDao;
-
 import com.bionic.exception.shift.impl.ShiftOverlapsException;
 import com.bionic.model.Ride;
 import com.bionic.model.Shift;
@@ -9,6 +8,7 @@ import com.bionic.service.ShiftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class ShiftServiceImpl implements ShiftService {
 
         int userId = shift.getUser().getId();
         List<Shift> overlappedShifts = shiftDao.getOverlappedShifts(userId, shift.getStartTime(), shift.getEndTime());
-        if (overlappedShifts != null)
+        if (!ObjectUtils.isEmpty(overlappedShifts))
             throw new ShiftOverlapsException(overlappedShifts);
         return shiftDao.saveAndFlush(shift);
     }

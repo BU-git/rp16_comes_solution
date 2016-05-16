@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
@@ -61,11 +62,12 @@ public class ShiftRestTest {
     }
 
     @Test
+    @Transactional
     public void addEditAndDeleteShift() throws Exception {
         //CREATE SHIFT
         Shift shift = new Shift();
 
-        shift.setStartTime(new Date(851032800000L));
+        shift.setStartTime(new Date(801032800000L));
         shift.setEndTime(new Date(851032800000L));
         shift.setPause(851032800000L);
 
