@@ -1,6 +1,7 @@
 package com.bionic.controllers.rest;
 
 import com.bionic.exception.shift.impl.ShiftNoExistsException;
+import com.bionic.exception.shift.impl.ShiftOverlapsException;
 import com.bionic.model.Shift;
 import com.bionic.model.User;
 import com.bionic.service.ShiftService;
@@ -36,7 +37,7 @@ public class ShiftRestController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public int createShift(@Valid @RequestBody Shift inputShift, @PathVariable("user_id") final int user_id) {
+    public int createShift(@Valid @RequestBody Shift inputShift, @PathVariable("user_id") final int user_id) throws ShiftOverlapsException {
         User user = userService.findById(user_id);
         inputShift.setUser(user);
         shiftService.addShift(inputShift);

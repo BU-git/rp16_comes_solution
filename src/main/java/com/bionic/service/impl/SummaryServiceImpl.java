@@ -50,7 +50,7 @@ public class SummaryServiceImpl implements SummaryService {
         int contractHours = 0;
         User user = userDao.findOne(userId);
 
-        if (user.isZeroHours() == true) {
+        if (user.isZeroHours()) {
             contractHours = 40;
         } else {
             contractHours = workScheduleService.getContractHours(user.getWorkSchedule());
@@ -89,7 +89,7 @@ public class SummaryServiceImpl implements SummaryService {
         int contractHours = 0;
         User user = userDao.findOne(userId);
 
-        if (user.isZeroHours() == true) {
+        if (user.isZeroHours()) {
             contractHours = 40;
         } else {
             contractHours = workScheduleService.getContractHours(user.getWorkSchedule());

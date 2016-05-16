@@ -1,5 +1,6 @@
 package com.bionic.exception.handlers;
 
+import com.bionic.exception.shift.impl.ShiftOverlapsException;
 import com.bionic.exception.shift.impl.ShiftsFromFuturePeriodException;
 import com.bionic.exception.shift.impl.ShiftsNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,13 @@ public class ShiftExceptionsHandler {
     public ResponseEntity handleShiftsFromFuturePeriodException(ShiftsFromFuturePeriodException e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
+                .body(e.getMessage());
+    }
+
+    @ExceptionHandler(ShiftOverlapsException.class)
+    public ResponseEntity handleShiftOverlapsException(ShiftOverlapsException e) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT) //409
                 .body(e.getMessage());
     }
 }

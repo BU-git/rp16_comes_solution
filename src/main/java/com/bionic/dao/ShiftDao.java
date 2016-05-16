@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * author Dima Budko
  */
-public interface ShiftDao extends JpaRepository<Shift,Integer>{
+public interface ShiftDao extends JpaRepository<Shift, Integer> {
 
     @Query("select u.shifts from User u where u.id =:userId")
     List<Shift> getByUserId(@Param("userId") int userId);
@@ -22,4 +22,11 @@ public interface ShiftDao extends JpaRepository<Shift,Integer>{
 
     @Query("DELETE FROM Shift s where s.user.id=:userId")
     void deleteByUser(@Param("userId") int userId);
+
+    @Query("select s from Shift s where s.user.id = :userId and " +
+            "((s.startTime BETWEEN :startDate and :endDate) " +
+            "or (s.endTime BETWEEN :startDate and :endDate)" +
+            "or ((s.startTime <= :startDate) and (s.endTime >= :endDate)))")
+    List<Shift> getOverlappedShifts(@Param("userId") int userId,
+                                    @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 }

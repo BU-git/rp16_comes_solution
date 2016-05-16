@@ -1,5 +1,6 @@
 package com.bionic.service;
 
+import com.bionic.exception.shift.impl.ShiftOverlapsException;
 import com.bionic.model.Shift;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  */
 public interface ShiftService {
 
-    Shift addShift(Shift shift);
+    Shift addShift(Shift shift) throws ShiftOverlapsException;
 
     void delete(int id) ;
 
