@@ -16,7 +16,7 @@ public interface ShiftService {
 
     Shift getById(int id);
 
-    Shift editShift(Shift shift);
+    Shift editShift(Shift shift) throws ShiftOverlapsException;
 
     List<Shift> getByUserId(int user_id);
 
