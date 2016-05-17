@@ -131,11 +131,15 @@ public class WeekCalculator {
         offsetCalendar.set(Calendar.DAY_OF_YEAR, 1);
 
         if (offsetCalendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
-            return calendar.get(Calendar.WEEK_OF_YEAR);
+            if (calendar.get(Calendar.WEEK_OF_YEAR) >= week) {
+                return calendar.get(Calendar.WEEK_OF_YEAR);
+            } else {
+                return getMonthWeekOfYear(year, month, week - 1) + 1;
+            }
         } else if (calendar.get(Calendar.WEEK_OF_YEAR) != 1) {
             return calendar.get(Calendar.WEEK_OF_YEAR) - 1;
         } else {
-            return 52;
+            return getMonthWeekOfYear(year, month, week - 1) + 1;
         }
     }
 }

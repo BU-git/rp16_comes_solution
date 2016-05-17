@@ -80,7 +80,7 @@ public class SummaryServiceTest {
 //        List<WorkingWeekDTO> summary = summaryService.getSummaryForMonth(61, 2016, 3);
 //        System.out.println(summary);
         System.out.println("=========");
-        for (int year = 2010; year < 2020; year++) {
+        for (int year = 1990; year < 2020; year++) {
             for (int month = 0; month < 12; month++) {
                 Date monthStart = getMonthStartTime(year, month);
                 Date monthEnd = getMonthEndTime(year, month);
@@ -90,6 +90,5 @@ public class SummaryServiceTest {
                 }
             }
         }
-
     }
 }
