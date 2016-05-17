@@ -9,7 +9,7 @@ public enum Job  {
     @Id
     private Integer jobId;
 
-    private Job(final Integer jobId) {
+    Job(final Integer jobId) {
         this.jobId = jobId;
     }
 

@@ -2,7 +2,6 @@ package com.bionic.service;
 
 import com.bionic.config.PersistenceConfig;
 import com.bionic.config.RootConfig;
-import com.bionic.dto.WorkingWeekDTO;
 import com.bionic.service.util.WeekCalculator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import static com.bionic.service.util.MonthCalculator.getMonthEndTime;
 import static com.bionic.service.util.MonthCalculator.getMonthStartTime;
@@ -79,9 +77,19 @@ public class SummaryServiceTest {
 
     @Test
     public void getTestSummary() throws Exception {
-        List<WorkingWeekDTO> summary = summaryService.getSummaryForMonth(61, 2016, 3);
-        System.out.println(summary);
+//        List<WorkingWeekDTO> summary = summaryService.getSummaryForMonth(61, 2016, 3);
+//        System.out.println(summary);
         System.out.println("=========");
-        System.out.println(getPeriodWeekOfYear(2016, 0, 1));
+        for (int year = 2010; year < 2020; year++) {
+            for (int month = 0; month < 12; month++) {
+                Date monthStart = getMonthStartTime(year, month);
+                Date monthEnd = getMonthEndTime(year, month);
+                int numberOfWeeks = getWeeksBetween(monthStart, monthEnd);
+                for (int weekNumber = 1; weekNumber <= numberOfWeeks; weekNumber++) {
+                    System.out.println(getMonthWeekOfYear(year, month, weekNumber));
+                }
+            }
+        }
+
     }
 }

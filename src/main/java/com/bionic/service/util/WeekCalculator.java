@@ -132,8 +132,10 @@ public class WeekCalculator {
 
         if (offsetCalendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
             return calendar.get(Calendar.WEEK_OF_YEAR);
-        } else {
+        } else if (calendar.get(Calendar.WEEK_OF_YEAR) != 1) {
             return calendar.get(Calendar.WEEK_OF_YEAR) - 1;
+        } else {
+            return 52;
         }
     }
 }

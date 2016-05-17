@@ -61,7 +61,8 @@ public class ShiftRestController {
 
     @RequestMapping(value = "{shift_id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public void editShift(@PathVariable final int shift_id, @Valid @RequestBody Shift inputShift, @PathVariable("user_id") final int user_id) throws ShiftNoExistsException {
+    public void editShift(@PathVariable final int shift_id, @Valid @RequestBody Shift inputShift, @PathVariable("user_id") final int user_id)
+            throws ShiftNoExistsException, ShiftOverlapsException {
         Integer userId = userService.getAuthUser().getId();
         Shift ushift = ofNullable(shiftService.getById(shift_id))
                 .orElseThrow(() -> new ShiftNoExistsException(shift_id));
