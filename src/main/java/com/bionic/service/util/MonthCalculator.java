@@ -25,6 +25,7 @@ public class MonthCalculator {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, 1, 23, 59, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
         int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         calendar.set(Calendar.DAY_OF_MONTH, daysInMonth);
         while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {

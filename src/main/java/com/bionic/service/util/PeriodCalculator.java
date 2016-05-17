@@ -43,6 +43,7 @@ public class PeriodCalculator {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, Calendar.JANUARY, 0, 23, 59, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
 
         Calendar offsetCalendar = Calendar.getInstance();
         offsetCalendar.set(Calendar.YEAR, year);
