@@ -29,4 +29,12 @@ public interface ShiftDao extends JpaRepository<Shift, Integer> {
             "or ((s.startTime <= :startDate) and (s.endTime >= :endDate)))")
     List<Shift> getOverlappedShifts(@Param("userId") int userId,
                                     @Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+
+    @Query("select s from Shift s where s.user.id = :userId and " +
+            "(s.id != :shiftId) and" +
+            "((s.startTime BETWEEN :startDate and :endDate) " +
+            "or (s.endTime BETWEEN :startDate and :endDate)" +
+            "or ((s.startTime <= :startDate) and (s.endTime >= :endDate)))")
+    List<Shift> getOverlappedShifts(@Param("userId") int userId,@Param("shiftId")  int shiftId, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 }

@@ -49,7 +49,8 @@ public class ShiftServiceImpl implements ShiftService {
     @Override
     public Shift editShift(Shift shift) throws ShiftOverlapsException {
         int userId = shift.getUser().getId();
-        List<Shift> overlappedShifts = shiftDao.getOverlappedShifts(userId, shift.getStartTime(), shift.getEndTime());
+        int shiftId = shift.getId();
+        List<Shift> overlappedShifts = shiftDao.getOverlappedShifts(userId, shiftId, shift.getStartTime(), shift.getEndTime());
         if (!ObjectUtils.isEmpty(overlappedShifts))
             throw new ShiftOverlapsException(overlappedShifts);
 

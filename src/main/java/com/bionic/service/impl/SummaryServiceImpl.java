@@ -12,6 +12,7 @@ import com.bionic.service.SummaryService;
 import com.bionic.service.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.*;
 
@@ -45,7 +46,7 @@ public class SummaryServiceImpl implements SummaryService {
         if (monthStartTime.after(currentTime)) throw new ShiftsFromFuturePeriodException();
 
         List<Shift> shifts = shiftDao.getForPeriod(userId, monthStartTime, monthEndTime);
-        if (shifts == null || shifts.size() == 0) throw new ShiftsNotFoundException();
+        if (ObjectUtils.isEmpty(shifts)) throw new ShiftsNotFoundException();
 
         int contractHours = 0;
         User user = userDao.findOne(userId);
@@ -84,7 +85,7 @@ public class SummaryServiceImpl implements SummaryService {
         if (periodStartTime.after(currentTime)) throw new ShiftsFromFuturePeriodException();
 
         List<Shift> shifts = shiftDao.getForPeriod(userId, periodStartTime, periodEndTime);
-        if (shifts == null || shifts.size() == 0) throw new ShiftsNotFoundException();
+        if (ObjectUtils.isEmpty(shifts)) throw new ShiftsNotFoundException();
 
         int contractHours = 0;
         User user = userDao.findOne(userId);
