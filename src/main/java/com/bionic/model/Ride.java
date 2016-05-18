@@ -25,6 +25,7 @@ public class Ride {
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
+
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL,fetch=FetchType.LAZY)
     @JoinColumn(name = "shiftId")

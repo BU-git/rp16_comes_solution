@@ -25,6 +25,9 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+
+import static com.bionic.service.util.WorkScheduleUtil.createEmptyWorkSchedule;
 
 /**
  * @author vitalii.levash
@@ -53,6 +56,34 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserKeyDao userKeyDao;
+
+    private void updateWorkSchedules(User user) {
+        User existingUser = userDao.findByEmail(user.getEmail());
+
+        if (existingUser.getWorkSchedule().equals(user.getWorkSchedule())
+                || (existingUser.isZeroHours() && user.isZeroHours())) {
+            user.setDeactivatedWorkSchedules(existingUser.getDeactivatedWorkSchedules());
+            user.setWorkSchedule(existingUser.getWorkSchedule());
+        }
+        else {
+            WorkSchedule deactivatedWorkSchedule = existingUser.getWorkSchedule();
+            deactivatedWorkSchedule.setDeactivationTime(new Date());
+
+            WorkSchedule newWorkSchedule = user.getWorkSchedule();
+            if (newWorkSchedule == null) {
+                user.setWorkSchedule(createEmptyWorkSchedule(user));
+                newWorkSchedule = user.getWorkSchedule();
+            }
+            newWorkSchedule.setId(null);
+            newWorkSchedule.setCreationTime(new Date());
+
+            Set<WorkSchedule> oldWorkSchedules = existingUser.getDeactivatedWorkSchedules();
+            oldWorkSchedules.add(deactivatedWorkSchedule);
+
+            for (WorkSchedule ws : oldWorkSchedules) ws.setUser(user);
+            user.setDeactivatedWorkSchedules(oldWorkSchedules);
+        }
+    }
 
     @Transactional
     public User addUser(User user) throws UserExistsException {
@@ -103,8 +134,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User saveUser(User user) {
-
-        saveUserWorkSchedule(user);
+        updateWorkSchedules(user);
 
         return userDao.saveAndFlush(user);
     }
@@ -116,10 +146,7 @@ public class UserServiceImpl implements UserService {
             WorkSchedule workSchedule = workScheduleService.saveWorkSchedule(user.getWorkSchedule());
             user.setWorkSchedule(workSchedule);
         } else {
-            WorkSchedule workSchedule = new WorkSchedule();
-            workSchedule.setCreationTime(new Date());
-            workScheduleService.saveWorkSchedule(workSchedule);
-            user.setWorkSchedule(workSchedule);
+            user.setWorkSchedule(createEmptyWorkSchedule(user));
         }
     }
 

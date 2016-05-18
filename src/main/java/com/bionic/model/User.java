@@ -3,18 +3,16 @@ package com.bionic.model;
 import com.bionic.model.dict.Job;
 import com.bionic.model.dict.UserRoleEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author vitalii.levash
@@ -76,6 +74,10 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "workScheduleId")
     private WorkSchedule workSchedule;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<WorkSchedule> deactivatedWorkSchedules;
 
     @Column(name = "role")
     @Enumerated(EnumType.ORDINAL)
@@ -278,5 +280,13 @@ public class User {
                 ", jobs=" + jobs +
                 ", postalCode=" + postalCode +
                 "}";
+    }
+
+    public Set<WorkSchedule> getDeactivatedWorkSchedules() {
+        return deactivatedWorkSchedules;
+    }
+
+    public void setDeactivatedWorkSchedules(Set<WorkSchedule> deactivatedWorkSchedules) {
+        this.deactivatedWorkSchedules = deactivatedWorkSchedules;
     }
 }

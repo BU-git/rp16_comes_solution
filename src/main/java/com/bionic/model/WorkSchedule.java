@@ -1,6 +1,8 @@
 package com.bionic.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -15,6 +17,15 @@ public class WorkSchedule {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationTime;
+
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deactivationTime;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userId")
+    private User user;
 
     private Integer sunday = 0;
     private Integer monday = 0;
@@ -100,6 +111,40 @@ public class WorkSchedule {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        WorkSchedule that = (WorkSchedule) o;
+
+        if (!id.equals(that.id)) return false;
+        if (user != null ? !user.equals(that.user) : that.user != null) return false;
+        if (sunday != null ? !sunday.equals(that.sunday) : that.sunday != null) return false;
+        if (monday != null ? !monday.equals(that.monday) : that.monday != null) return false;
+        if (tuesday != null ? !tuesday.equals(that.tuesday) : that.tuesday != null) return false;
+        if (wednesday != null ? !wednesday.equals(that.wednesday) : that.wednesday != null) return false;
+        if (thursday != null ? !thursday.equals(that.thursday) : that.thursday != null) return false;
+        if (friday != null ? !friday.equals(that.friday) : that.friday != null) return false;
+        return saturday != null ? saturday.equals(that.saturday) : that.saturday == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (sunday != null ? sunday.hashCode() : 0);
+        result = 31 * result + (monday != null ? monday.hashCode() : 0);
+        result = 31 * result + (tuesday != null ? tuesday.hashCode() : 0);
+        result = 31 * result + (wednesday != null ? wednesday.hashCode() : 0);
+        result = 31 * result + (thursday != null ? thursday.hashCode() : 0);
+        result = 31 * result + (friday != null ? friday.hashCode() : 0);
+        result = 31 * result + (saturday != null ? saturday.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "WorkSchedule{" +
                 "id=" + id +
@@ -112,5 +157,17 @@ public class WorkSchedule {
                 ", friday='" + friday + '\'' +
                 ", saturday='" + saturday + '\'' +
                 '}';
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Date getDeactivationTime() {
+        return deactivationTime;
+    }
+
+    public void setDeactivationTime(Date deactivationTime) {
+        this.deactivationTime = deactivationTime;
     }
 }
