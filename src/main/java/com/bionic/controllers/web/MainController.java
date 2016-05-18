@@ -4,6 +4,11 @@ import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.model.User;
 import com.bionic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,15 +31,21 @@ public class MainController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String start(){
-        return "index";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof AnonymousAuthenticationToken) {
+            return "login";
+        } else {
+            return "index";
+        }
     }
 
-    @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public String loginPage(Model model){
-        return "login";
-    }
+//    @RequestMapping(value = "/login",method = RequestMethod.GET)
+//    public String loginPage(Model model){
+//        return "login";
+//    }
 
 
+    @PreAuthorize("isAnonymous()")
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
         model.addAttribute("user",new User());
@@ -69,10 +80,10 @@ public class MainController {
 //        return "notFoundPage";
 //    }
 
-    @RequestMapping("/home")
-    public String showHomepage() {
-        return "home";
-    }
+//    @RequestMapping("/home")
+//    public String showHomepage() {
+//        return "home";
+//    }
 
 
 }

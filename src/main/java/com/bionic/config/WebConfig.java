@@ -7,6 +7,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.servlet.view.jasperreports.JasperReportsMultiFormatView;
+import org.springframework.web.servlet.view.jasperreports.JasperReportsViewResolver;
 
 /**
  * @author Sasha Chepurnoi
@@ -26,5 +28,17 @@ public class WebConfig {
         viewResolver.setPrefix("/WEB-INF/view/jsp/");
         viewResolver.setSuffix(".jsp");
         return viewResolver;
+    }
+
+    @Bean
+    public JasperReportsViewResolver getJasperReportsViewResolver() {
+        JasperReportsViewResolver resolver = new JasperReportsViewResolver();
+        resolver.setPrefix("classpath:/reports/");
+        resolver.setSuffix(".jrxml");
+        resolver.setReportDataKey("datasource");
+        resolver.setViewNames("rpt_*");
+        resolver.setViewClass(JasperReportsMultiFormatView.class);
+        resolver.setOrder(0);
+        return resolver;
     }
 }

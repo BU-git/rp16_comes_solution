@@ -95,7 +95,7 @@
                 <i class="truck icon"></i>
                 TDA
             </a>
-            <a href="#" class="item">Home</a>
+            <a href="/" class="item">Home</a>
             <div class="ui simple dropdown item">
                 Dropdown <i class="dropdown icon"></i>
                 <div class="menu">
@@ -117,7 +117,7 @@
             <div class="right menu">
                 <sec:authorize access="!isAuthenticated()">
                     <div class="item">
-                        <a href="login" class="ui inverted grey button">Log in</a>
+                        <a href="/" class="ui inverted grey button">Log in</a>
                     </div>
                     <div class="item">
                         <a href="registration" class="ui inverted grey button">Sign Up</a>

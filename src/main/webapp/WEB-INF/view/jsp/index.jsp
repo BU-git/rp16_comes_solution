@@ -10,7 +10,6 @@
 
     <jsp:attribute name="body_area">
         <div class="pusher">
-
             <div class="ui vertical stripe segment">
                 <div class="ui middle aligned stackable grid container">
                     <div class="row">
