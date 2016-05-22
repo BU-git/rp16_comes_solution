@@ -44,7 +44,7 @@ public class ReportServiceImpl implements ReportService {
         for (Shift shift: shifts) {
             List<Ride> rides = shift.getRides();
             for (Ride ride : rides) {
-                i++;
+                System.err.println("test" + i);
                 ReportDTO reportDTO = new ReportDTO();
                 reportDTO.setTotalDays((int)TimeUnit.DAYS.convert((ride.getEndTime().getTime()-ride.getStartTime().getTime()), TimeUnit.MILLISECONDS) + 1);
                 reportDTO.setRides("Ride " + i + " From " + ride.getStartTime() + " To " + ride.getEndTime());

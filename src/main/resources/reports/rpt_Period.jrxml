@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.2.final using JasperReports Library version 6.2.2  -->
-<!-- 2016-05-22T19:14:07 -->
+<!-- 2016-05-23T00:05:07 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Coffee_Landscape" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="df013db5-f76e-44d3-b0df-bcbc46d93160">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true"/>
@@ -35,14 +35,9 @@
 	<field name="rides" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="totalDays" class="java.lang.Integer">
-		<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
-	</field>
-	<field name="totalTimes" class="java.lang.Integer">
-		<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
-	</field>
+	<field name="totalDays" class="java.lang.Integer"/>
+	<field name="totalTimes" class="java.lang.Integer"/>
 	<field name="allowences" class="java.lang.Double">
-		<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<group name="Group1">

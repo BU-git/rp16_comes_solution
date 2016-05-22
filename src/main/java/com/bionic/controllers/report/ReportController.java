@@ -113,6 +113,9 @@ public class ReportController {
         modelMap.put("totalTimes",totalTimes);
         modelMap.put("allowences",allowences);
         modelAndView = new ModelAndView("rpt_Period", modelMap);
+        for (ReportDTO reportDTO :dataBeanList) {
+            System.out.println(reportDTO.getRides());
+        }
         return modelAndView;
     }
 }
