@@ -14,4 +14,5 @@ public interface MailService {
 
     void sendTemporaryPassword(String email, String password);
 
+    void sendPeriodReportLink(String email,int period,int year);
 }

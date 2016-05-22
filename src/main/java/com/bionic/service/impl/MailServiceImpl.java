@@ -67,7 +67,6 @@ public class MailServiceImpl implements MailService {
         } catch (Exception e) {
 
         }
-
     }
 
     public void sendTemporaryPassword(String email, String password) {
@@ -75,5 +74,26 @@ public class MailServiceImpl implements MailService {
         String message = "Your new temporary password: " + password + " \n";
         message += "Password is valid for 1 hour.";
         sendMail(email, subject, message);
+    }
+
+    public void sendPeriodReportLink(String email,int period,int year) {
+        StringBuilder url = new StringBuilder();
+        url
+                .append(env.getProperty(URL))
+                .append("/summary/")
+                .append(year)
+                .append("/")
+                .append(period)
+                .append("/")
+                .append("Period.xls");
+        String subject = "Period report";
+        String message = "Your link to download your report: " + url + " \n";
+        sendMail(email, subject, message);
+
+        try {
+            Thread.sleep(15000);
+        } catch (Exception e) {
+
+        }
     }
 }

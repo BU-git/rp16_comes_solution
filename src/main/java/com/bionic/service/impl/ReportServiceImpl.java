@@ -55,23 +55,4 @@ public class ReportServiceImpl implements ReportService {
         return reportList;
     }
 
-    public static void main(String[] args) {
-      //  ApplicationContext context = new AnnotationConfigApplicationContext(RootConfig.class);
-//        ReportService reportService = context.getBean(ReportService.class);
-//        UserService userService = context.getBean(UserService.class);
-//        User user = userService.findById(35);
-//        System.err.println("Test");
-//        for(ReportDTO reportDTO : reportService.getReportList(user,2016,4)){
-//            System.err.println("Rides: " + reportDTO.getRides());
-//            System.err.println("Total Times: " + reportDTO.getTotalTimes());
-//        }
-        Date periodStartTime = new Date(116,3,29,22,10);
-        System.out.println(periodStartTime);
-        Date periodEndTime =  PeriodCalculator.getPeriodEndTime(2016,4);
-       // System.out.println(periodStartTime.getDate());
-        System.out.println ("Days: " + TimeUnit.DAYS.convert(periodEndTime.getTime()-periodStartTime.getTime(), TimeUnit.MILLISECONDS));
-
-
-
-    }
 }
