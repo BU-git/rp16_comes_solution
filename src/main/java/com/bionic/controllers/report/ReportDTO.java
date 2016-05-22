@@ -3,7 +3,7 @@ package com.bionic.controllers.report;
 /**
  * author Dima Budko
  */
-public class Data {
+public class ReportDTO {
     private String rides;
     private Integer totalDays;
     private Integer totalTimes;
