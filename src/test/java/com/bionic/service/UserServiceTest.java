@@ -33,7 +33,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = {RootConfig.class, TestPersistenceConfig.class},
         loader = AnnotationConfigWebContextLoader.class)
 @Transactional
-@Rollback(false)
+@Rollback
 public class UserServiceTest {
 
     @Autowired
