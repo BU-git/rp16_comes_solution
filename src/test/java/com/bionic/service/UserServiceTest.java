@@ -33,7 +33,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = {RootConfig.class, TestPersistenceConfig.class},
         loader = AnnotationConfigWebContextLoader.class)
 @Transactional
-@Rollback
+@Rollback(false)
 public class UserServiceTest {
 
     @Autowired
@@ -51,12 +51,12 @@ public class UserServiceTest {
 
     @Test
     public void testAddUser() throws Exception {
-        List<Job> jobs = new ArrayList<Job>();
+        List<Job> jobs = new ArrayList<>();
         jobs.add(Job.DRIVER);
         jobs.add(Job.OPERATOR);
 
         User user = new User();
-        user.setEmail("cscc@c.com");
+        user.setEmail("csscdjc@c.com");
         user.setPassword("12345");
         user.setFirstName("test");
         user.setLastName("test");

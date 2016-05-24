@@ -100,6 +100,10 @@ public class User {
 
     private String postalCode;
 
+    private boolean paidTimeForTime;
+
+    private Integer tvt;
+
     public User() {
     }
 
@@ -288,5 +292,21 @@ public class User {
 
     public void setDeactivatedWorkSchedules(Set<WorkSchedule> deactivatedWorkSchedules) {
         this.deactivatedWorkSchedules = deactivatedWorkSchedules;
+    }
+
+    public boolean isPaidTimeForTime() {
+        return paidTimeForTime;
+    }
+
+    public void setPaidTimeForTime(boolean paidTimeForTime) {
+        this.paidTimeForTime = paidTimeForTime;
+    }
+
+    public Integer getTvt() {
+        return tvt;
+    }
+
+    public void setTvt(Integer tvt) {
+        this.tvt = tvt;
     }
 }
