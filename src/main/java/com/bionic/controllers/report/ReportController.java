@@ -83,6 +83,10 @@ public class ReportController {
 
     @RequestMapping(value = "/Period.xls",method = RequestMethod.GET)
     public ModelAndView generateExcelReport(ModelMap modelMap, ModelAndView modelAndView, @PathVariable("year") int year,@PathVariable("number") int number) {
+//        System.setProperty("java.awt.headless","true");
+//        System.setProperty("awt.toolkit", "com.eteks.awt.PJAToolkit");
+//        System.setProperty("java.awt.graphicsenv", "com.eteks.java2d.PJAGraphicsEnvironment");
+//        System.setProperty("com.eteks.awt.nojava2d", String.valueOf(true));
         User user = userService.findById(35);
         List<ReportDTO> dataBeanList = reportService.getReportList(user,year,number);
         int startWeek = number * NUMBER_OF_WEEKS_IN_PERIOD + 1;

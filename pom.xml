@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.bionic</groupId>
     <artifactId>tda</artifactId>
-    <version>0.7</version>
+    <version>0.7.2</version>
     <packaging>war</packaging>
 
     <properties>
@@ -342,6 +342,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>1.4.01</version>
         </dependency>
     </dependencies>
 
