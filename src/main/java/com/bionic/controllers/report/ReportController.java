@@ -1,6 +1,5 @@
 package com.bionic.controllers.report;
 
-import com.bionic.dao.UserDao;
 import com.bionic.model.User;
 import com.bionic.service.ReportService;
 import com.bionic.service.UserService;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,8 +42,8 @@ public class ReportController {
 //        totalDays = totalDays + data1.getTotalDays();
 //        data1.setTotalTimes(45);
 //        totalTimes = totalTimes + data1.getTotalTimes();
-//        data1.setAllowences(500.0);
-//        allowences = allowences + data1.getAllowences();
+//        data1.setAllowances(500.0);
+//        allowences = allowences + data1.getAllowances();
 //        dataBeanList.add(data1);
 //        data1 = new ReportDTO();
 //        data1.setRides("Second ride");
@@ -53,8 +51,8 @@ public class ReportController {
 //        totalDays = totalDays + data1.getTotalDays();
 //        data1.setTotalTimes(30);
 //        totalTimes = totalTimes + data1.getTotalTimes();
-//        data1.setAllowences(400.0);
-//        allowences = allowences + data1.getAllowences();
+//        data1.setAllowances(400.0);
+//        allowences = allowences + data1.getAllowances();
 //        dataBeanList.add(data1);
 //        data1 = new ReportDTO();
 //        data1.setRides("Third ride");
@@ -62,8 +60,8 @@ public class ReportController {
 //        totalDays = totalDays + data1.getTotalDays();
 //        data1.setTotalTimes(40);
 //        totalTimes = totalTimes + data1.getTotalTimes();
-//        data1.setAllowences(450.0);
-//        allowences = allowences + data1.getAllowences();
+//        data1.setAllowances(450.0);
+//        allowences = allowences + data1.getAllowances();
 //        dataBeanList.add(data1);
 //        JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataBeanList,false);
 //       //  Object[][] data = {{"Berne", new Integer(22), "Bill Ott", "250 - 20th Ave."}};
@@ -83,7 +81,7 @@ public class ReportController {
 
     @RequestMapping(value = "/Period.xls",method = RequestMethod.GET)
     public ModelAndView generateExcelReport(ModelMap modelMap, ModelAndView modelAndView, @PathVariable("year") int year,@PathVariable("number") int number) {
-//        System.setProperty("java.awt.headless","true");
+        System.setProperty("java.awt.headless","true");
 //        System.setProperty("awt.toolkit", "com.eteks.awt.PJAToolkit");
 //        System.setProperty("java.awt.graphicsenv", "com.eteks.java2d.PJAGraphicsEnvironment");
 //        System.setProperty("com.eteks.awt.nojava2d", String.valueOf(true));
@@ -101,8 +99,8 @@ public class ReportController {
             if (reportDTO.getTotalTimes() != null) {
                 totalTimes = totalTimes + reportDTO.getTotalTimes();
             }
-            if (reportDTO.getAllowences() != null) {
-                allowences = allowences + reportDTO.getAllowences();
+            if (reportDTO.getAllowances() != null) {
+                allowences = allowences + reportDTO.getAllowances();
             }
         }
 

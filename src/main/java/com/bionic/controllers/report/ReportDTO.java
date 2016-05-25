@@ -7,7 +7,7 @@ public class ReportDTO {
     private String rides;
     private Integer totalDays;
     private Integer totalTimes;
-    private Double allowences;
+    private Double allowances;
 
     public String getRides() {
         return rides;
@@ -33,11 +33,11 @@ public class ReportDTO {
         this.totalTimes = totalTimes;
     }
 
-    public Double getAllowences() {
-        return allowences;
+    public Double getAllowances() {
+        return allowances;
     }
 
-    public void setAllowences(Double allowences) {
-        this.allowences = allowences;
+    public void setAllowances(Double allowances) {
+        this.allowances = allowances;
     }
 }

@@ -26,7 +26,7 @@
 		<parameterDescription><![CDATA[]]></parameterDescription>
 	</parameter>
 	<parameter name="totalTimes" class="java.lang.Integer"/>
-	<parameter name="allowences" class="java.lang.Double">
+	<parameter name="allowances" class="java.lang.Double">
 		<parameterDescription><![CDATA[]]></parameterDescription>
 	</parameter>
 	<queryString>
@@ -37,7 +37,7 @@
 	</field>
 	<field name="totalDays" class="java.lang.Integer"/>
 	<field name="totalTimes" class="java.lang.Integer"/>
-	<field name="allowences" class="java.lang.Double">
+	<field name="allowances" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<group name="Group1">
@@ -188,7 +188,7 @@
 				<textElement>
 					<paragraph lineSpacing="Proportional"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{allowences}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{allowances}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement key="" positionType="Float" x="10" y="0" width="340" height="20" uuid="577de2ea-412f-4f59-a9ba-c42766c74df2"/>
@@ -274,7 +274,7 @@
 				<textElement>
 					<paragraph lineSpacing="Proportional"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{allowences}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{allowances}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

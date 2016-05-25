@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.bionic</groupId>
     <artifactId>tda</artifactId>
-    <version>0.7.2</version>
+    <version>0.7.3</version>
     <packaging>war</packaging>
 
     <properties>
@@ -327,10 +327,11 @@
 
 
 
+
         <!-- http://mvnrepository.com/artifact/org.apache.poi/poi -->
         <dependency>
             <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
+            <artifactId>poi</artifactId>e
             <version>3.10.1</version>
         </dependency>
 
