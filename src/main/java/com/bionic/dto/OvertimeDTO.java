@@ -3,9 +3,10 @@ package com.bionic.dto;
 import java.util.Date;
 
 public class OvertimeDTO {
-    private int number;
-    private Date fromDate;
-    private Date toDate;
+
+    private int weekOfYear;
+    private Date startTime;
+    private Date endTime;
     private int total;
     private int paid100;
     private int paid130;
@@ -18,28 +19,28 @@ public class OvertimeDTO {
     private int paidLeaveHours;
     private int unpaidLeaveHours;
 
-    public int getNumber() {
-        return number;
+    public int getWeekOfYear() {
+        return weekOfYear;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setWeekOfYear(int weekOfYear) {
+        this.weekOfYear = weekOfYear;
     }
 
-    public Date getFromDate() {
-        return fromDate;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void setFromDate(Date fromDate) {
-        this.fromDate = fromDate;
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
-    public Date getToDate() {
-        return toDate;
+    public Date getEndTime() {
+        return endTime;
     }
 
-    public void setToDate(Date toDate) {
-        this.toDate = toDate;
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public int getTotal() {

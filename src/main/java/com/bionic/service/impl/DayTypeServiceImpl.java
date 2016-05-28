@@ -4,10 +4,12 @@ import com.bionic.dao.DayTypeDao;
 import com.bionic.model.DayType;
 import com.bionic.service.DayTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
+@Service
 public class DayTypeServiceImpl implements DayTypeService {
 
     @Autowired

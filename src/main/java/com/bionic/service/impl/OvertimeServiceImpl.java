@@ -18,6 +18,8 @@ import java.util.List;
 
 import static com.bionic.service.util.MonthCalculator.getMonthEndTime;
 import static com.bionic.service.util.MonthCalculator.getMonthStartTime;
+import static com.bionic.service.util.PeriodCalculator.getPeriodEndTime;
+import static com.bionic.service.util.PeriodCalculator.getPeriodStartTime;
 import static com.bionic.service.util.WeekCalculator.*;
 
 /**
@@ -36,7 +38,19 @@ public class OvertimeServiceImpl implements OvertimeService {
     private WorkScheduleService workScheduleService;
 
     @Override
-    public List<OvertimeDTO> getOvertimeForPeriod(int userId, int year, int period) {
+    public List<OvertimeDTO> getOvertimeForPeriod(int userId, int year, int period) throws ShiftsNotFoundException {
+
+        Date periodStartTime = getPeriodStartTime(year, period);
+        Date periodEndTime = getPeriodEndTime(year, period);
+
+        List<Shift> shifts = shiftDao.getForPeriod(userId, periodStartTime, periodEndTime);
+        if (ObjectUtils.isEmpty(shifts)) throw new ShiftsNotFoundException();
+        List<DayType> dayTypes = dayTypeDao.getDayTypesForPeriod(userId, periodStartTime, periodEndTime);
+
+
+        List<OvertimeDTO> overtime = new ArrayList<>();
+
+
         return null;
     }
 
@@ -64,7 +78,7 @@ public class OvertimeServiceImpl implements OvertimeService {
             List<DayType> dayTypes = dayTypeDao.getDayTypesForPeriod(userId, monthStartTime, monthEndTime);
 
             OvertimeDTO workingWeek = getOvertimeForWeek(dayTypes, shifts, weekStartTime, weekEndTime, contractTime);
-            workingWeek.setNumber(weekNumber);
+            workingWeek.setWeekOfYear(weekNumber);
 
             overtimeDTOs.add(workingWeek);
         }

@@ -105,6 +105,8 @@ public class SummaryServiceImpl implements SummaryService {
         int pauseTime = 0;
         Collections.sort(shifts, (l, r) -> (int)(l.getStartTime().getTime() - r.getStartTime().getTime()));
 
+
+
         shift:
         for (Shift s : shifts) {
 
