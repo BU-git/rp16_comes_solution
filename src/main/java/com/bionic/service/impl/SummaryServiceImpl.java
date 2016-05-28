@@ -47,23 +47,18 @@ public class SummaryServiceImpl implements SummaryService {
 
         List<Shift> shifts = shiftDao.getForPeriod(userId, monthStartTime, monthEndTime);
         if (ObjectUtils.isEmpty(shifts)) throw new ShiftsNotFoundException();
-
-        int contractHours = 0;
         User user = userDao.findOne(userId);
 
-        if (user.isZeroHours()) {
-            contractHours = 40;
-        } else {
-            contractHours = workScheduleService.getContractHours(user.getWorkSchedule());
-        }
-
-        int contractTime = contractHours * 60 * 60 * 1000;
         List<WorkingWeekDTO> summary = new ArrayList<>();
         int numberOfWeeks = getWeeksBetween(monthStartTime, monthEndTime);
 
         for (int week = 1; week <= numberOfWeeks; week++) {
             Date weekStartTime = getMonthWeekStartTime(year, month, week);
             Date weekEndTime = getMonthWeekEndTime(year, month, week);
+            int contractHours = 0;
+            contractHours = workScheduleService.getContractHoursForWeek(userId, weekStartTime);
+            if (contractHours == 0) contractHours = 40;
+            long contractTime = contractHours * 60 * 60 * 1000;
             int weekNumber = getMonthWeekOfYear(year, month, week);
 
             WorkingWeekDTO workingWeek = getSummaryForWeek(shifts, weekStartTime, weekEndTime, contractTime);
@@ -87,21 +82,17 @@ public class SummaryServiceImpl implements SummaryService {
         List<Shift> shifts = shiftDao.getForPeriod(userId, periodStartTime, periodEndTime);
         if (ObjectUtils.isEmpty(shifts)) throw new ShiftsNotFoundException();
 
-        int contractHours = 0;
         User user = userDao.findOne(userId);
 
-        if (user.isZeroHours()) {
-            contractHours = 40;
-        } else {
-            contractHours = workScheduleService.getContractHours(user.getWorkSchedule());
-        }
-
-        int contractTime = contractHours * 60 * 60 * 1000;
         List<WorkingWeekDTO> summary = new ArrayList<>();
 
         for (int week = 1; week <= NUMBER_OF_WEEKS_IN_PERIOD; week++) {
             Date weekStartTime = getPeriodWeekStartTime(year, period, week);
             Date weekEndTime = getPeriodWeekEndTime(year, period, week);
+            int contractHours = 0;
+            contractHours = workScheduleService.getContractHoursForWeek(userId, weekStartTime);
+            if (contractHours == 0) contractHours = 40;
+            long contractTime = contractHours * 60 * 60 * 1000;
             int weekNumber = getPeriodWeekOfYear(year, period, week);
 
             WorkingWeekDTO workingWeek = getSummaryForWeek(shifts, weekStartTime, weekEndTime, contractTime);
@@ -113,7 +104,7 @@ public class SummaryServiceImpl implements SummaryService {
         return summary;
     }
 
-    public WorkingWeekDTO getSummaryForWeek(List<Shift> shifts, Date weekStartTime, Date weekEndTime, int contractTime) {
+    public WorkingWeekDTO getSummaryForWeek(List<Shift> shifts, Date weekStartTime, Date weekEndTime, long contractTime) {
 
         WorkingWeekDTO workingWeek = new WorkingWeekDTO();
         Set<Shift> shiftSet = new HashSet<>();
@@ -156,14 +147,14 @@ public class SummaryServiceImpl implements SummaryService {
                         System.out.println("temp worked time last = " + tempWorkedTime);
                         workedTime += s.getEndTime().getTime() - r.getEndTime().getTime();
                     }
-                    int tempPauseTime = getPauseTime(tempWorkedTime);
+                    long tempPauseTime = getPauseTime(tempWorkedTime);
                     pauseTime += tempPauseTime;
                 }
             }
         }
 
-        int overTime = 0;
-        int actualWorkedTime = workedTime - pauseTime;
+        long overTime = 0;
+        long actualWorkedTime = workedTime - pauseTime;
         if (actualWorkedTime >= contractTime) overTime = actualWorkedTime - contractTime;
         System.out.println("worked time = " + workedTime);
         System.out.println("pause time = " + pauseTime);

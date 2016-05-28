@@ -19,5 +19,5 @@ public interface SummaryService {
     List<WorkingWeekDTO> getSummaryForMonth(int userId, int year, int month)
             throws ShiftsNotFoundException, ShiftsFromFuturePeriodException;
 
-    WorkingWeekDTO getSummaryForWeek(List<Shift> shifts, Date weekStartTime, Date weekEndTime, int contractTime);
+    WorkingWeekDTO getSummaryForWeek(List<Shift> shifts, Date weekStartTime, Date weekEndTime, long contractTime);
 }

@@ -11,9 +11,9 @@ public class WorkingWeekDTO {
 
     private int weekNumber;
 
-    private int workedTime;
+    private long workedTime;
 
-    private int overTime;
+    private long overTime;
 
     private Set<Shift> shiftList;
 
@@ -25,19 +25,19 @@ public class WorkingWeekDTO {
         this.weekNumber = weekNumber;
     }
 
-    public int getWorkedTime() {
+    public long getWorkedTime() {
         return workedTime;
     }
 
-    public void setWorkedTime(int workedTime) {
+    public void setWorkedTime(long workedTime) {
         this.workedTime = workedTime;
     }
 
-    public int getOverTime() {
+    public long getOverTime() {
         return overTime;
     }
 
-    public void setOverTime(int overTime) {
+    public void setOverTime(long overTime) {
         this.overTime = overTime;
     }
 

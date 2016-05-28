@@ -22,8 +22,6 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class ReportServiceImpl implements ReportService {
 
-
-
     private static final double FOR_LONGER_THAN_4_HOURS = 0.60;
     private static final double FOR_BEETWEEN_18_AND_24 = 2.66;
     private static final double FOR_12_HOURS_RIDE = 11.40;
