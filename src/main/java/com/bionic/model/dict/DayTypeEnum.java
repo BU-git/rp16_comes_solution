@@ -1,6 +1,6 @@
 package com.bionic.model.dict;
 
-public enum DataTypeEnum {
+public enum DayTypeEnum {
     WAITING_DAY,
     SICK_DAY,
     HOLIDAY,
