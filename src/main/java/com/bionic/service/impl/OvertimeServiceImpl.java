@@ -5,6 +5,7 @@ import com.bionic.dao.ShiftDao;
 import com.bionic.dto.OvertimeDTO;
 import com.bionic.exception.shift.impl.ShiftsNotFoundException;
 import com.bionic.model.DayType;
+import com.bionic.model.Ride;
 import com.bionic.model.Shift;
 import com.bionic.service.OvertimeService;
 import com.bionic.service.WorkScheduleService;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -88,6 +90,22 @@ public class OvertimeServiceImpl implements OvertimeService {
 
     @Override
     public OvertimeDTO getOvertimeForWeek(List<DayType> dayTypes, List<Shift> shifts, Date weekStartTime, Date weekEndTime, long contractTime) {
+        OvertimeDTO overtimeDTO = new OvertimeDTO();
+        overtimeDTO.setStartTime(weekStartTime);
+        overtimeDTO.setEndTime(weekEndTime);
+
+        shift:
+        for (Shift s : shifts) {
+
+            List<Ride> rides = s.getRides();
+            Collections.sort(rides, (l, r) -> (int) (l.getStartTime().getTime() - r.getStartTime().getTime()));
+
+            for (Ride r : rides) {
+                if (r.getEndTime().getTime() > weekStartTime.getTime()) {
+                    if (r.getStartTime().getTime() > weekEndTime.getTime()) break shift;
+                }
+            }
+        }
         return null;
     }
 }

@@ -114,7 +114,7 @@ public class SummaryServiceImpl implements SummaryService {
             Collections.sort(rides, (l, r) -> (int)(l.getStartTime().getTime() - r.getStartTime().getTime()));
 
             for (Ride r : rides) {
-                if (r.getEndTime().getTime() >= weekStartTime.getTime()) {
+                if (r.getEndTime().getTime() > weekStartTime.getTime()) {
                     if (r.getStartTime().getTime() > weekEndTime.getTime()) break shift;
                     long tempWorkedTime = 0;
                     if (r.getStartTime().getTime() < weekStartTime.getTime()) {
