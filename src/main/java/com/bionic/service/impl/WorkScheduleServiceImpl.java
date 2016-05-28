@@ -6,6 +6,7 @@ import com.bionic.service.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,5 +69,10 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
         if (workSchedule.getSaturday() != null) hours += workSchedule.getSaturday();
 
         return hours;
+    }
+
+    @Override
+    public WorkSchedule getActualWorkSchedule(int uer_id, Date date) {
+        return workScheduleDao.getActualWorkSchedule(uer_id, date);
     }
 }

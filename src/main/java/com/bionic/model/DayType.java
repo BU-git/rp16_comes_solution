@@ -11,6 +11,8 @@ import java.util.Date;
  */
 @Entity
 public class DayType {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "dayTypeId")
     private Integer id;
     

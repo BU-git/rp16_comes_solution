@@ -2,6 +2,7 @@ package com.bionic.service;
 
 import com.bionic.model.WorkSchedule;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,4 +27,6 @@ public interface WorkScheduleService {
     WorkSchedule saveWorkSchedule(WorkSchedule workSchedule);
 
     int getContractHours(WorkSchedule workSchedule);
+
+    WorkSchedule getActualWorkSchedule(int uer_id, Date date);
 }
