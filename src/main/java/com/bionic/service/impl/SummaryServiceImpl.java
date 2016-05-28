@@ -1,13 +1,11 @@
 package com.bionic.service.impl;
 
 import com.bionic.dao.ShiftDao;
-import com.bionic.dao.UserDao;
 import com.bionic.dto.WorkingWeekDTO;
 import com.bionic.exception.shift.impl.ShiftsFromFuturePeriodException;
 import com.bionic.exception.shift.impl.ShiftsNotFoundException;
 import com.bionic.model.Ride;
 import com.bionic.model.Shift;
-import com.bionic.model.User;
 import com.bionic.service.SummaryService;
 import com.bionic.service.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +26,6 @@ import static com.bionic.service.util.WeekCalculator.*;
 public class SummaryServiceImpl implements SummaryService {
 
     @Autowired
-    private UserDao userDao;
-
-    @Autowired
     private ShiftDao shiftDao;
 
     @Autowired
@@ -47,7 +42,6 @@ public class SummaryServiceImpl implements SummaryService {
 
         List<Shift> shifts = shiftDao.getForPeriod(userId, monthStartTime, monthEndTime);
         if (ObjectUtils.isEmpty(shifts)) throw new ShiftsNotFoundException();
-        User user = userDao.findOne(userId);
 
         List<WorkingWeekDTO> summary = new ArrayList<>();
         int numberOfWeeks = getWeeksBetween(monthStartTime, monthEndTime);
@@ -81,8 +75,6 @@ public class SummaryServiceImpl implements SummaryService {
 
         List<Shift> shifts = shiftDao.getForPeriod(userId, periodStartTime, periodEndTime);
         if (ObjectUtils.isEmpty(shifts)) throw new ShiftsNotFoundException();
-
-        User user = userDao.findOne(userId);
 
         List<WorkingWeekDTO> summary = new ArrayList<>();
 
