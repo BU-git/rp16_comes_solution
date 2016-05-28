@@ -6,6 +6,7 @@ import com.bionic.service.DayTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
 
 public class DayTypeServiceImpl implements DayTypeService {
 
@@ -29,6 +30,11 @@ public class DayTypeServiceImpl implements DayTypeService {
 
     @Override
     public void deleteDayType(DayType dayType) {
+        dayTypeDao.delete(dayType.getId());
+    }
 
+    @Override
+    public List<DayType> getDayTypesForPeriod(int user_id, Date startDate, Date endDate) {
+        return dayTypeDao.getDayTypesForPeriod(user_id, startDate, endDate);
     }
 }
