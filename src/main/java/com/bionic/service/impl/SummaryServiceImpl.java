@@ -130,10 +130,21 @@ public class SummaryServiceImpl implements SummaryService {
 
             for (Ride r : rides) {
                 if (r.getEndTime().getTime() >= weekStartTime.getTime()) {
-                    if (r.getEndTime().getTime() > weekEndTime.getTime()) break shift;
-                    long tempWorkedTime = r.getEndTime().getTime() - r.getStartTime().getTime();
-                    workedTime += tempWorkedTime;
-                    shiftSet.add(s);
+                    if (r.getStartTime().getTime() > weekEndTime.getTime()) break shift;
+                    long tempWorkedTime = 0;
+                    if (r.getStartTime().getTime() < weekStartTime.getTime()) {
+                        tempWorkedTime = r.getEndTime().getTime() - weekStartTime.getTime();
+                        workedTime += tempWorkedTime;
+                        shiftSet.add(s);
+                    } else if (r.getEndTime().getTime() > weekEndTime.getTime()) {
+                        tempWorkedTime = weekEndTime.getTime() - r.getStartTime().getTime();
+                        workedTime += tempWorkedTime;
+                        shiftSet.add(s);
+                    } else {
+                        tempWorkedTime = r.getEndTime().getTime() - r.getStartTime().getTime();
+                        workedTime += tempWorkedTime;
+                        shiftSet.add(s);
+                    }
                     System.out.println("temp worked time = " + tempWorkedTime);
                     if (r.equals(rides.get(0))) {
                         tempWorkedTime += r.getStartTime().getTime() - s.getStartTime().getTime();
