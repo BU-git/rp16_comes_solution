@@ -72,21 +72,14 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
     }
 
     @Override
-    public WorkSchedule getActualWorkSchedule(int uer_id, Date date) {
-        return workScheduleDao.getActualWorkSchedule(uer_id, date);
+    public WorkSchedule getActualWorkSchedule(int userId, Date date) {
+        return workScheduleDao.getActualWorkSchedule(userId, date);
     }
 
     @Override
     public int getContractHoursForWeek(int userId, Date weekStartDate) {
         WorkSchedule workSchedule = getActualWorkSchedule(userId, weekStartDate);
-        int contractHours = 0;
-        contractHours += workSchedule.getMonday();
-        contractHours += workSchedule.getTuesday();
-        contractHours += workSchedule.getWednesday();
-        contractHours += workSchedule.getThursday();
-        contractHours += workSchedule.getFriday();
-        contractHours += workSchedule.getSaturday();
-        contractHours += workSchedule.getSunday();
+        int contractHours = getContractHours(workSchedule);
         return contractHours;
     }
 }
