@@ -47,7 +47,8 @@ public class AuthenticationRestController {
     @ResponseStatus(HttpStatus.OK)
     public void reportLink(@PathVariable("year") int year,@PathVariable("period") int period) throws UserNotExistsException {
         String email = userService.getAuthUser().getEmail();
-        mailService.sendPeriodReportLink(email,4,2016);
+        mailService.sendReportLinks(email,4,2016);
+
     }
 
     @RequestMapping(value = "exist", method = RequestMethod.GET)

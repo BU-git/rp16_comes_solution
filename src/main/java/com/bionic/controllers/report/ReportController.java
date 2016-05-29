@@ -1,6 +1,9 @@
 package com.bionic.controllers.report;
 
+import com.bionic.dto.OvertimeDTO;
+import com.bionic.exception.shift.impl.ShiftsNotFoundException;
 import com.bionic.model.User;
+import com.bionic.service.OvertimeService;
 import com.bionic.service.ReportService;
 import com.bionic.service.UserService;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -28,6 +31,9 @@ public class ReportController {
 
     @Autowired
     private ReportService reportService;
+
+    @Autowired
+    private OvertimeService overtimeService;
 
 //    @RequestMapping(value = "/Period.xls",method = RequestMethod.GET)
 //    public ModelAndView generateExcelReport(ModelMap modelMap, ModelAndView modelAndView, @PathVariable("year") int year,@PathVariable("number") int number) {
@@ -81,10 +87,7 @@ public class ReportController {
 
     @RequestMapping(value = "/Period.xls",method = RequestMethod.GET)
     public ModelAndView generateExcelReport(ModelMap modelMap, ModelAndView modelAndView, @PathVariable("year") int year,@PathVariable("number") int number) {
-        System.setProperty("java.awt.headless","true");
-//        System.setProperty("awt.toolkit", "com.eteks.awt.PJAToolkit");
-//        System.setProperty("java.awt.graphicsenv", "com.eteks.java2d.PJAGraphicsEnvironment");
-//        System.setProperty("com.eteks.awt.nojava2d", String.valueOf(true));
+
         User user = userService.findById(35);
         List<ReportDTO> dataBeanList = reportService.getReportList(user,year,number);
         int startWeek = number * NUMBER_OF_WEEKS_IN_PERIOD + 1;
@@ -118,6 +121,28 @@ public class ReportController {
         for (ReportDTO reportDTO :dataBeanList) {
             System.out.println(reportDTO.getRides());
         }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/Overtime.xls",method = RequestMethod.GET)
+    public ModelAndView generateExcelReport(ModelMap modelMap, ModelAndView modelAndView, @PathVariable("year") int year,@PathVariable("number") int number) throws ShiftsNotFoundException {
+        User user = userService.findById(35);
+        List<OvertimeDTO> dataBeanList = overtimeService.getOvertimeForMonth(35, year, number);
+        int startWeek = number * NUMBER_OF_WEEKS_IN_PERIOD + 1;
+        int endWeek = startWeek + NUMBER_OF_WEEKS_IN_PERIOD - 1;
+        JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataBeanList, false);
+
+        modelMap.put("datasource", beanColDataSource);
+        modelMap.put("format", "xls");
+        modelMap.put("period","Week " +  startWeek + "-" +  endWeek);
+        modelMap.put("name", user.getFirstName());
+        modelMap.put("contractHours", user.getContractHours());
+        modelMap.put("totalDays",totalDays);
+        modelMap.put("totalTimes",totalTimes);
+        modelMap.put("allowences",allowences);
+        modelAndView = new ModelAndView("rpt_Overtime", modelMap);
+
+
         return modelAndView;
     }
 }

@@ -76,9 +76,21 @@ public class MailServiceImpl implements MailService {
         sendMail(email, subject, message);
     }
 
-    public void sendPeriodReportLink(String email,int period,int year) {
-        StringBuilder url = new StringBuilder();
-        url
+    public void sendReportLinks(String email, int period, int year) {
+        StringBuilder overtimeUrl = new StringBuilder();
+        overtimeUrl
+                .append(env.getProperty(URL))
+                .append("/summary/")
+                .append(year)
+                .append("/")
+                .append(period)
+                .append("/")
+                .append("Overtime.xls");
+
+
+        String message = "Your link to download Overtime report: " + overtimeUrl + " \n";
+        StringBuilder allowancesUrl = new StringBuilder();
+        allowancesUrl
                 .append(env.getProperty(URL))
                 .append("/summary/")
                 .append(year)
@@ -86,14 +98,11 @@ public class MailServiceImpl implements MailService {
                 .append(period)
                 .append("/")
                 .append("Period.xls");
-        String subject = "Period report";
-        String message = "Your link to download your report: " + url + " \n";
+
+        message += "Your link to download Allowances report: " + allowancesUrl + " \n";
+
+        String subject = "Overtime & Allowances reports";
         sendMail(email, subject, message);
 
-        try {
-            Thread.sleep(15000);
-        } catch (Exception e) {
-
-        }
     }
 }
