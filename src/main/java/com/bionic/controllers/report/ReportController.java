@@ -85,8 +85,8 @@ public class ReportController {
 
     private static final int NUMBER_OF_WEEKS_IN_PERIOD = 4;
 
-    @RequestMapping(value = "/Period.xls",method = RequestMethod.GET)
-    public ModelAndView generateExcelReport(ModelMap modelMap, ModelAndView modelAndView, @PathVariable("year") int year,@PathVariable("number") int number) {
+    @RequestMapping(value = "/Allowances.xls",method = RequestMethod.GET)
+    public ModelAndView allowancesExcelReport(ModelMap modelMap, ModelAndView modelAndView, @PathVariable("year") int year,@PathVariable("number") int number) {
 
         User user = userService.findById(35);
         List<ReportDTO> dataBeanList = reportService.getReportList(user,year,number);
@@ -94,7 +94,7 @@ public class ReportController {
         int endWeek = startWeek + NUMBER_OF_WEEKS_IN_PERIOD - 1;
         Integer totalDays = 0;
         Integer totalTimes = 0 ;
-        Double allowences = 0.0;
+        Double allowances = 0.0;
         for (ReportDTO reportDTO : dataBeanList) {
             if (reportDTO.getTotalDays() != null) {
                 totalDays = totalDays + reportDTO.getTotalDays();
@@ -103,7 +103,7 @@ public class ReportController {
                 totalTimes = totalTimes + reportDTO.getTotalTimes();
             }
             if (reportDTO.getAllowances() != null) {
-                allowences = allowences + reportDTO.getAllowances();
+                allowances = allowances + reportDTO.getAllowances();
             }
         }
 
@@ -116,16 +116,13 @@ public class ReportController {
         modelMap.put("contractHours",user.getContractHours());
         modelMap.put("totalDays",totalDays);
         modelMap.put("totalTimes",totalTimes);
-        modelMap.put("allowences",allowences);
+        modelMap.put("allowances",allowances);
         modelAndView = new ModelAndView("rpt_Period", modelMap);
-        for (ReportDTO reportDTO :dataBeanList) {
-            System.out.println(reportDTO.getRides());
-        }
         return modelAndView;
     }
 
     @RequestMapping(value = "/Overtime.xls",method = RequestMethod.GET)
-    public ModelAndView generateExcelReport(ModelMap modelMap, ModelAndView modelAndView, @PathVariable("year") int year,@PathVariable("number") int number) throws ShiftsNotFoundException {
+    public ModelAndView overtimeExcelReport(ModelMap modelMap, ModelAndView modelAndView, @PathVariable("year") int year,@PathVariable("number") int number) throws ShiftsNotFoundException {
         User user = userService.findById(35);
         List<OvertimeDTO> dataBeanList = overtimeService.getOvertimeForMonth(35, year, number);
         int startWeek = number * NUMBER_OF_WEEKS_IN_PERIOD + 1;
@@ -137,9 +134,9 @@ public class ReportController {
         modelMap.put("period","Week " +  startWeek + "-" +  endWeek);
         modelMap.put("name", user.getFirstName());
         modelMap.put("contractHours", user.getContractHours());
-        modelMap.put("totalDays",totalDays);
-        modelMap.put("totalTimes",totalTimes);
-        modelMap.put("allowences",allowences);
+//        modelMap.put("totalDays",totalDays);
+//        modelMap.put("totalTimes",totalTimes);
+//        modelMap.put("allowences",allowences);
         modelAndView = new ModelAndView("rpt_Overtime", modelMap);
 
 
