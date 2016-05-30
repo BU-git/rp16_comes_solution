@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import static com.bionic.service.util.DayCalculator.getDayEndTime;
+import static com.bionic.service.util.DayCalculator.getDayStartTime;
 import static com.bionic.service.util.MonthCalculator.getMonthEndTime;
 import static com.bionic.service.util.MonthCalculator.getMonthStartTime;
 import static com.bionic.service.util.PeriodCalculator.getPeriodEndTime;
@@ -94,6 +96,23 @@ public class OvertimeServiceImpl implements OvertimeService {
         overtimeDTO.setStartTime(weekStartTime);
         overtimeDTO.setEndTime(weekEndTime);
 
+
+        for (int day = 1; day <= 7; day++) {
+
+            Date dayStartTime = getDayStartTime(weekStartTime, day);
+            Date dayEndTime = getDayEndTime(weekEndTime, day);
+
+            overtimeDTO = getOvertimeForDay(overtimeDTO, dayTypes, shifts, dayStartTime, dayEndTime);
+
+        }
+
+        return null;
+    }
+
+    public OvertimeDTO getOvertimeForDay(OvertimeDTO overtimeDTO, List<DayType> dayTypes, List<Shift> shifts,
+                                         Date dayStartTime, Date dayEndTime) {
+
+
         shift:
         for (Shift s : shifts) {
 
@@ -101,11 +120,14 @@ public class OvertimeServiceImpl implements OvertimeService {
             Collections.sort(rides, (l, r) -> (int) (l.getStartTime().getTime() - r.getStartTime().getTime()));
 
             for (Ride r : rides) {
-                if (r.getEndTime().getTime() > weekStartTime.getTime()) {
-                    if (r.getStartTime().getTime() > weekEndTime.getTime()) break shift;
+                if (r.getEndTime().getTime() > dayStartTime.getTime()) {
+                    if (r.getStartTime().getTime() > dayEndTime.getTime()) break shift;
                 }
             }
+
         }
-        return null;
+
+            return null;
+
     }
 }

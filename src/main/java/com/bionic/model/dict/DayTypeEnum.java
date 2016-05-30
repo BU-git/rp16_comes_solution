@@ -12,6 +12,4 @@ public enum DayTypeEnum {
     STAND_OVER_ALLOWANCE,
     TIME_FOR_TIME_DAY
 
-
-
     }
