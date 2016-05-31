@@ -58,6 +58,7 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
         return workScheduleDao.saveAndFlush(workSchedule);
     }
 
+    @Override
     public int getContractHours(WorkSchedule workSchedule) {
         int hours = 0;
         if (workSchedule.getSunday() != null) hours += workSchedule.getSunday();
@@ -72,6 +73,18 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
     }
 
     @Override
+    public int getContractHoursMondayFriday(WorkSchedule workSchedule) {
+        int hours = 0;
+        if (workSchedule.getMonday() != null) hours += workSchedule.getMonday();
+        if (workSchedule.getTuesday() != null) hours += workSchedule.getTuesday();
+        if (workSchedule.getWednesday() != null) hours += workSchedule.getWednesday();
+        if (workSchedule.getThursday() != null) hours += workSchedule.getThursday();
+        if (workSchedule.getFriday() != null) hours += workSchedule.getFriday();
+
+        return hours;
+    }
+
+    @Override
     public WorkSchedule getActualWorkSchedule(int userId, Date date) {
         return workScheduleDao.getActualWorkSchedule(userId, date);
     }
@@ -80,6 +93,13 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
     public int getContractHoursForWeek(int userId, Date weekStartDate) {
         WorkSchedule workSchedule = getActualWorkSchedule(userId, weekStartDate);
         int contractHours = getContractHours(workSchedule);
+        return contractHours;
+    }
+
+    @Override
+    public int getContractHoursMondayFriday(int userId, Date weekStartDate) {
+        WorkSchedule workSchedule = getActualWorkSchedule(userId, weekStartDate);
+        int contractHours = getContractHoursMondayFriday(workSchedule);
         return contractHours;
     }
 }

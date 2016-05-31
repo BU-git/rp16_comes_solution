@@ -31,4 +31,8 @@ public interface WorkScheduleService {
     WorkSchedule getActualWorkSchedule(int user_id, Date date);
 
     int getContractHoursForWeek(int userId, Date weekStartDate);
+
+    int getContractHoursMondayFriday(WorkSchedule workSchedule);
+
+    int getContractHoursMondayFriday(int userId, Date weekStartDate);
 }

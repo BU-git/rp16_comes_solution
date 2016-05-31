@@ -101,7 +101,6 @@ public class SummaryServiceImpl implements SummaryService {
         WorkingWeekDTO workingWeek = new WorkingWeekDTO();
         Set<Shift> shiftSet = new HashSet<>();
         int workedTime = 0;
-        //TODO add pause calculation for sequential rides
         int pauseTime = 0;
         Collections.sort(shifts, (l, r) -> (int)(l.getStartTime().getTime() - r.getStartTime().getTime()));
 

@@ -131,16 +131,17 @@ public class UserServiceImpl implements UserService {
         WorkSchedule incomingWorkSchedule = user.getWorkSchedule();
 
         if (incomingWorkSchedule == null) {
-            WorkSchedule workSchedule = workScheduleService.saveWorkSchedule(createEmptyWorkSchedule(user));
-            user.setWorkSchedule(workSchedule);
+            user.setWorkSchedule(existingWorkSchedule);
         } else if (!(existingWorkSchedule.equals(incomingWorkSchedule))) {
-            existingWorkSchedule.setDeactivationTime(new Date());
+            Date date = new Date();
+            existingWorkSchedule.setDeactivationTime(date);
+            incomingWorkSchedule.setCreationTime(date);
             incomingWorkSchedule.setId(null);
             incomingWorkSchedule.setUserId(user.getId());
+            incomingWorkSchedule.setDeactivationTime(new Date(new Date().getTime() * 2));
             WorkSchedule updatedWorkSchedule = workScheduleService.saveWorkSchedule(incomingWorkSchedule);
             user.setWorkSchedule(updatedWorkSchedule);
         }
-
     }
 
     @Override
