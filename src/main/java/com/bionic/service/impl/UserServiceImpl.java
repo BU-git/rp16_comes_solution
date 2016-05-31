@@ -25,9 +25,8 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
-import static com.bionic.service.util.WorkScheduleUtil.createEmptyWorkSchedule;
+import static com.bionic.service.util.WorkScheduleUtil.*;
 
 /**
  * @author vitalii.levash
@@ -56,34 +55,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserKeyDao userKeyDao;
-
-    private void updateWorkSchedules(User user) {
-        User existingUser = userDao.findByEmail(user.getEmail());
-
-        if (existingUser.getWorkSchedule().equals(user.getWorkSchedule())
-                || (existingUser.isZeroHours() && user.isZeroHours())) {
-            user.setDeactivatedWorkSchedules(existingUser.getDeactivatedWorkSchedules());
-            user.setWorkSchedule(existingUser.getWorkSchedule());
-        }
-        else {
-            WorkSchedule deactivatedWorkSchedule = existingUser.getWorkSchedule();
-            deactivatedWorkSchedule.setDeactivationTime(new Date());
-
-            WorkSchedule newWorkSchedule = user.getWorkSchedule();
-            if (newWorkSchedule == null) {
-                user.setWorkSchedule(createEmptyWorkSchedule(user));
-                newWorkSchedule = user.getWorkSchedule();
-            }
-            newWorkSchedule.setId(null);
-            newWorkSchedule.setCreationTime(new Date());
-
-            Set<WorkSchedule> oldWorkSchedules = existingUser.getDeactivatedWorkSchedules();
-            oldWorkSchedules.add(deactivatedWorkSchedule);
-
-            for (WorkSchedule ws : oldWorkSchedules) ws.setUser(user);
-            user.setDeactivatedWorkSchedules(oldWorkSchedules);
-        }
-    }
 
     @Transactional
     public User addUser(User user) throws UserExistsException {
@@ -144,10 +115,32 @@ public class UserServiceImpl implements UserService {
 
         if (user.getWorkSchedule() != null) {
             WorkSchedule workSchedule = workScheduleService.saveWorkSchedule(user.getWorkSchedule());
+            workSchedule.setUserId(user.getId());
             user.setWorkSchedule(workSchedule);
         } else {
-            user.setWorkSchedule(createEmptyWorkSchedule(user));
+            WorkSchedule workSchedule = workScheduleService.saveWorkSchedule(createEmptyWorkSchedule(user));
+            user.setWorkSchedule(workSchedule);
         }
+    }
+
+    @Transactional
+    private void updateWorkSchedules(User user) {
+
+        User existingUser = userDao.findByEmail(user.getEmail());
+        WorkSchedule existingWorkSchedule = existingUser.getWorkSchedule();
+        WorkSchedule incomingWorkSchedule = user.getWorkSchedule();
+
+        if (incomingWorkSchedule == null) {
+            WorkSchedule workSchedule = workScheduleService.saveWorkSchedule(createEmptyWorkSchedule(user));
+            user.setWorkSchedule(workSchedule);
+        } else if (!(existingWorkSchedule.equals(incomingWorkSchedule))) {
+            existingWorkSchedule.setDeactivationTime(new Date());
+            incomingWorkSchedule.setId(null);
+            incomingWorkSchedule.setUserId(user.getId());
+            WorkSchedule updatedWorkSchedule = workScheduleService.saveWorkSchedule(incomingWorkSchedule);
+            user.setWorkSchedule(updatedWorkSchedule);
+        }
+
     }
 
     @Override

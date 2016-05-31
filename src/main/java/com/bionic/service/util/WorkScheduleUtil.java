@@ -10,6 +10,7 @@ public class WorkScheduleUtil {
     public static WorkSchedule createEmptyWorkSchedule(User user) {
         WorkSchedule workSchedule = new WorkSchedule();
         workSchedule.setCreationTime(new Date());
+        workSchedule.setDeactivationTime(new Date(new Date().getTime() * 2));
         workSchedule.setSunday(0);
         workSchedule.setSaturday(0);
         workSchedule.setMonday(0);
@@ -17,7 +18,7 @@ public class WorkScheduleUtil {
         workSchedule.setWednesday(0);
         workSchedule.setThursday(0);
         workSchedule.setFriday(0);
-        workSchedule.setUser(user);
+        workSchedule.setUserId(user.getId());
         return workSchedule;
     }
 }

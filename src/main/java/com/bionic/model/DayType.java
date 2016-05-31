@@ -10,6 +10,7 @@ import java.util.Date;
  * Created by Forsent on 28.05.2016.
  */
 @Entity
+@Table(name = "day_types")
 public class DayType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

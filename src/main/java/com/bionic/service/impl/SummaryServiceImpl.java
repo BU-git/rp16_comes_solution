@@ -145,18 +145,42 @@ public class SummaryServiceImpl implements SummaryService {
                         workedTime += s.getEndTime().getTime() - r.getEndTime().getTime();
                     }
 
+                    //Calculate pause for sequential time rides
                     if (i == 0 && i != rides.size()-1) {
                         if (rides.get(i).getEndTime().getTime() == rides.get(i + 1).getStartTime().getTime()){
                             sequentialWorkedTime += tempWorkedTime;
+                        } else {
+                            long tempPauseTime = getPauseTime(tempWorkedTime);
+                            pauseTime += tempPauseTime;
                         }
+
                     } else if (i != 0 && i != rides.size()-1) {
+                        if (rides.get(i).getEndTime().getTime() == rides.get(i + 1).getStartTime().getTime()){
+                            sequentialWorkedTime += tempWorkedTime;
+                        } else if (sequentialWorkedTime > 0) {
+                            sequentialWorkedTime += tempWorkedTime;
+                            long tempPauseTime = getPauseTime(sequentialWorkedTime);
+                            System.out.println("sequential worked time = " + sequentialWorkedTime);
+                            pauseTime += tempPauseTime;
+                            sequentialWorkedTime = 0;
+                        } else {
+                            long tempPauseTime = getPauseTime(tempWorkedTime);
+                            pauseTime += tempPauseTime;
+                        }
 
                     } else if (i == rides.size()-1) {
-
+                        if (sequentialWorkedTime > 0) {
+                            sequentialWorkedTime += tempWorkedTime;
+                            long tempPauseTime = getPauseTime(sequentialWorkedTime);
+                            System.out.println("sequential worked time = " + sequentialWorkedTime);
+                            pauseTime += tempPauseTime;
+                            sequentialWorkedTime = 0;
+                        } else {
+                            long tempPauseTime = getPauseTime(tempWorkedTime);
+                            pauseTime += tempPauseTime;
+                        }
                     }
 
-                    long tempPauseTime = getPauseTime(tempWorkedTime);
-                    pauseTime += tempPauseTime;
                 }
             }
         }

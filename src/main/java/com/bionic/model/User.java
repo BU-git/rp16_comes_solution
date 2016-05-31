@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author vitalii.levash
@@ -74,10 +73,6 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "workScheduleId")
     private WorkSchedule workSchedule;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<WorkSchedule> deactivatedWorkSchedules;
 
     @Column(name = "role")
     @Enumerated(EnumType.ORDINAL)
@@ -284,14 +279,6 @@ public class User {
                 ", jobs=" + jobs +
                 ", postalCode=" + postalCode +
                 "}";
-    }
-
-    public Set<WorkSchedule> getDeactivatedWorkSchedules() {
-        return deactivatedWorkSchedules;
-    }
-
-    public void setDeactivatedWorkSchedules(Set<WorkSchedule> deactivatedWorkSchedules) {
-        this.deactivatedWorkSchedules = deactivatedWorkSchedules;
     }
 
     public boolean isPaidTimeForTime() {
