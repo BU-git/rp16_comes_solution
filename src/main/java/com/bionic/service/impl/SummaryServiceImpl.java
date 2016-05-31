@@ -113,6 +113,8 @@ public class SummaryServiceImpl implements SummaryService {
             List<Ride> rides = s.getRides();
             Collections.sort(rides, (l, r) -> (int)(l.getStartTime().getTime() - r.getStartTime().getTime()));
 
+            int sequentialWorkedTime = 0;
+
             for (int i = 0; i < rides.size(); i++) {
                 Ride r = rides.get(i);
                 if (r.getEndTime().getTime() > weekStartTime.getTime()) {
@@ -132,16 +134,27 @@ public class SummaryServiceImpl implements SummaryService {
                         shiftSet.add(s);
                     }
                     System.out.println("temp worked time = " + tempWorkedTime);
-                    if (r.equals(rides.get(0))) {
+                    if (i == 0) {
                         tempWorkedTime += r.getStartTime().getTime() - s.getStartTime().getTime();
                         System.out.println("temp worked time first = " + tempWorkedTime);
                         workedTime += r.getStartTime().getTime() - s.getStartTime().getTime();
                     }
-                    if (r.equals(rides.get(rides.size()-1))) {
+                    if (i == rides.size()-1) {
                         tempWorkedTime += s.getEndTime().getTime() - r.getEndTime().getTime();
                         System.out.println("temp worked time last = " + tempWorkedTime);
                         workedTime += s.getEndTime().getTime() - r.getEndTime().getTime();
                     }
+
+                    if (i == 0 && i != rides.size()-1) {
+                        if (rides.get(i).getEndTime().getTime() == rides.get(i + 1).getStartTime().getTime()){
+                            sequentialWorkedTime += tempWorkedTime;
+                        }
+                    } else if (i != 0 && i != rides.size()-1) {
+
+                    } else if (i == rides.size()-1) {
+
+                    }
+
                     long tempPauseTime = getPauseTime(tempWorkedTime);
                     pauseTime += tempPauseTime;
                 }
