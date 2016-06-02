@@ -37,6 +37,14 @@ public class UserRestController {
     @Autowired
     MailService mailService;
 
+    @RequestMapping(value = "/reportLink/{year}/{period}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public void reportLink(@PathVariable("year") int year,@PathVariable("period") int period) throws UserNotExistsException {
+        String email = userService.getAuthUser().getEmail();
+        int userId = userService.getAuthUser().getId();
+        mailService.sendReportLinks(email, userId, year, period);
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<User> getAllUsers() {

@@ -3,6 +3,7 @@ package com.bionic.service.impl;
 import com.bionic.config.MailConfig;
 import com.bionic.dao.UserKeyDao;
 import com.bionic.service.MailService;
+import com.bionic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -25,6 +26,9 @@ public class MailServiceImpl implements MailService {
     private MailSender mailSender;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private UserKeyDao userKeyDao;
 
     @Resource
@@ -42,6 +46,7 @@ public class MailServiceImpl implements MailService {
     }
 
     public void sendVerification(String email, long key) {
+
         StringBuilder url = new StringBuilder();
         url
                 .append(env.getProperty(URL))
@@ -62,11 +67,6 @@ public class MailServiceImpl implements MailService {
         String message = "Your link to password reset: " + url + " \n";
         sendMail(email, subject, message);
 
-        try {
-            Thread.sleep(15000);
-        } catch (Exception e) {
-
-        }
     }
 
     public void sendTemporaryPassword(String email, String password) {
@@ -76,11 +76,14 @@ public class MailServiceImpl implements MailService {
         sendMail(email, subject, message);
     }
 
-    public void sendReportLinks(String email, int period, int year) {
+    public void sendReportLinks(String email, int userId,  int year, int period) {
+
         StringBuilder overtimeUrl = new StringBuilder();
         overtimeUrl
                 .append(env.getProperty(URL))
                 .append("/summary/")
+                .append(userId)
+                .append("/")
                 .append(year)
                 .append("/")
                 .append(period)
@@ -93,11 +96,13 @@ public class MailServiceImpl implements MailService {
         allowancesUrl
                 .append(env.getProperty(URL))
                 .append("/summary/")
+                .append(userId)
+                .append("/")
                 .append(year)
                 .append("/")
                 .append(period)
                 .append("/")
-                .append("Period.xls");
+                .append("Allowances.xls");
 
         message += "Your link to download Allowances report: " + allowancesUrl + " \n";
 

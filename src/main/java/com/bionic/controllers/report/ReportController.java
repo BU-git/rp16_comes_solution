@@ -23,7 +23,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping(value = "summary/{year}/{number}")
+@RequestMapping(value = "summary/{userId}/{year}/{number}")
 public class ReportController {
 
     @Autowired
@@ -86,9 +86,10 @@ public class ReportController {
     private static final int NUMBER_OF_WEEKS_IN_PERIOD = 4;
 
     @RequestMapping(value = "/Allowances.xls",method = RequestMethod.GET)
-    public ModelAndView allowancesExcelReport(ModelMap modelMap, ModelAndView modelAndView, @PathVariable("year") int year,@PathVariable("number") int number) {
+    public ModelAndView allowancesExcelReport(ModelMap modelMap, ModelAndView modelAndView,
+                                              @PathVariable("userId") int userId, @PathVariable("year") int year, @PathVariable("number") int number) {
 
-        User user = userService.findById(35);
+        User user = userService.findById(userId);
         List<ReportDTO> dataBeanList = reportService.getReportList(user,year,number);
         int startWeek = number * NUMBER_OF_WEEKS_IN_PERIOD + 1;
         int endWeek = startWeek + NUMBER_OF_WEEKS_IN_PERIOD - 1;
