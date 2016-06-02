@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -81,10 +83,12 @@ public class OvertimeServiceImpl implements OvertimeService {
 
             List<DayType> dayTypes = dayTypeDao.getDayTypesForPeriod(userId, monthStartTime, monthEndTime);
 
-            OvertimeDTO workingWeek = getOvertimeForWeek(dayTypes, shifts, weekStartTime, weekEndTime, contractTime);
-            workingWeek.setWeekOfYear(weekNumber);
+            OvertimeDTO overtimeDTO = getOvertimeForWeek(dayTypes, shifts, weekStartTime, weekEndTime, contractTime);
+            overtimeDTO.setWeekOfYear(weekNumber);
+            overtimeDTO.setStartTime(weekStartTime);
+            overtimeDTO.setEndTime(weekEndTime);
 
-            overtimeDTOs.add(workingWeek);
+            overtimeDTOs.add(overtimeDTO);
         }
 
         return overtimeDTOs;
@@ -93,8 +97,6 @@ public class OvertimeServiceImpl implements OvertimeService {
     @Override
     public OvertimeDTO getOvertimeForWeek(List<DayType> dayTypes, List<Shift> shifts, Date weekStartTime, Date weekEndTime, long contractTime) {
         OvertimeDTO overtimeDTO = new OvertimeDTO();
-        overtimeDTO.setStartTime(weekStartTime);
-        overtimeDTO.setEndTime(weekEndTime);
 
 
         for (int day = 1; day <= 7; day++) {
@@ -102,15 +104,20 @@ public class OvertimeServiceImpl implements OvertimeService {
             Date dayStartTime = getDayStartTime(weekStartTime, day);
             Date dayEndTime = getDayEndTime(weekEndTime, day);
 
-            overtimeDTO = getOvertimeForDay(overtimeDTO, dayTypes, shifts, dayStartTime, dayEndTime);
-
+            overtimeDTO = getOvertimeForDay(overtimeDTO, dayTypes, shifts, dayStartTime, dayEndTime, contractTime);
+            overtimeDTO = fillByDayTypes(overtimeDTO, dayTypes, weekStartTime, weekEndTime);
         }
 
-        return null;
+        return overtimeDTO;
     }
 
-    public OvertimeDTO getOvertimeForDay(OvertimeDTO overtimeDTO, List<DayType> dayTypes, List<Shift> shifts,
-                                         Date dayStartTime, Date dayEndTime) {
+    private OvertimeDTO fillByDayTypes(OvertimeDTO overtimeDTO, List<DayType> dayTypes, Date weekStartTime, Date weekEndTime) {
+        //TODO fill
+        return overtimeDTO;
+    }
+
+    private OvertimeDTO getOvertimeForDay(OvertimeDTO overtimeDTO, List<DayType> dayTypes, List<Shift> shifts,
+                                          Date dayStartTime, Date dayEndTime, long contractTime) {
 
 
         shift:
@@ -122,12 +129,58 @@ public class OvertimeServiceImpl implements OvertimeService {
             for (Ride r : rides) {
                 if (r.getEndTime().getTime() > dayStartTime.getTime()) {
                     if (r.getStartTime().getTime() > dayEndTime.getTime()) break shift;
+                    //for valid rides
+                    LocalDateTime rideStartTime = LocalDateTime.ofInstant(r.getStartTime().toInstant(), ZoneId.systemDefault());
+                    LocalDateTime rideEndTime = LocalDateTime.ofInstant(r.getEndTime().toInstant(), ZoneId.systemDefault());
+
+                    if (rideStartTime.getDayOfMonth() == rideEndTime.getDayOfMonth()) {
+                        overtimeDTO = checkIfWeekend(overtimeDTO, rideStartTime, rideEndTime, contractTime);
+                    } else {
+                        Date rideMiddleDate = getDayEndTime(r.getStartTime());
+                        LocalDateTime rideMiddleTime = LocalDateTime.ofInstant(rideMiddleDate.toInstant(), ZoneId.systemDefault());
+                        overtimeDTO = checkIfWeekend(overtimeDTO, rideStartTime, rideMiddleTime, contractTime);
+                        overtimeDTO = checkIfWeekend(overtimeDTO, rideMiddleTime, rideEndTime, contractTime);
+                    }
+
                 }
             }
-
         }
+        return overtimeDTO;
+    }
 
-            return null;
+    private OvertimeDTO checkIfWeekend(OvertimeDTO overtimeDTO, LocalDateTime dayStartTime, LocalDateTime dayEndTime, long contractTime) {
+        //hours in format like 10.75 or 2.4 etc.
+        double workedHours = dayEndTime.getHour() - dayStartTime.getHour() + 100 * (dayEndTime.getMinute() - dayStartTime.getMinute()) / 60 / 100;
 
+        switch (dayStartTime.getDayOfWeek()) {
+            case SATURDAY:
+                double sat = overtimeDTO.getPaid150();
+                sat += workedHours;
+                overtimeDTO.setPaid150(sat);
+                break;
+            case SUNDAY:
+                double sun = overtimeDTO.getPaid200();
+                sun += workedHours;
+                overtimeDTO.setPaid200(sun);
+                break;
+            default:
+                double paid100 = overtimeDTO.getPaid100();
+                if (paid100 >= contractTime) {
+                    double overtime = overtimeDTO.getPaid130();
+                    overtime += workedHours;
+                    overtimeDTO.setPaid130(overtime);
+                } else if ((paid100 + workedHours) > contractTime){
+                    overtimeDTO.setPaid100(contractTime);
+                    double overtime = paid100 + workedHours - contractTime;
+                    overtimeDTO.setPaid130(overtime);
+                }
+                break;
+        }
+        return overtimeDTO;
+    }
+
+    public static void main(String[] args) {
+        LocalDateTime a = LocalDateTime.now();
+        System.out.println(a.getMinute());
     }
 }
