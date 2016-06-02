@@ -66,15 +66,16 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        saveUserWorkSchedule(user);
-
         long key = System.currentTimeMillis();
         UserKey userKey = new UserKey(key, email, "verification");
         userKey.setId(0);
         userKeyDao.saveAndFlush(userKey);
         mailService.sendVerification(email, key);
 
-        return userDao.saveAndFlush(user);
+        User savedUser = userDao.saveAndFlush(user);
+        saveUserWorkSchedule(savedUser);
+
+        return savedUser;
     }
 
     @Transactional
