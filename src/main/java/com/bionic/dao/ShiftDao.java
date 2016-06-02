@@ -4,6 +4,7 @@ import com.bionic.model.Shift;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 /**
  * author Dima Budko
  */
+@Repository
 public interface ShiftDao extends JpaRepository<Shift, Integer> {
 
     @Query("select u.shifts from User u where u.id =:userId")

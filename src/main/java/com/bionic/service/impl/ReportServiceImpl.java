@@ -1,13 +1,17 @@
 package com.bionic.service.impl;
 
+import com.bionic.config.RootConfig;
 import com.bionic.controllers.report.ReportDTO;
 import com.bionic.dao.ShiftDao;
 import com.bionic.model.Ride;
 import com.bionic.model.Shift;
 import com.bionic.model.User;
 import com.bionic.service.ReportService;
+import com.bionic.service.UserService;
 import com.bionic.service.util.PeriodCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,21 +44,25 @@ public class ReportServiceImpl implements ReportService {
         List<ReportDTO> reportList = new ArrayList<>();
         Date periodStartTime = PeriodCalculator.getPeriodStartTime(year, period);
         Date periodEndTime = PeriodCalculator.getPeriodEndTime(year, period);
+        System.err.println("testing " + shiftDao);
         List<Shift> shifts = shiftDao.getForPeriod(user.getId(), periodStartTime, periodEndTime);
+        System.err.println("testing " + shifts);
         int i = 0;
         for (Shift shift : shifts) {
-            i++;
             List<Ride> rides = shift.getRides();
-            ReportDTO reportDTO = new ReportDTO();
-            reportDTO.setRides("Ride " + i + " From " + rides.get(0).getStartTime() + " To " + rides.get(rides.size() - 1).getEndTime());
-            reportDTO.setTotalDays((int) TimeUnit.DAYS.convert((rides.get(rides.size() - 1).getEndTime().getTime() - rides.get(0).getStartTime().getTime()), TimeUnit.MILLISECONDS) + 1);
-            int totalTimes = 0;
-            for (Ride ride : shift.getRides()) {
-                totalTimes += (ride.getEndTime().getTime() - ride.getStartTime().getTime()) / (1000 * 60 * 60);
+            if (rides != null) {
+                i++;
+                ReportDTO reportDTO = new ReportDTO();
+                reportDTO.setRides("Ride " + i + " From " + rides.get(0).getStartTime() + " To " + rides.get(rides.size() - 1).getEndTime());
+                reportDTO.setTotalDays((int) TimeUnit.DAYS.convert((rides.get(rides.size() - 1).getEndTime().getTime() - rides.get(0).getStartTime().getTime()), TimeUnit.MILLISECONDS) + 1);
+                int totalTimes = 0;
+                for (Ride ride : shift.getRides()) {
+                    totalTimes += (ride.getEndTime().getTime() - ride.getStartTime().getTime()) / (1000 * 60 * 60);
+                }
+                reportDTO.setTotalTimes(totalTimes);
+                reportDTO.setAllowances(getAllowances(reportDTO, shift));
+                reportList.add(reportDTO);
             }
-            reportDTO.setTotalTimes(totalTimes);
-            reportDTO.setAllowances(getAllowances(reportDTO, shift));
-            reportList.add(reportDTO);
         }
         return reportList;
     }
@@ -79,6 +87,8 @@ public class ReportServiceImpl implements ReportService {
                         if (ride.getStartTime().getHours() >= 18) {
                             allowances += (FOR_BETWEEN_18_AND_24 - FOR_LONGER_THAN_4_HOURS) * (24 - ride.getStartTime().getHours());
                             System.err.println("test03 " + allowances);
+                        } else {
+                            allowances += (FOR_BETWEEN_18_AND_24 - FOR_LONGER_THAN_4_HOURS) * (24 - 18);
                         }
                         if (ride.getEndTime().getHours() >= 18) {
                             allowances += (FOR_BETWEEN_18_AND_24 - FOR_LONGER_THAN_4_HOURS) * (ride.getEndTime().getHours() - 18);
@@ -169,7 +179,12 @@ public class ReportServiceImpl implements ReportService {
             } else {
                 if (rides.get(rides.size()-1).getEndTime().getDate() == rides.get(rides.size()-1).getStartTime().getDate()) {
                     if (rides.get(rides.size()-1).getStartTime().getHours() <= 6) {
-                        int hours = rides.get(rides.size()-1).getEndTime().getHours() -  rides.get(rides.size()-1).getStartTime().getHours();
+                        int hours = 0;
+                        if (rides.get(rides.size()-1).getEndTime().getHours() <= 6) {
+                            hours = rides.get(rides.size() - 1).getEndTime().getHours() - rides.get(rides.size() - 1).getStartTime().getHours();
+                        } else {
+                            hours = 6 - rides.get(rides.size() - 1).getStartTime().getHours();
+                        }
                         if (hours > 6) {
                             hours = 6;
                         }
@@ -202,13 +217,27 @@ public class ReportServiceImpl implements ReportService {
     }
 
     public static void main(String[] args) {
-//        ApplicationContext context = new AnnotationConfigApplicationContext(RootConfig.class);
-//        ReportService reportService = context.getBean(ReportService.class);
-        Date date = new Date();
-        date.setTime(2221231238133L);
-        System.out.println(date);
-        date.setHours(date.getHours() + 24);
-        System.out.println(date);
+        ApplicationContext context = new AnnotationConfigApplicationContext(RootConfig.class);
+        UserService userService = context.getBean(UserService.class);
+        User user = userService.findById(3);
+//        ShiftDao shiftDao = context.getBean(ShiftDao.class);
+//        Date periodStartTime = PeriodCalculator.getPeriodStartTime(2016, 5);
+//        Date periodEndTime = PeriodCalculator.getPeriodEndTime(2016, 5);
+//        System.err.println("Start time " + periodStartTime);
+//        System.err.println("End time " + periodEndTime);
+//        List<Shift> shifts = shiftDao.getForPeriod(user.getId(), periodStartTime, periodEndTime);
+//        System.err.println("testing");
+//        System.out.println(shifts);
+//        System.err.println("testing");
+        ReportService rs = context.getBean(ReportService.class);
+        List<ReportDTO> list = rs.getReportList(user, 2016, 5);
+        System.err.println("testing");
+        System.out.println(list);
+//        Date date = new Date();
+//        date.setTime(2221231238133L);
+//        System.out.println(date);
+//        date.setHours(date.getHours() + 24);
+//        System.out.println(date);
 
     }
 
