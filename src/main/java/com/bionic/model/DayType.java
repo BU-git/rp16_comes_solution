@@ -1,6 +1,7 @@
 package com.bionic.model;
 
 import com.bionic.model.dict.DayTypeEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,7 +17,8 @@ public class DayType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "dayTypeId")
     private Integer id;
-    
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId")
     private User user;
