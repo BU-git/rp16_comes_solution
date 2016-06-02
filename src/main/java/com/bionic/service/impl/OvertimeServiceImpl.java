@@ -139,7 +139,7 @@ public class OvertimeServiceImpl implements OvertimeService {
                         Date rideMiddleDate = getDayEndTime(r.getStartTime());
                         LocalDateTime rideMiddleTime = LocalDateTime.ofInstant(rideMiddleDate.toInstant(), ZoneId.systemDefault());
                         overtimeDTO = checkIfWeekend(overtimeDTO, rideStartTime, rideMiddleTime, contractTime);
-                        overtimeDTO = checkIfWeekend(overtimeDTO, rideMiddleTime, rideEndTime, contractTime);
+                        overtimeDTO = checkIfWeekend(overtimeDTO, rideMiddleTime.plusSeconds(1), rideEndTime, contractTime);
                     }
 
                 }
@@ -150,7 +150,7 @@ public class OvertimeServiceImpl implements OvertimeService {
 
     private OvertimeDTO checkIfWeekend(OvertimeDTO overtimeDTO, LocalDateTime dayStartTime, LocalDateTime dayEndTime, long contractTime) {
         //hours in format like 10.75 or 2.4 etc.
-        double workedHours = dayEndTime.getHour() - dayStartTime.getHour() + 100 * (dayEndTime.getMinute() - dayStartTime.getMinute()) / 60 / 100;
+        double workedHours = dayEndTime.getHour() - dayStartTime.getHour() + 100 * (dayEndTime.getMinute() - dayStartTime.getMinute()) / 60 / 100; //TODO add rounding
 
         switch (dayStartTime.getDayOfWeek()) {
             case SATURDAY:
@@ -163,7 +163,7 @@ public class OvertimeServiceImpl implements OvertimeService {
                 sun += workedHours;
                 overtimeDTO.setPaid200(sun);
                 break;
-            default:
+            default: //TODO add tvt limit
                 double paid100 = overtimeDTO.getPaid100();
                 if (paid100 >= contractTime) {
                     double overtime = overtimeDTO.getPaid130();
@@ -177,10 +177,5 @@ public class OvertimeServiceImpl implements OvertimeService {
                 break;
         }
         return overtimeDTO;
-    }
-
-    public static void main(String[] args) {
-        LocalDateTime a = LocalDateTime.now();
-        System.out.println(a.getMinute());
     }
 }
