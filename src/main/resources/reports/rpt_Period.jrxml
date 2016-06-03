@@ -177,7 +177,7 @@
 	</title>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField pattern="###0.00">
+			<textField pattern="€ ###0.00">
 				<reportElement key="" style="Detail" positionType="Float" x="590" y="-2" width="150" height="20" uuid="9f3938cd-9ca5-4e3c-aae9-f48d6d73532c"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -186,6 +186,7 @@
 					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
+					<font fontName = "Calibri" size = "12" isBold = "false"/>
 					<paragraph lineSpacing="Proportional"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{allowances}]]></textFieldExpression>
@@ -263,7 +264,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{totalTimes}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
+			<textField pattern="€ ###0.00">
 				<reportElement key="" positionType="Float" x="590" y="0" width="150" height="20" uuid="78865c20-b45b-41ca-868c-947587099126"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -272,6 +273,7 @@
 					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
+					<font fontName = "Calibri" size = "12" isBold = "false"/>
 					<paragraph lineSpacing="Proportional"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{allowances}]]></textFieldExpression>
