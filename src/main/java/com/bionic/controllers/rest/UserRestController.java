@@ -85,7 +85,7 @@ public class UserRestController {
             User user = userService.findByUserEmail(name);
 
             if (user == null)
-                return new ResponseEntity<User>(user, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<User>(user, HttpStatus.EXPECTATION_FAILED);
 
             if (user.getPasswordExpire().before(new Date()))
                 return new ResponseEntity<User>(user, HttpStatus.FORBIDDEN);

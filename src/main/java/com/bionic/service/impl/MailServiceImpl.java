@@ -88,7 +88,7 @@ public class MailServiceImpl implements MailService {
                 .append("/")
                 .append(period)
                 .append("/")
-                .append("Overtime.xls");
+                .append("Overtime.xlsx");
 
 
         String message = "Your link to download Overtime report: " + overtimeUrl + " \n";
@@ -102,7 +102,7 @@ public class MailServiceImpl implements MailService {
                 .append("/")
                 .append(period)
                 .append("/")
-                .append("Allowances.xls");
+                .append("Allowances.xlsx");
 
         message += "Your link to download Allowances report: " + allowancesUrl + " \n";
 
