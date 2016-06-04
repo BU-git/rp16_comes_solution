@@ -13,6 +13,8 @@ import java.util.List;
  */
 public interface OvertimeService {
 
+    OvertimeDTO getOvertimeSum(List<OvertimeDTO> overtimeDTOList);
+
     List<OvertimeDTO> getOvertimeForPeriod(int userId, int year, int period) throws ShiftsNotFoundException;
 
     List<OvertimeDTO> getOvertimeForMonth(int userId, int year, int month) throws ShiftsNotFoundException;

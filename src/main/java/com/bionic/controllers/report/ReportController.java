@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -74,18 +72,18 @@ public class ReportController {
         modelMap.put("totalDays",totalDays);
         modelMap.put("totalTimes",totalTimes);
         modelMap.put("allowances",allowances);
-        modelAndView = new ModelAndView("rpt_Period", modelMap);
+        modelAndView = new ModelAndView("rpt_Allowances", modelMap);
         return modelAndView;
     }
 
     @RequestMapping(value = "/Overtime.xlsx",method = RequestMethod.GET)
     public ModelAndView overtimeExcelReport(ModelMap modelMap, ModelAndView modelAndView,@PathVariable("userId") int userId, @PathVariable("year") int year,@PathVariable("number") int number) throws ShiftsNotFoundException {
         User user = userService.findById(userId);
-        List<OvertimeDTO> dataBeanList = overtimeService.getOvertimeForPeriod(userId, year, number);
-        System.out.println(dataBeanList);
+        List<OvertimeDTO> overtimeWeeks = overtimeService.getOvertimeForPeriod(userId, year, number);
+        System.out.println(overtimeWeeks);
         int startWeek = number * NUMBER_OF_WEEKS_IN_PERIOD + 1;
         int endWeek = startWeek + NUMBER_OF_WEEKS_IN_PERIOD - 1;
-        JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataBeanList, false);
+        JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(overtimeWeeks, false);
 
         modelMap.put("datasource", beanColDataSource);
         modelMap.put("format", "xlsx");
@@ -94,16 +92,20 @@ public class ReportController {
         modelMap.put("overviewType", "Overtime");
         modelMap.put("contractHours", user.getContractHours());
 
-        modelMap.put("sumUnpaidLeaveHours", 0.0);
-        modelMap.put("sumPaidLeaveHours", 0.0);
-        modelMap.put("sumAtvHours", 0.0);
-        modelMap.put("sumSickdayHours", 0.0);
-        modelMap.put("sumWaitingdayHours", 0.0);
-        modelMap.put("sumPaid100", 0.0);
-        modelMap.put("sumPaid130", 0.0);
-        modelMap.put("sumPaid150", 0.0);
-        modelMap.put("sumPaid200", 0.0);
-        modelMap.put("sumTotal", 0);
+        OvertimeDTO overtimeSum = overtimeService.getOvertimeSum(overtimeWeeks);
+        System.out.println(overtimeSum);
+
+        modelMap.put("sumUnpaidLeaveHours", overtimeSum.getUnpaidLeaveHours());
+        modelMap.put("sumPaidLeaveHours", overtimeSum.getPaidLeaveHours());
+        modelMap.put("sumAtvHours", overtimeSum.getAtvHours());
+        modelMap.put("sumHolidayHours", overtimeSum.getHolidayHours());
+        modelMap.put("sumSickdayHours", overtimeSum.getSickdayHours());
+        modelMap.put("sumWaitingdayHours", overtimeSum.getWaitingdayHours());
+        modelMap.put("sumPaid100", overtimeSum.getPaid100());
+        modelMap.put("sumPaid130", overtimeSum.getPaid130());
+        modelMap.put("sumPaid150", overtimeSum.getPaid150());
+        modelMap.put("sumPaid200", overtimeSum.getPaid200());
+        modelMap.put("sumTotal", overtimeSum.getTotalHours());
 
         modelAndView = new ModelAndView("rpt_Overtime", modelMap);
 

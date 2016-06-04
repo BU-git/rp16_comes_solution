@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.2.final using JasperReports Library version 6.2.2  -->
 <!-- 2016-06-04T17:39:41 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Coffee_Landscape" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="df013db5-f76e-44d3-b0df-bcbc46d93160">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Coffee_Landscape" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="df013db5-f76e-44d3-b0df-bcbc46d93160">
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true"/>
 	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -13,13 +12,7 @@
 			<style backcolor="#E6DAC3"/>
 		</conditionalStyle>
 	</style>
-	<subDataset name="dataBeanList" uuid="374fa525-e6f6-4859-be0d-80f32bf430f6">
-		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-		<queryString>
-			<![CDATA[]]>
-		</queryString>
-	</subDataset>
-	<parameter name="sumTotal" class="java.lang.Integer">
+	<parameter name="sumTotal" class="java.lang.Double">
 		<parameterDescription><![CDATA[]]></parameterDescription>
 	</parameter>
 	<parameter name="sumPaid100" class="java.lang.Double"/>
@@ -30,6 +23,7 @@
 	<parameter name="sumPaid200" class="java.lang.Double"/>
 	<parameter name="sumWaitingdayHours" class="java.lang.Double"/>
 	<parameter name="sumSickdayHours" class="java.lang.Double"/>
+    <parameter name="sumHolidayHours" class="java.lang.Double"/>
 	<parameter name="sumAtvHours" class="java.lang.Double"/>
 	<parameter name="sumPaidLeaveHours" class="java.lang.Double"/>
 	<parameter name="sumUnpaidLeaveHours" class="java.lang.Double"/>
@@ -264,8 +258,18 @@
 				</box>
 				<text><![CDATA[Sickday hours]]></text>
 			</staticText>
+            <staticText>
+                <reportElement key="" style="Column header" x="630" y="130" width="50" height="38" uuid="03863241-c6ec-42ef-a1d8-758d6a585ba6"/>
+                <box>
+                    <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <text><![CDATA[Holiday hours]]></text>
+            </staticText>
 			<staticText>
-				<reportElement key="" style="Column header" x="630" y="130" width="50" height="38" uuid="974f51fa-c123-4d1c-8572-79938533da51"/>
+				<reportElement key="" style="Column header" x="680" y="130" width="50" height="38" uuid="974f51fa-c123-4d1c-8572-79938533da51"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -275,7 +279,7 @@
 				<text><![CDATA[ATV hours]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="" style="Column header" x="680" y="130" width="60" height="38" uuid="e6cde6ca-57cb-4d33-ba06-298206382244"/>
+				<reportElement key="" style="Column header" x="730" y="130" width="60" height="38" uuid="e6cde6ca-57cb-4d33-ba06-298206382244"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -285,7 +289,7 @@
 				<text><![CDATA[Paid leave hours]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="" style="Column header" x="740" y="130" width="60" height="38" uuid="7993ec90-3e21-4c4b-8345-562c95d5f038"/>
+				<reportElement key="" style="Column header" x="790" y="130" width="60" height="38" uuid="7993ec90-3e21-4c4b-8345-562c95d5f038"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -325,7 +329,7 @@
 				<textFieldExpression><![CDATA[$F{startTime}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement key="" positionType="Float" x="178" y="1" width="81" height="20" uuid="20cf268a-cbbd-4e65-842d-248e83b88242"/>
+				<reportElement key="" positionType="Float" x="178" y="0" width="81" height="20" uuid="20cf268a-cbbd-4e65-842d-248e83b88242"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -337,18 +341,21 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{endTime}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="260" y="1" width="60" height="20" uuid="3079add6-8328-4fa0-b39a-eda3eba356eb"/>
+			<textField pattern="">
+				<reportElement key="" positionType="Float" x="260" y="0" width="60" height="20" uuid="9f3938cd-9ca5-4e3c-aae9-f48d6d73532c"/>
 				<box>
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
+				<textElement>
+					<paragraph lineSpacing="Proportional"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{totalHours}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement key="" positionType="Float" x="320" y="1" width="50" height="20" uuid="848894d8-ad22-4413-9cf4-28317ec4f7e1"/>
+				<reportElement key="" positionType="Float" x="320" y="0" width="50" height="20" uuid="848894d8-ad22-4413-9cf4-28317ec4f7e1"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -361,7 +368,7 @@
 				<textFieldExpression><![CDATA[$F{paid100}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement key="" positionType="Float" x="370" y="1" width="50" height="20" uuid="328a99a3-becb-4f6c-89ae-08453fa3041f"/>
+				<reportElement key="" positionType="Float" x="370" y="0" width="50" height="20" uuid="328a99a3-becb-4f6c-89ae-08453fa3041f"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -426,7 +433,7 @@
 				<textFieldExpression><![CDATA[$F{sickdayHours}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement key="" positionType="Float" x="630" y="0" width="50" height="20" uuid="61f245e4-3fa6-4ebf-b7ca-89329a7eacd6"/>
+				<reportElement key="" positionType="Float" x="680" y="0" width="50" height="20" uuid="61f245e4-3fa6-4ebf-b7ca-89329a7eacd6"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -439,7 +446,20 @@
 				<textFieldExpression><![CDATA[$F{atvHours}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement key="" positionType="Float" x="680" y="0" width="60" height="20" uuid="17398d65-1045-4cad-9cb1-230e8912ec64"/>
+				<reportElement key="" positionType="Float" x="630" y="0" width="50" height="20" uuid="37783aa9-3aca-436c-8a94-696830e22390"/>
+				<box>
+					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<paragraph lineSpacing="Proportional"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{holidayHours}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement key="" positionType="Float" x="730" y="0" width="60" height="20" uuid="17398d65-1045-4cad-9cb1-230e8912ec64"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -452,7 +472,7 @@
 				<textFieldExpression><![CDATA[$F{paidLeaveHours}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement key="" positionType="Float" x="740" y="1" width="60" height="20" uuid="6a5f9eec-bdc5-4f6d-8b01-2cb3e6cdd240"/>
+				<reportElement key="" positionType="Float" x="790" y="0" width="60" height="20" uuid="6a5f9eec-bdc5-4f6d-8b01-2cb3e6cdd240"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -467,141 +487,154 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="22">
+		<band height="40" splitType="Stretch">
 			<staticText>
-				<reportElement x="180" y="0" width="70" height="20" uuid="4d30f5e3-d7da-4429-9e1d-90144de99ea0"/>
+				<reportElement x="180" y="15" width="70" height="20" uuid="4d30f5e3-d7da-4429-9e1d-90144de99ea0"/>
 				<text><![CDATA[TOTAL]]></text>
 			</staticText>
-			<textField>
-				<reportElement key="" positionType="Float" x="260" y="0" width="60" height="20" uuid="b553d240-b769-43e9-9e81-1b831ae33fed"/>
-				<box>
-					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<paragraph lineSpacing="Proportional"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{sumTotal}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" positionType="Float" x="320" y="0" width="50" height="20" uuid="30f9cd43-2d48-44ec-897c-178c09f56ad3"/>
-				<box>
-					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<paragraph lineSpacing="Proportional"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{sumPaid100}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" positionType="Float" x="370" y="0" width="50" height="20" uuid="cd60feda-b47d-434c-ba45-39d304c5efc1"/>
-				<box>
-					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<paragraph lineSpacing="Proportional"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{sumPaid130}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" positionType="Float" x="420" y="0" width="50" height="20" uuid="f9302053-d21c-46f0-8f25-2100db21e915"/>
-				<box>
-					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<paragraph lineSpacing="Proportional"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{sumPaid150}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" positionType="Float" x="470" y="0" width="40" height="20" uuid="289950c5-275e-47ea-9090-0eff7b773ce8"/>
-				<box>
-					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<paragraph lineSpacing="Proportional"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{sumPaid200}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" positionType="Float" x="510" y="0" width="70" height="20" uuid="6819b83a-0e45-4f51-9563-afb449157962"/>
-				<box>
-					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<paragraph lineSpacing="Proportional"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{sumWaitingdayHours}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" positionType="Float" x="580" y="0" width="50" height="20" uuid="364c0512-237c-43b4-9cb9-a181e44bf494"/>
-				<box>
-					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<paragraph lineSpacing="Proportional"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{sumSickdayHours}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" positionType="Float" x="630" y="0" width="50" height="20" uuid="0ec2a16e-9663-4f92-a778-dbfef046cf4c"/>
-				<box>
-					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<paragraph lineSpacing="Proportional"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{sumAtvHours}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" positionType="Float" x="680" y="0" width="60" height="20" uuid="3784478a-7585-4c16-ab53-bfaba13577e9"/>
-				<box>
-					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<paragraph lineSpacing="Proportional"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{sumPaidLeaveHours}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" positionType="Float" x="740" y="0" width="60" height="20" uuid="7af33c88-61ba-401c-b8b5-36418f5c00a0"/>
-				<box>
-					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<paragraph lineSpacing="Proportional"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{sumUnpaidLeaveHours}]]></textFieldExpression>
-			</textField>
+            <textField>
+                <reportElement key="" positionType="Float" x="259" y="15" width="60" height="20" uuid="b553d240-b769-43e9-9e81-1b831ae33fed"/>
+                <box>
+                    <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <paragraph lineSpacing="Proportional"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{sumTotal}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement key="" positionType="Float" x="320" y="15" width="50" height="20" uuid="30f9cd43-2d48-44ec-897c-178c09f56ad3"/>
+                <box>
+                    <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <paragraph lineSpacing="Proportional"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{sumPaid100}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement key="" positionType="Float" x="370" y="15" width="50" height="20" uuid="cd60feda-b47d-434c-ba45-39d304c5efc1"/>
+                <box>
+                    <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <paragraph lineSpacing="Proportional"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{sumPaid130}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement key="" positionType="Float" x="420" y="15" width="50" height="20" uuid="f9302053-d21c-46f0-8f25-2100db21e915"/>
+                <box>
+                    <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <paragraph lineSpacing="Proportional"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{sumPaid150}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement key="" positionType="Float" x="470" y="15" width="40" height="20" uuid="289950c5-275e-47ea-9090-0eff7b773ce8"/>
+                <box>
+                    <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <paragraph lineSpacing="Proportional"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{sumPaid200}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement key="" positionType="Float" x="510" y="15" width="70" height="20" uuid="6819b83a-0e45-4f51-9563-afb449157962"/>
+                <box>
+                    <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <paragraph lineSpacing="Proportional"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{sumWaitingdayHours}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement key="" positionType="Float" x="580" y="15" width="50" height="20" uuid="364c0512-237c-43b4-9cb9-a181e44bf494"/>
+                <box>
+                    <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <paragraph lineSpacing="Proportional"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{sumSickdayHours}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement key="" positionType="Float" x="630" y="15" width="50" height="20" uuid="7129b13d-e075-4bc0-856e-57066a0ebfd8"/>
+                <box>
+                    <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <paragraph lineSpacing="Proportional"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{sumHolidayHours}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement key="" positionType="Float" x="680" y="15" width="50" height="20" uuid="0ec2a16e-9663-4f92-a778-dbfef046cf4c"/>
+                <box>
+                    <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <paragraph lineSpacing="Proportional"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{sumAtvHours}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement key="" positionType="Float" x="730" y="15" width="60" height="20" uuid="3784478a-7585-4c16-ab53-bfaba13577e9"/>
+                <box>
+                    <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <paragraph lineSpacing="Proportional"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{sumPaidLeaveHours}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement key="" positionType="Float" x="790" y="15" width="60" height="20" uuid="7af33c88-61ba-401c-b8b5-36418f5c00a0"/>
+                <box>
+                    <topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <paragraph lineSpacing="Proportional"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{sumUnpaidLeaveHours}]]></textFieldExpression>
+            </textField>
 		</band>
 	</pageFooter>
 	<summary>

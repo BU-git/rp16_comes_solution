@@ -43,6 +43,28 @@ public class OvertimeServiceImpl implements OvertimeService {
     @Autowired
     private WorkScheduleService workScheduleService;
 
+
+    @Override
+    public OvertimeDTO getOvertimeSum(List<OvertimeDTO> overtimeDTOList) {
+        OvertimeDTO overtimeSum = new OvertimeDTO();
+
+        for (OvertimeDTO o : overtimeDTOList) {
+            overtimeSum.setTotalHours(overtimeSum.getTotalHours() + o.getTotalHours());
+            overtimeSum.setPaid100(overtimeSum.getPaid100() + o.getPaid100());
+            overtimeSum.setPaid130(overtimeSum.getPaid130() + o.getPaid130());
+            overtimeSum.setPaid150(overtimeSum.getPaid150() + o.getPaid150());
+            overtimeSum.setPaid200(overtimeSum.getPaid200() + o.getPaid200());
+            overtimeSum.setWaitingdayHours(overtimeSum.getWaitingdayHours() + o.getWaitingdayHours());
+            overtimeSum.setSickdayHours(overtimeSum.getSickdayHours() + o.getSickdayHours());
+            overtimeSum.setHolidayHours(overtimeSum.getHolidayHours() + o.getHolidayHours());
+            overtimeSum.setAtvHours(overtimeSum.getAtvHours() + o.getAtvHours());
+            overtimeSum.setPaidLeaveHours(overtimeSum.getPaidLeaveHours() + o.getPaidLeaveHours());
+            overtimeSum.setUnpaidLeaveHours(overtimeSum.getUnpaidLeaveHours() + o.getUnpaidLeaveHours());
+        }
+
+        return overtimeSum;
+    }
+
     @Override
     public List<OvertimeDTO> getOvertimeForPeriod(int userId, int year, int period) throws ShiftsNotFoundException {
 
