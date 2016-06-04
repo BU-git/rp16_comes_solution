@@ -112,7 +112,47 @@ public class OvertimeServiceImpl implements OvertimeService {
     }
 
     private OvertimeDTO fillByDayTypes(OvertimeDTO overtimeDTO, List<DayType> dayTypes, Date weekStartTime, Date weekEndTime) {
-        //TODO fill
+        final int standartHours = 8;
+        for(DayType dayType: dayTypes) {
+            if (dayType.getStartTime().after(weekEndTime) && dayType.getEndTime().before(weekStartTime)) continue;
+
+            LocalDateTime dayTypeStartTime = LocalDateTime.ofInstant(dayType.getStartTime().toInstant(), ZoneId.systemDefault());
+            LocalDateTime dayTypeEndTime = LocalDateTime.ofInstant(dayType.getEndTime().toInstant(), ZoneId.systemDefault());
+            double workedHours = dayTypeEndTime.getHour() - dayTypeStartTime.getHour() + 100 * (dayTypeEndTime.getMinute() - dayTypeStartTime.getMinute()) / 60 / 100;
+
+            switch (dayType.getDayTypeName()) {
+                case WAITING_DAY:
+                    double waitingDayHours = overtimeDTO.getWaitingdayHours();
+                    waitingDayHours += standartHours;
+                    overtimeDTO.setWaitingdayHours(waitingDayHours);
+                    break;
+                case SICK_DAY:
+                    double sickDayHours = overtimeDTO.getSickdayHours();
+                    sickDayHours += standartHours;
+                    overtimeDTO.setSickdayHours(sickDayHours);
+                    break;
+                case HOLIDAY:
+                    double holidayHours = overtimeDTO.getHolidayHours();
+                    holidayHours += standartHours;
+                    overtimeDTO.setHolidayHours(holidayHours);
+                    break;
+                case ATV_DAY:
+                    double AtvHours = overtimeDTO.getAtvHours();
+                    AtvHours += standartHours;
+                    overtimeDTO.setAtvHours(AtvHours);
+                    break;
+                case PAID_LEAVE_OF_ABSENCE:
+                    double paidLeaveHours = overtimeDTO.getPaidLeaveHours();
+                    paidLeaveHours += workedHours;
+                    overtimeDTO.setPaidLeaveHours(paidLeaveHours);
+                    break;
+                case UNPAID_LEAVE_OF_ABSENCE:
+                    double unpaidLeaveHours = overtimeDTO.getUnpaidLeaveHours();
+                    unpaidLeaveHours += workedHours;
+                    overtimeDTO.setUnpaidLeaveHours(unpaidLeaveHours);
+                    break;
+            }
+        }
         return overtimeDTO;
     }
 
@@ -150,7 +190,7 @@ public class OvertimeServiceImpl implements OvertimeService {
 
     private OvertimeDTO checkIfWeekend(OvertimeDTO overtimeDTO, LocalDateTime dayStartTime, LocalDateTime dayEndTime, long contractTime) {
         //hours in format like 10.75 or 2.4 etc.
-        double workedHours = dayEndTime.getHour() - dayStartTime.getHour() + 100 * (dayEndTime.getMinute() - dayStartTime.getMinute()) / 60 / 100; //TODO add rounding
+        double workedHours = dayEndTime.getHour() - dayStartTime.getHour() + 100 * (dayEndTime.getMinute() - dayStartTime.getMinute()) / 60 / 100;
 
         switch (dayStartTime.getDayOfWeek()) {
             case SATURDAY:
