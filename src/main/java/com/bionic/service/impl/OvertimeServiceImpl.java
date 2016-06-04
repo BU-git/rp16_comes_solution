@@ -63,10 +63,11 @@ public class OvertimeServiceImpl implements OvertimeService {
             if (contractHours == 0) contractHours = 40;
             int weekNumber = getPeriodWeekOfYear(year, period, week);
 
-            OvertimeDTO overtimeDTO = getOvertimeForWeek(dayTypes, shifts, weekStartTime, weekEndTime, contractHours);
+            OvertimeDTO overtimeDTO = new OvertimeDTO();
             overtimeDTO.setWeekOfYear(weekNumber);
             overtimeDTO.setStartTime(weekStartTime);
             overtimeDTO.setEndTime(weekEndTime);
+            overtimeDTO = getOvertimeForWeek(overtimeDTO, dayTypes, shifts, weekStartTime, weekEndTime, contractHours);
 
             overtimeDTOs.add(overtimeDTO);
         }
@@ -96,10 +97,11 @@ public class OvertimeServiceImpl implements OvertimeService {
 
             List<DayType> dayTypes = dayTypeDao.getDayTypesForPeriod(userId, monthStartTime, monthEndTime);
 
-            OvertimeDTO overtimeDTO = getOvertimeForWeek(dayTypes, shifts, weekStartTime, weekEndTime, contractHours);
+            OvertimeDTO overtimeDTO = new OvertimeDTO();
             overtimeDTO.setWeekOfYear(weekNumber);
             overtimeDTO.setStartTime(weekStartTime);
             overtimeDTO.setEndTime(weekEndTime);
+            overtimeDTO = getOvertimeForWeek(overtimeDTO, dayTypes, shifts, weekStartTime, weekEndTime, contractHours);
 
             overtimeDTOs.add(overtimeDTO);
         }
@@ -108,14 +110,12 @@ public class OvertimeServiceImpl implements OvertimeService {
     }
 
     @Override
-    public OvertimeDTO getOvertimeForWeek(List<DayType> dayTypes, List<Shift> shifts, Date weekStartTime, Date weekEndTime, long contractHours) {
-        OvertimeDTO overtimeDTO = new OvertimeDTO();
-
+    public OvertimeDTO getOvertimeForWeek(OvertimeDTO overtimeDTO, List<DayType> dayTypes, List<Shift> shifts, Date weekStartTime, Date weekEndTime, long contractHours) {
 
         for (int day = 1; day <= 7; day++) {
 
             Date dayStartTime = getDayStartTime(weekStartTime, day);
-            Date dayEndTime = getDayEndTime(weekEndTime, day);
+            Date dayEndTime = getDayEndTime(weekStartTime, day);
 
             overtimeDTO = getOvertimeForDay(overtimeDTO, dayTypes, shifts, dayStartTime, dayEndTime, contractHours);
             overtimeDTO = fillByDayTypes(overtimeDTO, dayTypes, weekStartTime, weekEndTime);
@@ -166,6 +166,8 @@ public class OvertimeServiceImpl implements OvertimeService {
                     break;
             }
         }
+        double total = overtimeDTO.getPaid100() + overtimeDTO.getPaid130() + overtimeDTO.getPaid150() + overtimeDTO.getPaid200();
+        overtimeDTO.setTotal(total);
         return overtimeDTO;
     }
 
@@ -181,7 +183,7 @@ public class OvertimeServiceImpl implements OvertimeService {
 
             for (Ride r : rides) {
                 if (r.getEndTime().getTime() > dayStartTime.getTime()) {
-                    if (r.getStartTime().getTime() > dayEndTime.getTime()) break shift;
+                    if (r.getStartTime().getTime() > dayEndTime.getTime()) continue ;
                     //for valid rides
                     LocalDateTime rideStartTime = LocalDateTime.ofInstant(r.getStartTime().toInstant(), ZoneId.systemDefault());
                     LocalDateTime rideEndTime = LocalDateTime.ofInstant(r.getEndTime().toInstant(), ZoneId.systemDefault());
@@ -203,7 +205,7 @@ public class OvertimeServiceImpl implements OvertimeService {
 
     private OvertimeDTO checkIfWeekend(OvertimeDTO overtimeDTO, LocalDateTime rideStartTime, LocalDateTime rideEndTime, long contractHours) {
         //hours in format like 10.75 or 2.4 etc.
-        double workedHours = rideEndTime.getHour() - rideStartTime.getHour() + 100 * (rideEndTime.getMinute() - rideStartTime.getMinute()) / 60 / 100;
+        double workedHours = rideEndTime.getHour() - rideStartTime.getHour() + (rideEndTime.getMinute() - rideStartTime.getMinute()) / 60;
 
         switch (rideStartTime.getDayOfWeek()) {
             case SATURDAY:
@@ -226,6 +228,9 @@ public class OvertimeServiceImpl implements OvertimeService {
                     overtimeDTO.setPaid100(contractHours);
                     double overtime = paid100 + workedHours - contractHours;
                     overtimeDTO.setPaid130(overtime);
+                } else {
+                    double standartHours = paid100 + workedHours;
+                    overtimeDTO.setPaid100(standartHours);
                 }
                 break;
         }
