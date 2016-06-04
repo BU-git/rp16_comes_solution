@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.bionic</groupId>
     <artifactId>tda</artifactId>
-    <version>0.8</version>
+    <version>0.8.2</version>
     <packaging>war</packaging>
 
     <properties>

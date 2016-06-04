@@ -3,20 +3,21 @@ package com.bionic.dto;
 import java.util.Date;
 
 public class OvertimeDTO {
+
     private int weekOfYear;
     private Date startTime;
     private Date endTime;
-    private double total;
-    private double paid100;
-    private double paid130;
-    private double paid150;
-    private double paid200;
-    private double waitingdayHours;
-    private double sickdayHours;
-    private double holidayHours;
-    private double atvHours;
-    private double paidLeaveHours;
-    private double unpaidLeaveHours;
+    private double total = 0.0;
+    private double paid100 = 0.0;
+    private double paid130 = 0.0;
+    private double paid150 = 0.0;
+    private double paid200 = 0.0;
+    private double waitingdayHours = 0.0;
+    private double sickdayHours = 0.0;
+    private double holidayHours = 0.0;
+    private double atvHours = 0.0;
+    private double paidLeaveHours = 0.0;
+    private double unpaidLeaveHours = 0.0;
 
     public int getWeekOfYear() {
         return weekOfYear;

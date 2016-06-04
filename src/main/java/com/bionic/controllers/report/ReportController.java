@@ -6,6 +6,7 @@ import com.bionic.model.User;
 import com.bionic.service.OvertimeService;
 import com.bionic.service.ReportService;
 import com.bionic.service.UserService;
+import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Dima Budko
@@ -23,7 +25,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping(value = "summary/{year}/{number}")
+@RequestMapping(value = "summary/{userId}/{year}/{number}")
 public class ReportController {
 
     @Autowired
@@ -85,10 +87,11 @@ public class ReportController {
 
     private static final int NUMBER_OF_WEEKS_IN_PERIOD = 4;
 
-    @RequestMapping(value = "/Allowances.xls",method = RequestMethod.GET)
-    public ModelAndView allowancesExcelReport(ModelMap modelMap, ModelAndView modelAndView, @PathVariable("year") int year,@PathVariable("number") int number) {
+    @RequestMapping(value = "/Allowances.xlsx",method = RequestMethod.GET)
+    public ModelAndView allowancesExcelReport(ModelMap modelMap, ModelAndView modelAndView,
+                                              @PathVariable("userId") int userId, @PathVariable("year") int year, @PathVariable("number") int number) {
 
-        User user = userService.findById(35);
+        User user = userService.findById(userId);
         List<ReportDTO> dataBeanList = reportService.getReportList(user,year,number);
         int startWeek = number * NUMBER_OF_WEEKS_IN_PERIOD + 1;
         int endWeek = startWeek + NUMBER_OF_WEEKS_IN_PERIOD - 1;
@@ -110,7 +113,7 @@ public class ReportController {
         JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataBeanList,false);
         //  Object[][] data = {{"Berne", new Integer(22), "Bill Ott", "250 - 20th Ave."}};
         modelMap.put("datasource", beanColDataSource);
-        modelMap.put("format", "xls");
+        modelMap.put("format", "xlsx");
         modelMap.put("period","Week " +  startWeek + "-" +  endWeek);
         modelMap.put("name",user.getFirstName());
         modelMap.put("contractHours",user.getContractHours());

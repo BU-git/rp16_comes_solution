@@ -188,11 +188,11 @@ public class OvertimeServiceImpl implements OvertimeService {
         return overtimeDTO;
     }
 
-    private OvertimeDTO checkIfWeekend(OvertimeDTO overtimeDTO, LocalDateTime dayStartTime, LocalDateTime dayEndTime, long contractTime) {
+    private OvertimeDTO checkIfWeekend(OvertimeDTO overtimeDTO, LocalDateTime rideStartTime, LocalDateTime rideEndTime, long contractTime) {
         //hours in format like 10.75 or 2.4 etc.
-        double workedHours = dayEndTime.getHour() - dayStartTime.getHour() + 100 * (dayEndTime.getMinute() - dayStartTime.getMinute()) / 60 / 100;
+        double workedHours = rideEndTime.getHour() - rideStartTime.getHour() + 100 * (rideEndTime.getMinute() - rideStartTime.getMinute()) / 60 / 100;
 
-        switch (dayStartTime.getDayOfWeek()) {
+        switch (rideStartTime.getDayOfWeek()) {
             case SATURDAY:
                 double sat = overtimeDTO.getPaid150();
                 sat += workedHours;
@@ -203,7 +203,7 @@ public class OvertimeServiceImpl implements OvertimeService {
                 sun += workedHours;
                 overtimeDTO.setPaid200(sun);
                 break;
-            default: //TODO add tvt limit
+            default:
                 double paid100 = overtimeDTO.getPaid100();
                 if (paid100 >= contractTime) {
                     double overtime = overtimeDTO.getPaid130();

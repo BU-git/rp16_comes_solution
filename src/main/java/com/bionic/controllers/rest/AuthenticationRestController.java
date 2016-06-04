@@ -3,7 +3,6 @@ package com.bionic.controllers.rest;
 import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.exception.auth.impl.UserNotExistsException;
 import com.bionic.model.User;
-import com.bionic.service.MailService;
 import com.bionic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,9 +22,6 @@ public class AuthenticationRestController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    MailService mailService;
-
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED) // HTTP 201 "Created"
     public User createUser(@Valid @RequestBody User user,  HttpServletResponse response) throws BindException, UserExistsException {
@@ -41,14 +37,6 @@ public class AuthenticationRestController {
     @ResponseStatus(HttpStatus.OK)
     public void resetLink(@RequestBody String email) throws UserNotExistsException {
         userService.resetLink(email);
-    }
-
-    @RequestMapping(value = "/reportLink/{year}/{period}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public void reportLink(@PathVariable("year") int year,@PathVariable("period") int period) throws UserNotExistsException {
-        String email = userService.getAuthUser().getEmail();
-        mailService.sendReportLinks(email,4,2016);
-
     }
 
     @RequestMapping(value = "exist", method = RequestMethod.GET)
