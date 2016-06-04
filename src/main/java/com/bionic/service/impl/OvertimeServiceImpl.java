@@ -53,7 +53,7 @@ public class OvertimeServiceImpl implements OvertimeService {
         List<DayType> dayTypes = dayTypeDao.getDayTypesForPeriod(userId, periodStartTime, periodEndTime);
 
 
-        List<OvertimeDTO> overtime = new ArrayList<>();
+        List<OvertimeDTO> overtimeDTOs = new ArrayList<>();
 
         for (int week = 1; week <= NUMBER_OF_WEEKS_IN_PERIOD; week++) {
             Date weekStartTime = getPeriodWeekStartTime(year, period, week);
@@ -61,17 +61,17 @@ public class OvertimeServiceImpl implements OvertimeService {
             int contractHours = 0;
             contractHours = workScheduleService.getContractHoursForWeek(userId, weekStartTime);
             if (contractHours == 0) contractHours = 40;
-            long contractTime = contractHours * 60 * 60 * 1000;
             int weekNumber = getPeriodWeekOfYear(year, period, week);
 
-            OvertimeDTO overtimeDTO = getOvertimeForWeek(dayTypes, shifts, weekStartTime, weekEndTime, contractTime);
+            OvertimeDTO overtimeDTO = getOvertimeForWeek(dayTypes, shifts, weekStartTime, weekEndTime, contractHours);
             overtimeDTO.setWeekOfYear(weekNumber);
             overtimeDTO.setStartTime(weekStartTime);
             overtimeDTO.setEndTime(weekEndTime);
 
+            overtimeDTOs.add(overtimeDTO);
         }
 
-        return overtime;
+        return overtimeDTOs;
     }
 
     @Override
@@ -92,7 +92,6 @@ public class OvertimeServiceImpl implements OvertimeService {
 
             int contractHours = workScheduleService.getContractHoursForWeek(userId, weekStartTime);
             if (contractHours == 0) contractHours = 40;
-//            long contractTime = contractHours * 60 * 60 * 1000;
             int weekNumber = getMonthWeekOfYear(year, month, week);
 
             List<DayType> dayTypes = dayTypeDao.getDayTypesForPeriod(userId, monthStartTime, monthEndTime);
