@@ -2,6 +2,7 @@ package com.bionic.service;
 
 import com.bionic.config.PersistenceConfig;
 import com.bionic.config.RootConfig;
+import com.bionic.dto.OvertimeDTO;
 import com.bionic.dto.WorkingWeekDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +32,9 @@ public class OvertimeServiceTest {
     @Autowired
     private SummaryService summaryService;
 
+    @Autowired
+    private OvertimeService overtimeService;
+
     @Test
     public void getTestOverview() throws Exception {
         List<WorkingWeekDTO> summary = summaryService.getSummaryForMonth(61, 2016, 0);
@@ -46,5 +50,12 @@ public class OvertimeServiceTest {
 //                }
 //            }
 //        }
+    }
+
+    @Test
+    public void getTestOvertime() throws Exception {
+        List<OvertimeDTO> summary = overtimeService.getOvertimeForPeriod(3, 2016, 5);
+        System.out.println(summary);
+        System.out.println("=========");
     }
 }

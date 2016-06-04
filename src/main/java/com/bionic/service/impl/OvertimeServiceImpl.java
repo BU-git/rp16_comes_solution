@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -175,7 +176,6 @@ public class OvertimeServiceImpl implements OvertimeService {
                                           Date dayStartTime, Date dayEndTime, long contractHours) {
 
 
-        shift:
         for (Shift s : shifts) {
 
             List<Ride> rides = s.getRides();
@@ -194,7 +194,9 @@ public class OvertimeServiceImpl implements OvertimeService {
                         Date rideMiddleDate = getDayEndTime(r.getStartTime());
                         LocalDateTime rideMiddleTime = LocalDateTime.ofInstant(rideMiddleDate.toInstant(), ZoneId.systemDefault());
                         overtimeDTO = checkIfWeekend(overtimeDTO, rideStartTime, rideMiddleTime, contractHours);
-                        overtimeDTO = checkIfWeekend(overtimeDTO, rideMiddleTime.plusSeconds(1), rideEndTime, contractHours);
+                        if (!rideMiddleTime.plusSeconds(1).getDayOfWeek().equals(DayOfWeek.MONDAY))
+                            overtimeDTO = checkIfWeekend(overtimeDTO, rideMiddleTime.plusSeconds(1), rideEndTime, contractHours);
+                        //TODO send info from next overtimeDTO
                     }
 
                 }
@@ -205,7 +207,8 @@ public class OvertimeServiceImpl implements OvertimeService {
 
     private OvertimeDTO checkIfWeekend(OvertimeDTO overtimeDTO, LocalDateTime rideStartTime, LocalDateTime rideEndTime, long contractHours) {
         //hours in format like 10.75 or 2.4 etc.
-        double workedHours = rideEndTime.getHour() - rideStartTime.getHour() + (rideEndTime.getMinute() - rideStartTime.getMinute()) / 60;
+        double workedMinutes = (rideEndTime.getMinute() - rideStartTime.getMinute());
+        double workedHours = rideEndTime.getHour() - rideStartTime.getHour() + workedMinutes / 60;
 
         switch (rideStartTime.getDayOfWeek()) {
             case SATURDAY:
