@@ -1,7 +1,7 @@
 package com.bionic.service.impl;
 
 import com.bionic.config.RootConfig;
-import com.bionic.controllers.report.ReportDTO;
+import com.bionic.dto.AllowancesDTO;
 import com.bionic.dao.ShiftDao;
 import com.bionic.model.Ride;
 import com.bionic.model.Shift;
@@ -40,8 +40,8 @@ public class ReportServiceImpl implements ReportService {
 
 
     @Override
-    public List<ReportDTO> getReportList(User user, int year, int period) {
-        List<ReportDTO> reportList = new ArrayList<>();
+    public List<AllowancesDTO> getReportList(User user, int year, int period) {
+        List<AllowancesDTO> reportList = new ArrayList<>();
         Date periodStartTime = PeriodCalculator.getPeriodStartTime(year, period);
         Date periodEndTime = PeriodCalculator.getPeriodEndTime(year, period);
         System.err.println("testing " + shiftDao);
@@ -52,33 +52,33 @@ public class ReportServiceImpl implements ReportService {
             List<Ride> rides = shift.getRides();
             if (rides != null) {
                 i++;
-                ReportDTO reportDTO = new ReportDTO();
-                reportDTO.setRides("Ride " + i + " From " + rides.get(0).getStartTime() + " To " + rides.get(rides.size() - 1).getEndTime());
-                reportDTO.setTotalDays((int) TimeUnit.DAYS.convert((rides.get(rides.size() - 1).getEndTime().getTime() - rides.get(0).getStartTime().getTime()), TimeUnit.MILLISECONDS) + 1);
+                AllowancesDTO allowancesDTO = new AllowancesDTO();
+                allowancesDTO.setRides("Ride " + i + " From " + rides.get(0).getStartTime() + " To " + rides.get(rides.size() - 1).getEndTime());
+                allowancesDTO.setTotalDays((int) TimeUnit.DAYS.convert((rides.get(rides.size() - 1).getEndTime().getTime() - rides.get(0).getStartTime().getTime()), TimeUnit.MILLISECONDS) + 1);
                 int totalTimes = 0;
                 for (Ride ride : shift.getRides()) {
                     totalTimes += (ride.getEndTime().getTime() - ride.getStartTime().getTime()) / (1000 * 60 * 60);
                 }
-                reportDTO.setTotalTimes(totalTimes);
-                reportDTO.setAllowances(getAllowances(reportDTO, shift));
-                reportList.add(reportDTO);
+                allowancesDTO.setTotalTimes(totalTimes);
+                allowancesDTO.setAllowances(getAllowances(allowancesDTO, shift));
+                reportList.add(allowancesDTO);
             }
         }
         return reportList;
     }
 
-    public double getAllowances(ReportDTO reportDTO, Shift shift) {
+    public double getAllowances(AllowancesDTO allowancesDTO, Shift shift) {
         double allowances = 0;
         List<Ride>  rides = shift.getRides();
         int totalHours = (int)(rides.get(rides.size() - 1).getEndTime().getTime() - rides.get(0).getStartTime().getTime()) / (1000 * 60 * 60);
         // Single day ride
         if (totalHours <= 24) {
-            if (reportDTO.getTotalTimes() > 12) {
+            if (allowancesDTO.getTotalTimes() > 12) {
                 allowances += FOR_12_HOURS_RIDE;
                 System.err.println("test01 " + allowances);
             }
-            if (reportDTO.getTotalTimes() > 4) {
-                allowances += reportDTO.getTotalTimes() * FOR_LONGER_THAN_4_HOURS;
+            if (allowancesDTO.getTotalTimes() > 4) {
+                allowances += allowancesDTO.getTotalTimes() * FOR_LONGER_THAN_4_HOURS;
                 System.err.println("test02 " + allowances);
             }
             for (Ride ride :rides) {
@@ -103,7 +103,6 @@ public class ReportServiceImpl implements ReportService {
                 }
             }
             // Multiple day ride
-            //TODO
         } else {
             Date endDate = rides.get(0).getEndTime();
             allowances = 0;
@@ -211,7 +210,7 @@ public class ReportServiceImpl implements ReportService {
                 }
             }
 //            allowances += 24 * MULTIPLE_FIRST_DAY;
-//            allowances += (reportDTO.getTotalTimes() / 24) * MULTIPLE_INTERIM_DAYS;
+//            allowances += (allowancesDTO.getTotalTimes() / 24) * MULTIPLE_INTERIM_DAYS;
         }
         return allowances;
     }
@@ -230,7 +229,7 @@ public class ReportServiceImpl implements ReportService {
 //        System.out.println(shifts);
 //        System.err.println("testing");
         ReportService rs = context.getBean(ReportService.class);
-        List<ReportDTO> list = rs.getReportList(user, 2016, 5);
+        List<AllowancesDTO> list = rs.getReportList(user, 2016, 5);
         System.err.println("testing");
         System.out.println(list);
 //        Date date = new Date();

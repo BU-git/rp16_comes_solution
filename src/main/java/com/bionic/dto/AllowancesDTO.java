@@ -1,9 +1,9 @@
-package com.bionic.controllers.report;
+package com.bionic.dto;
 
 /**
  * author Dima Budko
  */
-public class ReportDTO {
+public class AllowancesDTO {
     private String rides;
     private Integer totalDays;
     private Integer totalTimes;

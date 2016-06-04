@@ -167,7 +167,7 @@ public class OvertimeServiceImpl implements OvertimeService {
             }
         }
         double total = overtimeDTO.getPaid100() + overtimeDTO.getPaid130() + overtimeDTO.getPaid150() + overtimeDTO.getPaid200();
-        overtimeDTO.setTotal(total);
+        overtimeDTO.setTotalHours(total);
         return overtimeDTO;
     }
 

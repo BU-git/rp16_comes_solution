@@ -7,7 +7,7 @@ public class OvertimeDTO {
     private int weekOfYear;
     private Date startTime;
     private Date endTime;
-    private double total = 0.0;
+    private double totalHours = 0.0;
     private double paid100 = 0.0;
     private double paid130 = 0.0;
     private double paid150 = 0.0;
@@ -43,12 +43,12 @@ public class OvertimeDTO {
         this.endTime = endTime;
     }
 
-    public double getTotal() {
-        return total;
+    public double getTotalHours() {
+        return totalHours;
     }
 
-    public void setTotal(double total) {
-        this.total = total;
+    public void setTotalHours(double totalHours) {
+        this.totalHours = totalHours;
     }
 
     public double getPaid100() {
@@ -129,6 +129,26 @@ public class OvertimeDTO {
 
     public void setUnpaidLeaveHours(double unpaidLeaveHours) {
         this.unpaidLeaveHours = unpaidLeaveHours;
+    }
+
+    @Override
+    public String toString() {
+        return "OvertimeDTO{" +
+                "weekOfYear=" + weekOfYear +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", totalHours=" + totalHours +
+                ", paid100=" + paid100 +
+                ", paid130=" + paid130 +
+                ", paid150=" + paid150 +
+                ", paid200=" + paid200 +
+                ", waitingdayHours=" + waitingdayHours +
+                ", sickdayHours=" + sickdayHours +
+                ", holidayHours=" + holidayHours +
+                ", atvHours=" + atvHours +
+                ", paidLeaveHours=" + paidLeaveHours +
+                ", unpaidLeaveHours=" + unpaidLeaveHours +
+                '}';
     }
 }
 
