@@ -21,4 +21,9 @@ public interface DayTypeDao extends JpaRepository<DayType, Integer> {
             "dt.startTime >= :startDate and dt.endTime <= :endDate")
     List<DayType> getDayTypesForPeriod(@Param("user_id") int user_id, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
+    @Query("select dt from DayType dt where dt.user.id =:user_id and " +
+            "dt.startTime >= :startDate and dt.endTime <= :endDate and " +
+            "dt.dayTypeName = com.bionic.model.dict.DayTypeEnum.WAITING_DAY")
+    List<DayType> getWainigDayForPeriod(@Param("user_id") int user_id, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
 }
