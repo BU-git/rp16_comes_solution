@@ -186,7 +186,6 @@
 					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Calibri" size="12" isBold="false"/>
 					<paragraph lineSpacing="Proportional"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{allowances}]]></textFieldExpression>
@@ -273,7 +272,6 @@
 					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Calibri" size="12" isBold="false"/>
 					<paragraph lineSpacing="Proportional"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{allowances}]]></textFieldExpression>

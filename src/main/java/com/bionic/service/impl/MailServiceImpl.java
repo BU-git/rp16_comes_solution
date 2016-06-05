@@ -1,10 +1,9 @@
 package com.bionic.service.impl;
 
 import com.bionic.config.MailConfig;
-import com.bionic.dao.UserKeyDao;
 import com.bionic.service.MailService;
-import com.bionic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailSender;
@@ -18,18 +17,13 @@ import javax.annotation.Resource;
  * @author taras.yaroshchuk
  */
 @Service
+@Lazy
 @Async
 @PropertySource("classpath:mail.properties")
 public class MailServiceImpl implements MailService {
 
     @Autowired
     private MailSender mailSender;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserKeyDao userKeyDao;
 
     @Resource
     private Environment env;

@@ -18,6 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+import static com.bionic.service.util.MonthCalculator.getMonthName;
+
 /**
  * @author Dima Budko
  */
@@ -66,7 +68,16 @@ public class ReportController {
         //  Object[][] data = {{"Berne", new Integer(22), "Bill Ott", "250 - 20th Ave."}};
         modelMap.put("datasource", beanColDataSource);
         modelMap.put("format", "xlsx");
-        modelMap.put("period","Week " +  startWeek + "-" +  endWeek);
+
+        if (user.isFourWeekPayOff()) {
+            modelMap.put("reportType", "PERIOD OVERVIEW");
+            modelMap.put("periodName", "Period:");
+            modelMap.put("period", "Week " + startWeek + "-" + endWeek);
+        } else {
+            modelMap.put("reportType", "MONTHLY OVERVIEW");
+            modelMap.put("periodName", "Month:");
+            modelMap.put("period", getMonthName(number));
+        }
         modelMap.put("name",user.getFirstName());
         modelMap.put("contractHours",user.getContractHours());
         modelMap.put("totalDays",totalDays);
@@ -79,7 +90,14 @@ public class ReportController {
     @RequestMapping(value = "/Overtime.xlsx",method = RequestMethod.GET)
     public ModelAndView overtimeExcelReport(ModelMap modelMap, ModelAndView modelAndView,@PathVariable("userId") int userId, @PathVariable("year") int year,@PathVariable("number") int number) throws ShiftsNotFoundException {
         User user = userService.findById(userId);
-        List<OvertimeDTO> overtimeWeeks = overtimeService.getOvertimeForPeriod(userId, year, number);
+        List<OvertimeDTO> overtimeWeeks;
+
+        if (user.isFourWeekPayOff()) {
+            overtimeWeeks = overtimeService.getOvertimeForPeriod(userId, year, number);
+        } else {
+            overtimeWeeks = overtimeService.getOvertimeForMonth(userId, year, number);
+        }
+
         System.out.println(overtimeWeeks);
         int startWeek = number * NUMBER_OF_WEEKS_IN_PERIOD + 1;
         int endWeek = startWeek + NUMBER_OF_WEEKS_IN_PERIOD - 1;
@@ -87,7 +105,17 @@ public class ReportController {
 
         modelMap.put("datasource", beanColDataSource);
         modelMap.put("format", "xlsx");
-        modelMap.put("period","Week " +  startWeek + "-" +  endWeek);
+
+        if (user.isFourWeekPayOff()) {
+            modelMap.put("reportType", "PERIOD OVERVIEW");
+            modelMap.put("periodName", "Period:");
+            modelMap.put("period", "Week " + startWeek + "-" + endWeek);
+        } else {
+            modelMap.put("reportType", "MONTHLY OVERVIEW");
+            modelMap.put("periodName", "Month:");
+            modelMap.put("period", getMonthName(number));
+        }
+
         modelMap.put("name", user.getFirstName());
         modelMap.put("overviewType", "Overtime");
         modelMap.put("contractHours", user.getContractHours());
