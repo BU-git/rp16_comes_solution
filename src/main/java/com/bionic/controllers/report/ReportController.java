@@ -76,7 +76,15 @@ public class ReportController {
             JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataBeanList, false);
             modelMap.put("datasource", beanColDataSource);
             modelMap.put("format", "xlsx");
-            modelMap.put("period", "Week " + startWeek + "-" + endWeek);
+            if (user.isFourWeekPayOff()) {
+                modelMap.put("reportType", "PERIOD OVERVIEW");
+                modelMap.put("periodName", "Period:");
+                modelMap.put("period", "Week " + startWeek + "-" + endWeek);
+            } else {
+                modelMap.put("reportType", "MONTHLY OVERVIEW");
+                modelMap.put("periodName", "Month:");
+                modelMap.put("period", getMonthName(number));
+            }
             modelMap.put("name", user.getFirstName());
             modelMap.put("contractHours", user.getContractHours());
             modelMap.put("totalDays", totalDays);
