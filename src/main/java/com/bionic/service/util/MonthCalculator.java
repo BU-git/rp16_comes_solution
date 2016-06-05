@@ -37,4 +37,9 @@ public class MonthCalculator {
         return endDate;
     }
 
+    public static String getMonthName(int monthNumber) {
+        String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        return monthNames[monthNumber];
+    }
+
 }

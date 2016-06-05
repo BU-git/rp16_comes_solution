@@ -26,13 +26,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import static com.bionic.service.util.WorkScheduleUtil.*;
+import static com.bionic.service.util.WorkScheduleUtil.createEmptyWorkSchedule;
 
 /**
  * @author vitalii.levash
  * @author Dima Budko
  */
-
 @Service
 @PropertySource("classpath:mail.properties")
 public class UserServiceImpl implements UserService {
