@@ -8,6 +8,7 @@ import com.bionic.model.Shift;
 import com.bionic.model.User;
 import com.bionic.service.ReportService;
 import com.bionic.service.UserService;
+import com.bionic.service.util.MonthCalculator;
 import com.bionic.service.util.PeriodCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -42,8 +43,16 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public List<AllowancesDTO> getReportList(User user, int year, int period) {
         List<AllowancesDTO> reportList = new ArrayList<>();
-        Date periodStartTime = PeriodCalculator.getPeriodStartTime(year, period);
-        Date periodEndTime = PeriodCalculator.getPeriodEndTime(year, period);
+
+        Date periodStartTime;
+        Date periodEndTime;
+        if (user.isFourWeekPayOff()) {
+            periodStartTime = PeriodCalculator.getPeriodStartTime(year, period);
+            periodEndTime = PeriodCalculator.getPeriodEndTime(year, period);
+        } else {
+            periodStartTime = MonthCalculator.getMonthStartTime(year,period);
+            periodEndTime = MonthCalculator.getMonthEndTime(year,period);
+        }
         System.err.println("testing " + shiftDao);
         List<Shift> shifts = shiftDao.getForPeriod(user.getId(), periodStartTime, periodEndTime);
         System.err.println("testing " + shifts);

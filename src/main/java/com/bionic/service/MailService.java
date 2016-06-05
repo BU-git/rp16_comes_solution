@@ -1,5 +1,7 @@
 package com.bionic.service;
 
+import com.bionic.exception.auth.impl.UserNotExistsException;
+
 /**
  * @author taras.yaroshchuk
  */
@@ -14,5 +16,5 @@ public interface MailService {
 
     void sendTemporaryPassword(String email, String password);
 
-    void sendReportLinks(String email, int userId, int year, int period);
+    void sendReportLinks(String email, int userId, int year, int period) throws UserNotExistsException;
 }

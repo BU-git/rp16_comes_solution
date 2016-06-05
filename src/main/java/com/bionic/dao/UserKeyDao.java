@@ -16,4 +16,7 @@ public interface UserKeyDao extends JpaRepository<UserKey, Integer> {
     @Query("select b from UserKey b where b.secret = :secret and b.keyType='verification'")
     UserKey findBySecretForVerification(@Param("secret") long secret);
 
+    @Query("select b from UserKey b where b.secret = :secret and b.keyType='report'")
+    UserKey findBySecretForReport(@Param("secret") long secret);
+
 }

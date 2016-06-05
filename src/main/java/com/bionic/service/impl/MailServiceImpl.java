@@ -2,6 +2,9 @@ package com.bionic.service.impl;
 
 import com.bionic.config.MailConfig;
 import com.bionic.dao.UserKeyDao;
+import com.bionic.exception.auth.impl.UserNotExistsException;
+import com.bionic.model.User;
+import com.bionic.model.UserKey;
 import com.bionic.service.MailService;
 import com.bionic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,38 +79,48 @@ public class MailServiceImpl implements MailService {
         sendMail(email, subject, message);
     }
 
-    public void sendReportLinks(String email, int userId,  int year, int period) {
+    public void sendReportLinks(String email, int userId,  int year, int period) throws UserNotExistsException{
 
-        StringBuilder overtimeUrl = new StringBuilder();
-        overtimeUrl
-                .append(env.getProperty(URL))
-                .append("/summary/")
-                .append(userId)
-                .append("/")
-                .append(year)
-                .append("/")
-                .append(period)
-                .append("/")
-                .append("Overtime.xlsx");
+        User user = userService.findById(userId);
+        String message = "";
+        if (!(user == null)) {
+            long key = System.currentTimeMillis();
+            UserKey userKey = new UserKey(key, user.getEmail(), "report");
+            userKeyDao.saveAndFlush(userKey);
+            StringBuilder overtimeUrl = new StringBuilder();
+            overtimeUrl
+                    .append(env.getProperty(URL))
+                    .append("/summary/")
+                    .append(userId)
+                    .append("/")
+                    .append(year)
+                    .append("/")
+                    .append(period)
+                    .append("/")
+                    .append("Overtime.xlsx");
 
 
-        String message = "Your link to download Overtime report: " + overtimeUrl + " \n";
-        StringBuilder allowancesUrl = new StringBuilder();
-        allowancesUrl
-                .append(env.getProperty(URL))
-                .append("/summary/")
-                .append(userId)
-                .append("/")
-                .append(year)
-                .append("/")
-                .append(period)
-                .append("/")
-                .append("Allowances.xlsx");
+            message = "Your link to download Overtime report: " + overtimeUrl + "?key="+ key + " \n";
+            key = System.currentTimeMillis();
+            userKey = new UserKey(key, user.getEmail(), "report");
+            userKeyDao.saveAndFlush(userKey);
+            StringBuilder allowancesUrl = new StringBuilder();
+            allowancesUrl
+                    .append(env.getProperty(URL))
+                    .append("/summary/")
+                    .append(userId)
+                    .append("/")
+                    .append(year)
+                    .append("/")
+                    .append(period)
+                    .append("/")
+                    .append("Allowances.xlsx");
 
-        message += "Your link to download Allowances report: " + allowancesUrl + " \n";
-
+            message += "Your link to download Allowances report: " + allowancesUrl + "?key="+ key +" \n";
+        } else {
+            throw new UserNotExistsException(email);
+        }
         String subject = "Overtime & Allowances reports";
         sendMail(email, subject, message);
-
     }
 }
