@@ -141,8 +141,8 @@ public class OvertimeServiceImpl implements OvertimeService {
             Date dayEndTime = getDayEndTime(weekStartTime, day);
 
             overtimeDTO = getOvertimeForDay(overtimeDTO, dayTypes, shifts, dayStartTime, dayEndTime, contractHours);
-            overtimeDTO = fillByDayTypes(overtimeDTO, dayTypes, weekStartTime, weekEndTime);
         }
+        overtimeDTO = fillByDayTypes(overtimeDTO, dayTypes, weekStartTime, weekEndTime);
 
         return overtimeDTO;
     }
@@ -197,7 +197,6 @@ public class OvertimeServiceImpl implements OvertimeService {
     private OvertimeDTO getOvertimeForDay(OvertimeDTO overtimeDTO, List<DayType> dayTypes, List<Shift> shifts,
                                           Date dayStartTime, Date dayEndTime, long contractHours) {
 
-
         for (Shift s : shifts) {
 
             List<Ride> rides = s.getRides();
@@ -205,7 +204,7 @@ public class OvertimeServiceImpl implements OvertimeService {
 
             for (Ride r : rides) {
                 if (r.getEndTime().getTime() > dayStartTime.getTime()) {
-                    if (r.getStartTime().getTime() > dayEndTime.getTime()) continue ;
+                    if (r.getStartTime().getTime() > dayEndTime.getTime()) continue;
                     //for valid rides
                     LocalDateTime rideStartTime = LocalDateTime.ofInstant(r.getStartTime().toInstant(), ZoneId.systemDefault());
                     LocalDateTime rideEndTime = LocalDateTime.ofInstant(r.getEndTime().toInstant(), ZoneId.systemDefault());
