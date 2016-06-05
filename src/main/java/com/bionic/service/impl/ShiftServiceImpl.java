@@ -1,5 +1,6 @@
 package com.bionic.service.impl;
 
+import com.bionic.dao.RideDao;
 import com.bionic.dao.ShiftDao;
 import com.bionic.exception.shift.impl.ShiftOverlapsException;
 import com.bionic.model.Ride;
@@ -21,6 +22,9 @@ public class ShiftServiceImpl implements ShiftService {
 
     @Autowired
     private ShiftDao shiftDao;
+
+    @Autowired
+    private RideDao rideDao;
 
     @Override
     public Shift addShift(Shift shift) throws ShiftOverlapsException {
@@ -47,6 +51,7 @@ public class ShiftServiceImpl implements ShiftService {
     }
 
     @Override
+    @Transactional
     public Shift editShift(Shift shift) throws ShiftOverlapsException {
         int userId = shift.getUser().getId();
         int shiftId = shift.getId();
@@ -59,6 +64,16 @@ public class ShiftServiceImpl implements ShiftService {
                 ride.setShift(shift);
             }
         }
+
+        Shift existingShift = shiftDao.findOne(shift.getId());
+        for (Ride rExist : existingShift.getRides()) {
+            boolean deletedRide = true;
+            for (Ride rNew : shift.getRides()){
+                if (rExist.equals(rNew)) deletedRide = false;
+            }
+            if (deletedRide) rideDao.deleteById(rExist.getId());
+        }
+
         return shiftDao.saveAndFlush(shift);
     }
 

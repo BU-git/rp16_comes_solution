@@ -2,9 +2,11 @@ package com.bionic.dao;
 
 import com.bionic.model.Shift;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -22,6 +24,8 @@ public interface ShiftDao extends JpaRepository<Shift, Integer> {
     List<Shift> getForPeriod(@Param("userId") int userId,
                              @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
+    @Modifying
+    @Transactional
     @Query("DELETE FROM Shift s where s.user.id=:userId")
     void deleteByUser(@Param("userId") int userId);
 

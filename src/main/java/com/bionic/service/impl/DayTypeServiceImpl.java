@@ -33,7 +33,7 @@ public class DayTypeServiceImpl implements DayTypeService {
             LocalDateTime fourWeeksAgo = dayTypeStartDay.minusWeeks(4);
             Date fourWeekAgoDate = Date.from(fourWeeksAgo.atZone(ZoneId.systemDefault()).toInstant());
 
-            List<DayType> waitingDays = dayTypeDao.getWainigDayForPeriod(dayType.getUser().getId(), fourWeekAgoDate, dayType.getStartTime());
+            List<DayType> waitingDays = dayTypeDao.getWaitingDayForPeriod(dayType.getUser().getId(), fourWeekAgoDate, dayType.getStartTime());
             if (ObjectUtils.isEmpty(waitingDays)) dayType.setDayTypeName(DayTypeEnum.WAITING_DAY);
         }
         return dayTypeDao.saveAndFlush(dayType);
