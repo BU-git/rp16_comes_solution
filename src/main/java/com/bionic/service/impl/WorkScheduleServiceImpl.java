@@ -86,7 +86,11 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
 
     @Override
     public WorkSchedule getActualWorkSchedule(int userId, Date date) {
-        return workScheduleDao.getActualWorkSchedule(userId, date);
+        WorkSchedule actualWorkSchedule = workScheduleDao.getActualWorkSchedule(userId, date);
+        if (actualWorkSchedule == null) {
+            actualWorkSchedule = workScheduleDao.getOldestWorkSchedule(userId);
+        }
+        return actualWorkSchedule;
     }
 
     @Override
