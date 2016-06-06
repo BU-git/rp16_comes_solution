@@ -19,6 +19,8 @@
 			<![CDATA[]]>
 		</queryString>
 	</subDataset>
+    <parameter name="reportType" class="java.lang.String"/>
+	<parameter name="periodName" class="java.lang.String"/>
 	<parameter name="period" class="java.lang.String"/>
 	<parameter name="name" class="java.lang.String"/>
 	<parameter name="contractHours" class="java.lang.Integer"/>
@@ -51,8 +53,8 @@
 	</background>
 	<title>
 		<band height="152" splitType="Stretch">
-			<staticText>
-				<reportElement style="Title" x="10" y="0" width="270" height="40" uuid="bc1ce1da-8232-46ea-be55-cec4abb986dd"/>
+			<textField>
+				<reportElement x="10" y="0" width="270" height="40" uuid="bc1ce1da-8232-46ea-be55-cec4abb986dd"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -60,11 +62,11 @@
 					<rightPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="22"/>
+					<font size="16"/>
 				</textElement>
-				<text><![CDATA[PERIOD OVERVIEW]]></text>
-			</staticText>
-			<staticText>
+				<textFieldExpression><![CDATA[$P{reportType}]]></textFieldExpression>
+			</textField>
+			<textField>
 				<reportElement positionType="FixRelativeToBottom" x="10" y="40" width="170" height="20" uuid="8240065e-64b6-4170-b5d9-6341598e7b35"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -75,10 +77,10 @@
 				<textElement textAlignment="Center">
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[Period: (Periode:)]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$P{periodName}]]></textFieldExpression>
+			</textField>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="10" y="60" width="168" height="30" uuid="ab7b108e-876a-4a10-a85f-312b3a9b5ae6"/>
+				<reportElement positionType="FixRelativeToBottom" x="10" y="60" width="170" height="30" uuid="ab7b108e-876a-4a10-a85f-312b3a9b5ae6"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -91,7 +93,7 @@
 				<text><![CDATA[Name user]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="10" y="90" width="168" height="40" uuid="6e89de1e-efa5-412a-a099-e797f128a405"/>
+				<reportElement positionType="FixRelativeToBottom" x="10" y="90" width="170" height="40" uuid="6e89de1e-efa5-412a-a099-e797f128a405"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -114,7 +116,7 @@
 				<textFieldExpression><![CDATA[$P{period}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="178" y="90" width="100" height="40" uuid="efc7c8f5-5ec7-43f6-97d9-ba736d644b56"/>
+				<reportElement x="180" y="90" width="100" height="40" uuid="efc7c8f5-5ec7-43f6-97d9-ba736d644b56"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
@@ -124,7 +126,7 @@
 				<textFieldExpression><![CDATA[$P{contractHours}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="60" width="98" height="30" uuid="959adfb8-b68f-43c6-ab41-0e00d68d1fb9"/>
+				<reportElement x="180" y="60" width="100" height="30" uuid="959adfb8-b68f-43c6-ab41-0e00d68d1fb9"/>
 				<box>
 					<topPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.5" lineStyle="Solid" lineColor="#000000"/>
