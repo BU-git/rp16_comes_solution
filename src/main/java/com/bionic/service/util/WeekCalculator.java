@@ -11,6 +11,44 @@ import static com.bionic.service.util.PeriodCalculator.NUMBER_OF_WEEKS_IN_PERIOD
  */
 public class WeekCalculator {
 
+    public static final double MILLIS_IN_HOUR = 1000 * 60 *60d;
+
+    public static Date getWorkingWeekEndTime(Date weekEndTime) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(weekEndTime);
+        calendar.add(Calendar.DAY_OF_WEEK, -2);
+
+        Date workingWeekEndTime = calendar.getTime();
+        return workingWeekEndTime;
+    }
+
+    public static Date getSaturdayEndTime(Date weekEndTime) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(weekEndTime);
+        calendar.add(Calendar.DAY_OF_WEEK, -1);
+
+        Date workingWeekEndTime = calendar.getTime();
+        return workingWeekEndTime;
+    }
+
+    public static Date getSaturdayStartTime(Date weekStartTime) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(weekStartTime);
+        calendar.add(Calendar.DAY_OF_WEEK, 5);
+
+        Date workingWeekEndTime = calendar.getTime();
+        return workingWeekEndTime;
+    }
+
+    public static Date getSundayStartTime(Date weekStartTime) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(weekStartTime);
+        calendar.add(Calendar.DAY_OF_WEEK, 6);
+
+        Date workingWeekEndTime = calendar.getTime();
+        return workingWeekEndTime;
+    }
+
     public static Date getMonthWeekStartTime(int year, int month, int week) {
 
         Calendar calendar = Calendar.getInstance();

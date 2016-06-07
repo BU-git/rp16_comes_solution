@@ -19,6 +19,8 @@ public interface OvertimeService {
 
     List<OvertimeDTO> getOvertimeForMonth(int userId, int year, int month) throws ShiftsNotFoundException;
 
-    OvertimeDTO getOvertimeForWeek(OvertimeDTO overtimeDTO, List<DayType> dayTypes, List<Shift> shifts, Date weekStartTime, Date weekEndTime, long contractTime);
+    long getWorkedTimeForPeriod(List<Shift> shifts, Date startTime, Date endTime);
+
+    OvertimeDTO getOvertimeForWeek(List<DayType> dayTypes, List<Shift> shifts, Date weekStartTime, Date weekEndTime, long contractTime);
 
 }

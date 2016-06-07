@@ -32,7 +32,7 @@ public interface WorkScheduleService {
 
     int getContractHoursForWeek(int userId, Date weekStartDate);
 
-    int getContractHoursMondayFriday(WorkSchedule workSchedule);
+    int getContractHoursForWorkingWeek(WorkSchedule workSchedule);
 
-    int getContractHoursMondayFriday(int userId, Date weekStartDate);
+    int getContractHoursForWorkingWeek(int userId, Date weekStartDate);
 }

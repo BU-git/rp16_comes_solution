@@ -73,7 +73,7 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
     }
 
     @Override
-    public int getContractHoursMondayFriday(WorkSchedule workSchedule) {
+    public int getContractHoursForWorkingWeek(WorkSchedule workSchedule) {
         int hours = 0;
         if (workSchedule.getMonday() != null) hours += workSchedule.getMonday();
         if (workSchedule.getTuesday() != null) hours += workSchedule.getTuesday();
@@ -101,9 +101,9 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
     }
 
     @Override
-    public int getContractHoursMondayFriday(int userId, Date weekStartDate) {
+    public int getContractHoursForWorkingWeek(int userId, Date weekStartDate) {
         WorkSchedule workSchedule = getActualWorkSchedule(userId, weekStartDate);
-        int contractHours = getContractHoursMondayFriday(workSchedule);
+        int contractHours = getContractHoursForWorkingWeek(workSchedule);
         return contractHours;
     }
 }

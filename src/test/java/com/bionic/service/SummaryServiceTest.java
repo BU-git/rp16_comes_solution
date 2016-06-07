@@ -82,6 +82,15 @@ public class SummaryServiceTest {
         List<WorkingWeekDTO> summary = summaryService.getSummaryForPeriod(61, 2016, 4);
         System.out.println(summary);
         System.out.println("=========");
+        Date weekStartTime = getMonthWeekStartTime(2016, 5, 1);
+        System.out.println("--" + weekStartTime);
+        Date weekEndTime = getMonthWeekEndTime(2016, 5, 1);
+        System.out.println("--" + getWorkingWeekEndTime(weekEndTime));
+        System.out.println("--" + getSaturdayStartTime(weekStartTime));
+        System.out.println("--" + getSaturdayEndTime(weekEndTime));
+        System.out.println("--" + getSundayStartTime(weekStartTime));
+        System.out.println("--" + weekEndTime);
+
 //        for (int year = 1990; year < 2020; year++) {
 //            for (int month = 0; month < 12; month++) {
 //                Date monthStart = getMonthStartTime(year, month);
