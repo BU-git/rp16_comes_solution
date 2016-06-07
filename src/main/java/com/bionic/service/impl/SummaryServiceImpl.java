@@ -57,7 +57,7 @@ public class SummaryServiceImpl implements SummaryService {
 
             WorkingWeekDTO workingWeek = getSummaryForWeek(shifts, weekStartTime, weekEndTime, contractTime);
             workingWeek.setWeekNumber(weekNumber);
-            System.out.println("worked time for week " + weekNumber + " = " + workingWeek.getWorkedTime());
+            System.out.println("worked time for week " + weekNumber + " = " + (workingWeek.getWorkedTime() / 1000 / 60 / 60d));
             summary.add(workingWeek);
         }
 
@@ -89,7 +89,7 @@ public class SummaryServiceImpl implements SummaryService {
 
             WorkingWeekDTO workingWeek = getSummaryForWeek(shifts, weekStartTime, weekEndTime, contractTime);
             workingWeek.setWeekNumber(weekNumber);
-            System.out.println("worked time for week " + weekNumber + " = " + workingWeek.getWorkedTime());
+            System.out.println("worked time for week " + weekNumber + " = " + (workingWeek.getWorkedTime() / 1000 / 60 / 60d));
             summary.add(workingWeek);
         }
 
@@ -132,15 +132,15 @@ public class SummaryServiceImpl implements SummaryService {
                         workedTime += tempWorkedTime;
                         shiftSet.add(s);
                     }
-                    System.out.println("temp worked time = " + tempWorkedTime);
+                    System.out.println("temp worked time = " + (tempWorkedTime/ 1000 / 60 / 60d));
                     if (i == 0) {
                         tempWorkedTime += r.getStartTime().getTime() - s.getStartTime().getTime();
-                        System.out.println("temp worked time first = " + tempWorkedTime);
+                        System.out.println("temp worked time first = " + (tempWorkedTime / 1000 / 60 / 60d));
                         workedTime += r.getStartTime().getTime() - s.getStartTime().getTime();
                     }
                     if (i == rides.size()-1) {
                         tempWorkedTime += s.getEndTime().getTime() - r.getEndTime().getTime();
-                        System.out.println("temp worked time last = " + tempWorkedTime);
+                        System.out.println("temp worked time last = " + (tempWorkedTime / 1000 / 60 / 60d));
                         workedTime += s.getEndTime().getTime() - r.getEndTime().getTime();
                     }
 
@@ -159,7 +159,7 @@ public class SummaryServiceImpl implements SummaryService {
                         } else if (sequentialWorkedTime > 0) {
                             sequentialWorkedTime += tempWorkedTime;
                             long tempPauseTime = getPauseTime(sequentialWorkedTime);
-                            System.out.println("sequential worked time = " + sequentialWorkedTime);
+                            System.out.println("sequential worked time = " + (sequentialWorkedTime / 1000 / 60 / 60d));
                             pauseTime += tempPauseTime;
                             sequentialWorkedTime = 0;
                         } else {
@@ -171,7 +171,7 @@ public class SummaryServiceImpl implements SummaryService {
                         if (sequentialWorkedTime > 0) {
                             sequentialWorkedTime += tempWorkedTime;
                             long tempPauseTime = getPauseTime(sequentialWorkedTime);
-                            System.out.println("sequential worked time = " + sequentialWorkedTime);
+                            System.out.println("sequential worked time = " + (sequentialWorkedTime / 1000 / 60 / 60d));
                             pauseTime += tempPauseTime;
                             sequentialWorkedTime = 0;
                         } else {
@@ -187,10 +187,10 @@ public class SummaryServiceImpl implements SummaryService {
         long overTime = 0;
         long actualWorkedTime = workedTime - pauseTime;
         if (actualWorkedTime >= contractTime) overTime = actualWorkedTime - contractTime;
-        System.out.println("worked time = " + workedTime);
-        System.out.println("pause time = " + pauseTime);
-        System.out.println("actual worked time = " + actualWorkedTime);
-        System.out.println("contract time = " + contractTime);
+        System.out.println("worked time = " + (workedTime / 1000 / 60 / 60d));
+        System.out.println("pause time = " + (pauseTime / 1000 / 60 / 60d));
+        System.out.println("actual worked time = " + (actualWorkedTime / 1000 / 60 / 60d));
+        System.out.println("contract time = " + (contractTime / 1000 / 60 / 60d));
         workingWeek.setWorkedTime(actualWorkedTime);
         workingWeek.setOverTime(overTime);
         workingWeek.setShiftList(shiftSet);

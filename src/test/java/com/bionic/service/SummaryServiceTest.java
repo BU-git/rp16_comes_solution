@@ -79,7 +79,7 @@ public class SummaryServiceTest {
 
     @Test
     public void getTestSummary() throws Exception {
-        List<WorkingWeekDTO> summary = summaryService.getSummaryForMonth(61, 2016, 0);
+        List<WorkingWeekDTO> summary = summaryService.getSummaryForPeriod(61, 2016, 4);
         System.out.println(summary);
         System.out.println("=========");
 //        for (int year = 1990; year < 2020; year++) {

@@ -148,33 +148,31 @@ public class OvertimeServiceImpl implements OvertimeService {
     }
 
     private OvertimeDTO fillByDayTypes(OvertimeDTO overtimeDTO, List<DayType> dayTypes, Date weekStartTime, Date weekEndTime) {
-        final int standartHours = 8;
+        final int standardHours = 8;
         for(DayType dayType: dayTypes) {
-            if (dayType.getStartTime().after(weekEndTime) && dayType.getEndTime().before(weekStartTime)) continue;
+            if (dayType.getStartTime().after(weekEndTime) || dayType.getEndTime().before(weekStartTime)) continue;
 
-            LocalDateTime dayTypeStartTime = LocalDateTime.ofInstant(dayType.getStartTime().toInstant(), ZoneId.systemDefault());
-            LocalDateTime dayTypeEndTime = LocalDateTime.ofInstant(dayType.getEndTime().toInstant(), ZoneId.systemDefault());
-            double workedHours = dayTypeEndTime.getHour() - dayTypeStartTime.getHour() + 100 * (dayTypeEndTime.getMinute() - dayTypeStartTime.getMinute()) / 60 / 100;
+            double workedHours = (dayType.getEndTime().getTime() - dayType.getStartTime().getTime()) / 1000 / 60 / 60;
 
             switch (dayType.getDayTypeName()) {
                 case WAITING_DAY:
                     double waitingDayHours = overtimeDTO.getWaitingdayHours();
-                    waitingDayHours += standartHours;
+                    waitingDayHours += standardHours;
                     overtimeDTO.setWaitingdayHours(waitingDayHours);
                     break;
                 case SICK_DAY:
                     double sickDayHours = overtimeDTO.getSickdayHours();
-                    sickDayHours += standartHours;
+                    sickDayHours += standardHours;
                     overtimeDTO.setSickdayHours(sickDayHours);
                     break;
                 case HOLIDAY:
                     double holidayHours = overtimeDTO.getHolidayHours();
-                    holidayHours += standartHours;
+                    holidayHours += standardHours;
                     overtimeDTO.setHolidayHours(holidayHours);
                     break;
                 case ATV_DAY:
                     double AtvHours = overtimeDTO.getAtvHours();
-                    AtvHours += standartHours;
+                    AtvHours += standardHours;
                     overtimeDTO.setAtvHours(AtvHours);
                     break;
                 case PAID_LEAVE_OF_ABSENCE:
@@ -193,6 +191,8 @@ public class OvertimeServiceImpl implements OvertimeService {
         overtimeDTO.setTotalHours(total);
         return overtimeDTO;
     }
+
+
 
     private OvertimeDTO getOvertimeForDay(OvertimeDTO overtimeDTO, List<DayType> dayTypes, List<Shift> shifts,
                                           Date dayStartTime, Date dayEndTime, long contractHours) {

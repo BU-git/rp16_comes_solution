@@ -3,7 +3,6 @@ package com.bionic.controllers.report;
 import com.bionic.dao.UserKeyDao;
 import com.bionic.dto.AllowancesDTO;
 import com.bionic.dto.OvertimeDTO;
-import com.bionic.exception.auth.impl.UserExistsException;
 import com.bionic.exception.auth.impl.UserNotExistsException;
 import com.bionic.exception.shift.impl.ShiftsNotFoundException;
 import com.bionic.model.User;
@@ -103,34 +102,35 @@ public class ReportController {
         UserKey userKey = userKeyDao.findBySecretForReport(key);
         if (userKey != null) {
             User user = userService.findById(userId);
-            List<OvertimeDTO> overtimeWeeks = overtimeService.getOvertimeForPeriod(userId, year, number);
-            System.out.println(overtimeWeeks);
+            List<OvertimeDTO> overtimeWeeks;
             int startWeek = number * NUMBER_OF_WEEKS_IN_PERIOD + 1;
             int endWeek = startWeek + NUMBER_OF_WEEKS_IN_PERIOD - 1;
+
+            if (user.isFourWeekPayOff()) {
+                overtimeWeeks = overtimeService.getOvertimeForPeriod(userId, year, number);
+            } else {
+                overtimeWeeks = overtimeService.getOvertimeForMonth(userId, year, number);
+            }
+
+            System.out.println(overtimeWeeks);
+
             JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(overtimeWeeks, false);
 
             modelMap.put("datasource", beanColDataSource);
             modelMap.put("format", "xlsx");
-            modelMap.put("period", "Week " + startWeek + "-" + endWeek);
             modelMap.put("name", user.getFirstName());
             modelMap.put("overviewType", "Overtime");
             modelMap.put("contractHours", user.getContractHours());
-        modelMap.put("datasource", beanColDataSource);
-        modelMap.put("format", "xlsx");
 
-        if (user.isFourWeekPayOff()) {
-            modelMap.put("reportType", "PERIOD OVERVIEW");
-            modelMap.put("periodName", "Period:");
-            modelMap.put("period", "Week " + startWeek + "-" + endWeek);
-        } else {
-            modelMap.put("reportType", "MONTHLY OVERVIEW");
-            modelMap.put("periodName", "Month:");
-            modelMap.put("period", getMonthName(number));
-        }
-
-        modelMap.put("name", user.getFirstName());
-        modelMap.put("overviewType", "Overtime");
-        modelMap.put("contractHours", user.getContractHours());
+            if (user.isFourWeekPayOff()) {
+                modelMap.put("reportType", "PERIOD OVERVIEW");
+                modelMap.put("periodName", "Period:");
+                modelMap.put("period", "Week " + startWeek + "-" + endWeek);
+            } else {
+                modelMap.put("reportType", "MONTHLY OVERVIEW");
+                modelMap.put("periodName", "Month:");
+                modelMap.put("period", getMonthName(number));
+            }
 
             OvertimeDTO overtimeSum = overtimeService.getOvertimeSum(overtimeWeeks);
             System.out.println(overtimeSum);

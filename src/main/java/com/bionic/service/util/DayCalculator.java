@@ -45,4 +45,15 @@ public class DayCalculator {
 
         return  calendar.getTime();
     }
+
+    public static boolean rideTraversesTwoDays(Date rideStartTime, Date rideEndTime) {
+        Calendar start = Calendar.getInstance();
+        start.setTime(rideStartTime);
+        Calendar end = Calendar.getInstance();
+        end.setTime(rideEndTime);
+
+        boolean rideTraversesTwoDays = true;
+        if (start.get(Calendar.DAY_OF_MONTH) == end.get(Calendar.DAY_OF_MONTH)) rideTraversesTwoDays = false;
+        return rideTraversesTwoDays;
+    }
 }
