@@ -79,7 +79,7 @@ public class SummaryServiceTest {
 
     @Test
     public void getTestSummary() throws Exception {
-        List<WorkingWeekDTO> summary = summaryService.getSummaryForPeriod(61, 2016, 4);
+        List<WorkingWeekDTO> summary = summaryService.getSummaryForPeriod(61, 2016, 3);
         System.out.println(summary);
         System.out.println("=========");
         Date weekStartTime = getMonthWeekStartTime(2016, 5, 1);

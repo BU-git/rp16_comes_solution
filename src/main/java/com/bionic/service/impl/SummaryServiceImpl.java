@@ -6,6 +6,7 @@ import com.bionic.exception.shift.impl.ShiftsFromFuturePeriodException;
 import com.bionic.exception.shift.impl.ShiftsNotFoundException;
 import com.bionic.model.Ride;
 import com.bionic.model.Shift;
+import com.bionic.service.OvertimeService;
 import com.bionic.service.SummaryService;
 import com.bionic.service.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class SummaryServiceImpl implements SummaryService {
     private ShiftDao shiftDao;
 
     @Autowired
+    private OvertimeService overtimeService;
+
+    @Autowired
     private WorkScheduleService workScheduleService;
 
     public List<WorkingWeekDTO> getSummaryForMonth(int userId, int year, int month)
@@ -49,6 +53,11 @@ public class SummaryServiceImpl implements SummaryService {
         for (int week = 1; week <= numberOfWeeks; week++) {
             Date weekStartTime = getMonthWeekStartTime(year, month, week);
             Date weekEndTime = getMonthWeekEndTime(year, month, week);
+            Date workingWeekEndTime = getWorkingWeekEndTime(weekEndTime);
+            Date saturdayStartTime = getSaturdayStartTime(weekStartTime);
+            Date saturdayEndTime = getSaturdayEndTime(weekEndTime);
+            Date sundayStartTime = getSundayStartTime(weekStartTime);
+
             int contractHours = 0;
             contractHours = workScheduleService.getContractHoursForWeek(userId, weekStartTime);
             if (contractHours == 0) contractHours = 40;
@@ -56,7 +65,18 @@ public class SummaryServiceImpl implements SummaryService {
             int weekNumber = getMonthWeekOfYear(year, month, week);
 
             WorkingWeekDTO workingWeek = getSummaryForWeek(shifts, weekStartTime, weekEndTime, contractTime);
+
+            long actualWorkedTime = overtimeService.getWorkedTimeForPeriod(shifts, weekStartTime, workingWeekEndTime);
+            long overTime = 0;
+            if (actualWorkedTime > contractTime) {
+                overTime = actualWorkedTime - contractTime;
+            }
+            long saturdayWorkedTime = overtimeService.getWorkedTimeForPeriod(shifts, saturdayStartTime, saturdayEndTime);
+            long sundayWorkedTime = overtimeService.getWorkedTimeForPeriod(shifts, sundayStartTime, weekEndTime);
+            long totalTime = actualWorkedTime + saturdayWorkedTime + sundayWorkedTime;
             workingWeek.setWeekNumber(weekNumber);
+            workingWeek.setWorkedTime(totalTime);
+            workingWeek.setOverTime(overTime);
             System.out.println("worked time for week " + weekNumber + " = " + (workingWeek.getWorkedTime() / 1000 / 60 / 60d));
             summary.add(workingWeek);
         }
@@ -81,6 +101,11 @@ public class SummaryServiceImpl implements SummaryService {
         for (int week = 1; week <= NUMBER_OF_WEEKS_IN_PERIOD; week++) {
             Date weekStartTime = getPeriodWeekStartTime(year, period, week);
             Date weekEndTime = getPeriodWeekEndTime(year, period, week);
+            Date workingWeekEndTime = getWorkingWeekEndTime(weekEndTime);
+            Date saturdayStartTime = getSaturdayStartTime(weekStartTime);
+            Date saturdayEndTime = getSaturdayEndTime(weekEndTime);
+            Date sundayStartTime = getSundayStartTime(weekStartTime);
+
             int contractHours = 0;
             contractHours = workScheduleService.getContractHoursForWeek(userId, weekStartTime);
             if (contractHours == 0) contractHours = 40;
@@ -88,7 +113,20 @@ public class SummaryServiceImpl implements SummaryService {
             int weekNumber = getPeriodWeekOfYear(year, period, week);
 
             WorkingWeekDTO workingWeek = getSummaryForWeek(shifts, weekStartTime, weekEndTime, contractTime);
+
+            //Override previous calculations by OvertimeService data
+            long actualWorkedTime = overtimeService.getWorkedTimeForPeriod(shifts, weekStartTime, workingWeekEndTime);
+            long overTime = 0;
+            if (actualWorkedTime > contractTime) {
+                overTime = actualWorkedTime - contractTime;
+            }
+            long saturdayWorkedTime = overtimeService.getWorkedTimeForPeriod(shifts, saturdayStartTime, saturdayEndTime);
+            long sundayWorkedTime = overtimeService.getWorkedTimeForPeriod(shifts, sundayStartTime, weekEndTime);
+            long totalTime = actualWorkedTime + saturdayWorkedTime + sundayWorkedTime;
+
             workingWeek.setWeekNumber(weekNumber);
+            workingWeek.setWorkedTime(totalTime);
+            workingWeek.setOverTime(overTime);
             System.out.println("worked time for week " + weekNumber + " = " + (workingWeek.getWorkedTime() / 1000 / 60 / 60d));
             summary.add(workingWeek);
         }
