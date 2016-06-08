@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import static com.bionic.service.util.DayCalculator.isNationalHoliday;
 import static com.bionic.service.util.MonthCalculator.getMonthEndTime;
 import static com.bionic.service.util.MonthCalculator.getMonthStartTime;
 import static com.bionic.service.util.PeriodCalculator.*;
@@ -145,8 +146,14 @@ public class OvertimeServiceImpl implements OvertimeService {
         overtimeDTO.setTotalHours(totalTime / MILLIS_IN_HOUR);
         overtimeDTO.setPaid100(paid100Time / MILLIS_IN_HOUR);
         overtimeDTO.setPaid130(overTime / MILLIS_IN_HOUR);
-        overtimeDTO.setPaid150(saturdayWorkedTime / MILLIS_IN_HOUR);
-        overtimeDTO.setPaid200(sundayWorkedTime / MILLIS_IN_HOUR);
+
+        if (isNationalHoliday(saturdayStartTime)) {
+            overtimeDTO.setPaid200((saturdayWorkedTime + sundayWorkedTime) / MILLIS_IN_HOUR);
+        } else {
+            overtimeDTO.setPaid150(saturdayWorkedTime / MILLIS_IN_HOUR);
+            overtimeDTO.setPaid200(sundayWorkedTime / MILLIS_IN_HOUR);
+        }
+
 
         overtimeDTO = fillByDayTypes(overtimeDTO, dayTypes, weekStartTime, weekEndTime);
 

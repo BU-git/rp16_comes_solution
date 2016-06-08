@@ -8,6 +8,40 @@ import java.util.Date;
  */
 public class DayCalculator {
 
+    public static boolean isNationalHoliday(Date dayStartDate) {
+
+        Calendar newYearsDay = Calendar.getInstance();
+        newYearsDay.set(Calendar.MONTH, Calendar.JANUARY);
+        newYearsDay.set(Calendar.DAY_OF_MONTH, 1);
+
+        Calendar kingsDay = Calendar.getInstance();
+        kingsDay.set(Calendar.MONTH, Calendar.APRIL);
+        kingsDay.set(Calendar.DAY_OF_MONTH, 27);
+
+        Calendar firstChristmasDay = Calendar.getInstance();
+        firstChristmasDay.set(Calendar.MONTH, Calendar.DECEMBER);
+        firstChristmasDay.set(Calendar.DAY_OF_MONTH, 25);
+
+        Calendar secondChristmasDay = Calendar.getInstance();
+        secondChristmasDay.set(Calendar.MONTH, Calendar.DECEMBER);
+        secondChristmasDay.set(Calendar.DAY_OF_MONTH, 26);
+
+        Calendar oldYearsDay = Calendar.getInstance();
+        oldYearsDay.set(Calendar.MONTH, Calendar.DECEMBER);
+        oldYearsDay.set(Calendar.DAY_OF_MONTH, 31);
+
+        Calendar inputDate = Calendar.getInstance();
+        inputDate.setTime(dayStartDate);
+
+        if (inputDate.get(Calendar.DAY_OF_YEAR) == newYearsDay.get(Calendar.DAY_OF_YEAR) ||
+            inputDate.get(Calendar.DAY_OF_YEAR) == kingsDay.get(Calendar.DAY_OF_YEAR) ||
+            inputDate.get(Calendar.DAY_OF_YEAR) == firstChristmasDay.get(Calendar.DAY_OF_YEAR) ||
+            inputDate.get(Calendar.DAY_OF_YEAR) == secondChristmasDay.get(Calendar.DAY_OF_YEAR) ||
+            inputDate.get(Calendar.DAY_OF_YEAR) == oldYearsDay.get(Calendar.DAY_OF_YEAR)) return true;
+
+        return false;
+    }
+
     public static Date getDayStartTime(Date weekStartDate, int dayNumber) {
 
         Calendar calendar = Calendar.getInstance();

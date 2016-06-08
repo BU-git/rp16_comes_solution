@@ -105,6 +105,7 @@ public class SummaryServiceImpl implements SummaryService {
             Date saturdayStartTime = getSaturdayStartTime(weekStartTime);
             Date saturdayEndTime = getSaturdayEndTime(weekEndTime);
             Date sundayStartTime = getSundayStartTime(weekStartTime);
+            System.out.println();
 
             int contractHours = 0;
             contractHours = workScheduleService.getContractHoursForWeek(userId, weekStartTime);
@@ -115,12 +116,15 @@ public class SummaryServiceImpl implements SummaryService {
             WorkingWeekDTO workingWeek = getSummaryForWeek(shifts, weekStartTime, weekEndTime, contractTime);
 
             //Override previous calculations by OvertimeService data
+            System.out.println("time for working week");
             long actualWorkedTime = overtimeService.getWorkedTimeForPeriod(shifts, weekStartTime, workingWeekEndTime);
             long overTime = 0;
             if (actualWorkedTime > contractTime) {
                 overTime = actualWorkedTime - contractTime;
             }
+            System.out.println("saturday worked time");
             long saturdayWorkedTime = overtimeService.getWorkedTimeForPeriod(shifts, saturdayStartTime, saturdayEndTime);
+            System.out.println("sunday worked time");
             long sundayWorkedTime = overtimeService.getWorkedTimeForPeriod(shifts, sundayStartTime, weekEndTime);
             long totalTime = actualWorkedTime + saturdayWorkedTime + sundayWorkedTime;
 
