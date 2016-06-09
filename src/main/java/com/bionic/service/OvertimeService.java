@@ -1,7 +1,6 @@
 package com.bionic.service;
 
 import com.bionic.dto.OvertimeDTO;
-import com.bionic.exception.shift.impl.ShiftsNotFoundException;
 import com.bionic.model.DayType;
 import com.bionic.model.Shift;
 
@@ -15,9 +14,9 @@ public interface OvertimeService {
 
     OvertimeDTO getOvertimeSum(List<OvertimeDTO> overtimeDTOList);
 
-    List<OvertimeDTO> getOvertimeForPeriod(int userId, int year, int period) throws ShiftsNotFoundException;
+    List<OvertimeDTO> getOvertimeForPeriod(int userId, int year, int period);
 
-    List<OvertimeDTO> getOvertimeForMonth(int userId, int year, int month) throws ShiftsNotFoundException;
+    List<OvertimeDTO> getOvertimeForMonth(int userId, int year, int month);
 
     long getWorkedTimeForPeriod(List<Shift> shifts, Date startTime, Date endTime);
 

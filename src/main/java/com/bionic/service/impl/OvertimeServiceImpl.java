@@ -3,7 +3,6 @@ package com.bionic.service.impl;
 import com.bionic.dao.DayTypeDao;
 import com.bionic.dao.ShiftDao;
 import com.bionic.dto.OvertimeDTO;
-import com.bionic.exception.shift.impl.ShiftsNotFoundException;
 import com.bionic.model.DayType;
 import com.bionic.model.Ride;
 import com.bionic.model.Shift;
@@ -11,7 +10,6 @@ import com.bionic.service.OvertimeService;
 import com.bionic.service.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +37,6 @@ public class OvertimeServiceImpl implements OvertimeService {
     @Autowired
     private WorkScheduleService workScheduleService;
 
-
     @Override
     public OvertimeDTO getOvertimeSum(List<OvertimeDTO> overtimeDTOList) {
         OvertimeDTO overtimeSum = new OvertimeDTO();
@@ -62,16 +59,13 @@ public class OvertimeServiceImpl implements OvertimeService {
     }
 
     @Override
-    public List<OvertimeDTO> getOvertimeForPeriod(int userId, int year, int period) throws ShiftsNotFoundException {
+    public List<OvertimeDTO> getOvertimeForPeriod(int userId, int year, int period) {
 
         Date periodStartTime = getPeriodStartTime(year, period);
         Date periodEndTime = getPeriodEndTime(year, period);
 
         List<Shift> shifts = shiftDao.getForPeriod(userId, periodStartTime, periodEndTime);
-        if (ObjectUtils.isEmpty(shifts)) throw new ShiftsNotFoundException();
         List<DayType> dayTypes = dayTypeDao.getDayTypesForPeriod(userId, periodStartTime, periodEndTime);
-
-
         List<OvertimeDTO> overtimeDTOs = new ArrayList<>();
 
         for (int week = 1; week <= NUMBER_OF_WEEKS_IN_PERIOD; week++) {
@@ -92,15 +86,14 @@ public class OvertimeServiceImpl implements OvertimeService {
     }
 
     @Override
-    public List<OvertimeDTO> getOvertimeForMonth(int userId, int year, int month) throws ShiftsNotFoundException {
+    public List<OvertimeDTO> getOvertimeForMonth(int userId, int year, int month) {
         Date monthStartTime = getMonthStartTime(year, month);
         Date monthEndTime = getMonthEndTime(year, month);
 
-
         List<Shift> shifts = shiftDao.getForPeriod(userId, monthStartTime, monthEndTime);
-        if (ObjectUtils.isEmpty(shifts)) throw new ShiftsNotFoundException();
-
+        List<DayType> dayTypes = dayTypeDao.getDayTypesForPeriod(userId, monthStartTime, monthEndTime);
         List<OvertimeDTO> overtimeDTOs = new ArrayList<>();
+
         int numberOfWeeks = getWeeksBetween(monthStartTime, monthEndTime);
 
         for (int week = 1; week <= numberOfWeeks; week++) {
@@ -111,8 +104,6 @@ public class OvertimeServiceImpl implements OvertimeService {
             if (contractHours == 0) contractHours = 40;
             long contractTime = contractHours * 60 * 60 * 1000;
             int weekNumber = getMonthWeekOfYear(year, month, week);
-
-            List<DayType> dayTypes = dayTypeDao.getDayTypesForPeriod(userId, monthStartTime, monthEndTime);
 
             OvertimeDTO overtimeDTO = getOvertimeForWeek(dayTypes, shifts, weekStartTime, weekEndTime, contractTime);
             overtimeDTO.setWeekOfYear(weekNumber);
@@ -153,7 +144,6 @@ public class OvertimeServiceImpl implements OvertimeService {
             overtimeDTO.setPaid150(saturdayWorkedTime / MILLIS_IN_HOUR);
             overtimeDTO.setPaid200(sundayWorkedTime / MILLIS_IN_HOUR);
         }
-
 
         overtimeDTO = fillByDayTypes(overtimeDTO, dayTypes, weekStartTime, weekEndTime);
 

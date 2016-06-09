@@ -102,7 +102,8 @@ public class MailServiceImpl implements MailService {
                     .append("Overtime.xlsx");
 
 
-            message = "Your link to download Overtime report: " + overtimeUrl + "?key="+ key + " \n";
+            message = "Your link to download Overtime report: " + overtimeUrl + "?key="+ key + " \n\n";
+
             key = System.currentTimeMillis();
             userKey = new UserKey(key, user.getEmail(), "report");
             userKeyDao.saveAndFlush(userKey);
@@ -118,7 +119,25 @@ public class MailServiceImpl implements MailService {
                     .append("/")
                     .append("Allowances.xlsx");
 
-            message += "Your link to download Allowances report: " + allowancesUrl + "?key="+ key +" \n";
+            message += "Your link to download Allowances report: " + allowancesUrl + "?key="+ key +" \n\n";
+
+            key = System.currentTimeMillis();
+            userKey = new UserKey(key, user.getEmail(), "report");
+            userKeyDao.saveAndFlush(userKey);
+            StringBuilder tvtUrl = new StringBuilder();
+            tvtUrl
+                    .append(env.getProperty(URL))
+                    .append("/summary/")
+                    .append(userId)
+                    .append("/")
+                    .append(year)
+                    .append("/")
+                    .append(period)
+                    .append("/")
+                    .append("TVT.xlsx");
+
+            message += "Your link to download TVT report: " + tvtUrl + "?key="+ key +" \n";
+
         } else {
             throw new UserNotExistsException(email);
         }

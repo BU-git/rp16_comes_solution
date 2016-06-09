@@ -4,7 +4,6 @@ import com.bionic.dao.UserKeyDao;
 import com.bionic.dto.AllowancesDTO;
 import com.bionic.dto.OvertimeDTO;
 import com.bionic.exception.auth.impl.UserNotExistsException;
-import com.bionic.exception.shift.impl.ShiftsNotFoundException;
 import com.bionic.model.User;
 import com.bionic.model.UserKey;
 import com.bionic.service.OvertimeService;
@@ -23,11 +22,11 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 import static com.bionic.service.util.MonthCalculator.getMonthName;
+import static com.bionic.service.util.PeriodCalculator.NUMBER_OF_WEEKS_IN_PERIOD;
 
 /**
  * @author Dima Budko
  */
-
 
 @Controller
 @RequestMapping(value = "summary/{userId}/{year}/{number}")
@@ -45,11 +44,28 @@ public class ReportController {
     @Autowired
     private UserKeyDao userKeyDao;
 
-    private static final int NUMBER_OF_WEEKS_IN_PERIOD = 4;
+    @RequestMapping(value = "/TVT.xlsx", method = RequestMethod.GET)
+    public ModelAndView tvtExcelReport(ModelMap modelMap, ModelAndView modelAndView, @PathVariable("userId") int userId,
+                                       @PathVariable("year") int year, @PathVariable("number") int number,
+                                       @RequestParam("key") long key) throws UserNotExistsException {
+
+        UserKey userKey = userKeyDao.findBySecretForReport(key);
+        if (userKey != null) {
+
+
+
+            modelAndView = new ModelAndView("rtp_TVT", modelMap);
+            return modelAndView;
+
+        } else {
+         throw new UserNotExistsException();
+        }
+    }
 
     @RequestMapping(value = "/Allowances.xlsx",method = RequestMethod.GET)
-    public ModelAndView allowancesExcelReport(ModelMap modelMap, ModelAndView modelAndView,
-                                              @PathVariable("userId") int userId, @PathVariable("year") int year, @PathVariable("number") int number, @RequestParam("key")long key) throws UserNotExistsException {
+    public ModelAndView allowancesExcelReport(ModelMap modelMap, ModelAndView modelAndView, @PathVariable("userId") int userId,
+                                              @PathVariable("year") int year, @PathVariable("number") int number,
+                                              @RequestParam("key") long key) throws UserNotExistsException {
 
         UserKey userKey = userKeyDao.findBySecretForReport(key);
         if (userKey != null) {
@@ -98,7 +114,9 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/Overtime.xlsx",method = RequestMethod.GET)
-    public ModelAndView overtimeExcelReport(ModelMap modelMap, ModelAndView modelAndView,@PathVariable("userId") int userId, @PathVariable("year") int year,@PathVariable("number") int number,@RequestParam("key") long key) throws ShiftsNotFoundException,UserNotExistsException {
+    public ModelAndView overtimeExcelReport(ModelMap modelMap, ModelAndView modelAndView,@PathVariable("userId") int userId,
+                                            @PathVariable("year") int year,@PathVariable("number") int number,
+                                            @RequestParam("key") long key) throws UserNotExistsException {
         UserKey userKey = userKeyDao.findBySecretForReport(key);
         if (userKey != null) {
             User user = userService.findById(userId);
