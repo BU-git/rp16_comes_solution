@@ -12,14 +12,16 @@
 			<style backcolor="#E6DAC3"/>
 		</conditionalStyle>
 	</style>
-	<parameter name="sumTotal" class="java.lang.Double">
-		<parameterDescription><![CDATA[]]></parameterDescription>
-	</parameter>
+	<subDataset name="dataBeanList" uuid="374fa525-e6f6-4859-be0d-80f32bf430f6">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<parameter name="sumTotal" class="java.lang.Double"/>
 	<parameter name="sumPaid100" class="java.lang.Double"/>
 	<parameter name="sumPaid130" class="java.lang.Double"/>
-	<parameter name="sumPaid150" class="java.lang.Double">
-		<parameterDescription><![CDATA[]]></parameterDescription>
-	</parameter>
+	<parameter name="sumPaid150" class="java.lang.Double"/>
     <parameter name="reportType" class="java.lang.String"/>
 	<parameter name="periodName" class="java.lang.String"/>
 	<parameter name="period" class="java.lang.String"/>

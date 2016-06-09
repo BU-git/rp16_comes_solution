@@ -105,7 +105,12 @@ public class SummaryServiceImpl implements SummaryService {
             Date saturdayStartTime = getSaturdayStartTime(weekStartTime);
             Date saturdayEndTime = getSaturdayEndTime(weekEndTime);
             Date sundayStartTime = getSundayStartTime(weekStartTime);
-            System.out.println();
+            System.out.println("weekStartTime = " + weekStartTime);
+            System.out.println("workingWeekEndTime = " + workingWeekEndTime);
+            System.out.println("saturdayStartTime = " + saturdayStartTime);
+            System.out.println("saturdayEndTime = " + saturdayEndTime);
+            System.out.println("sundayStartTime = " + sundayStartTime);
+            System.out.println("weekEndTime = " + weekEndTime);
 
             int contractHours = 0;
             contractHours = workScheduleService.getContractHoursForWeek(userId, weekStartTime);

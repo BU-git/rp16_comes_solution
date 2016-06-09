@@ -185,7 +185,8 @@ public class OvertimeServiceImpl implements OvertimeService {
                     if (r.getStartTime().getTime() > endTime.getTime()) break shift;
                     long tempWorkedTime;
 
-
+//                    System.out.println("Ride start time = " + r.getStartTime().getTime());
+//                    System.out.println("period start time = " + startTime.getTime());
                     if (r.getStartTime().getTime() < startTime.getTime()) {
                         tempWorkedTime = r.getEndTime().getTime() - startTime.getTime();
                         workedTime += tempWorkedTime;

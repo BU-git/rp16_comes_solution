@@ -53,6 +53,7 @@ public class WeekCalculator {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, 1, 0, 0, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
             calendar.add(Calendar.DATE, 1);
         }
@@ -103,7 +104,7 @@ public class WeekCalculator {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, Calendar.JANUARY, 0, 0, 0, 0);
-
+        calendar.set(Calendar.MILLISECOND, 0);
         Calendar offsetCalendar = Calendar.getInstance();
         offsetCalendar.set(Calendar.YEAR, year);
         offsetCalendar.set(Calendar.DAY_OF_YEAR, 1);
@@ -161,6 +162,7 @@ public class WeekCalculator {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, 1, 0, 0, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
             calendar.add(Calendar.DATE, 1);
         }
