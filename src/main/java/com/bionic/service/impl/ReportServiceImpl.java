@@ -1,8 +1,11 @@
 package com.bionic.service.impl;
 
 import com.bionic.config.RootConfig;
+import com.bionic.dao.DayTypeDao;
 import com.bionic.dto.AllowancesDTO;
 import com.bionic.dao.ShiftDao;
+import com.bionic.dto.ConsigmentFeeDTO;
+import com.bionic.model.DayType;
 import com.bionic.model.Ride;
 import com.bionic.model.Shift;
 import com.bionic.model.User;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -38,6 +42,10 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     private ShiftDao shiftDao;
+
+    @Autowired
+    private DayTypeDao dayTypeDao;
+
 
 
     @Override
@@ -218,8 +226,6 @@ public class ReportServiceImpl implements ReportService {
                     }
                 }
             }
-//            allowances += 24 * MULTIPLE_FIRST_DAY;
-//            allowances += (allowancesDTO.getTotalTimes() / 24) * MULTIPLE_INTERIM_DAYS;
         }
         return allowances;
     }
@@ -249,4 +255,34 @@ public class ReportServiceImpl implements ReportService {
 
     }
 
+    @Override
+    public List<ConsigmentFeeDTO> getConsigmentList(User user, int year, int period) {
+        Date periodStartTime;
+        Date periodEndTime;
+        if (user.isFourWeekPayOff()) {
+            periodStartTime = PeriodCalculator.getPeriodStartTime(year, period);
+            periodEndTime = PeriodCalculator.getPeriodEndTime(year, period);
+        } else {
+            periodStartTime = MonthCalculator.getMonthStartTime(year, period);
+            periodEndTime = MonthCalculator.getMonthEndTime(year, period);
+        }
+        List<DayType> dayTypes = dayTypeDao.getDayTypesForPeriod(user.getId(), periodStartTime, periodEndTime);
+
+        List<ConsigmentFeeDTO> consigmentFeeList = new LinkedList<>();
+        for (DayType dayType : dayTypes) {
+            ConsigmentFeeDTO consigmentFeeDTO = new ConsigmentFeeDTO();;
+            consigmentFeeDTO.setFee(dayType.getStartTime() + " - " + dayType.getEndTime());
+            consigmentFeeDTO.setFeeType(dayType.getDayTypeName().toString());
+            switch (dayType.getDayTypeName()) {
+                case CONSIGNMENT_FEE:
+                    consigmentFeeDTO.setFeeAllowances(20.28);
+                    break;
+                case STAND_OVER_ALLOWANCE:
+                    consigmentFeeDTO.setFeeAllowances(20.17);
+                    break;
+            }
+            consigmentFeeList.add(consigmentFeeDTO);
+        }
+        return consigmentFeeList;
+    }
 }

@@ -5,7 +5,7 @@ package com.bionic.dto;
  */
 public class ConsigmentFeeDTO {
     private String fee;
-    private Integer feeAllowances;
+    private Double feeAllowances;
     private String feeType;
 
     public String getFee() {
@@ -16,11 +16,11 @@ public class ConsigmentFeeDTO {
         this.fee = fee;
     }
 
-    public Integer getFeeAllowances() {
+    public Double getFeeAllowances() {
         return feeAllowances;
     }
 
-    public void setFeeAllowances(Integer feeAllowances) {
+    public void setFeeAllowances(Double feeAllowances) {
         this.feeAllowances = feeAllowances;
     }
 

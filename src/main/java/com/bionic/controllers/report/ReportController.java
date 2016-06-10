@@ -2,6 +2,7 @@ package com.bionic.controllers.report;
 
 import com.bionic.dao.UserKeyDao;
 import com.bionic.dto.AllowancesDTO;
+import com.bionic.dto.ConsigmentFeeDTO;
 import com.bionic.dto.OvertimeDTO;
 import com.bionic.exception.auth.impl.UserNotExistsException;
 import com.bionic.model.User;
@@ -106,6 +107,46 @@ public class ReportController {
             modelMap.put("totalTimes", totalTimes);
             modelMap.put("allowances", allowances);
             modelAndView = new ModelAndView("rpt_Allowances", modelMap);
+            userKeyDao.delete(userKey);
+            return modelAndView;
+        } else {
+            throw new UserNotExistsException();
+        }
+    }
+
+    @RequestMapping(value = "/Consigment.xlsx",method = RequestMethod.GET)
+    public ModelAndView consigmentExcelReport(ModelMap modelMap, ModelAndView modelAndView, @PathVariable("userId") int userId,
+                                              @PathVariable("year") int year, @PathVariable("number") int number,
+                                              @RequestParam("key") long key) throws UserNotExistsException {
+
+        UserKey userKey = userKeyDao.findBySecretForReport(key);
+        if (userKey != null) {
+            User user = userService.findById(userId);
+            List<ConsigmentFeeDTO> dataBeanList = reportService.getConsigmentList(user, year, number);
+            int startWeek = number * NUMBER_OF_WEEKS_IN_PERIOD + 1;
+            int endWeek = startWeek + NUMBER_OF_WEEKS_IN_PERIOD - 1;
+            Double totalAllowances = 0.0;
+            for (ConsigmentFeeDTO consigmentFeeDTO : dataBeanList) {
+                if (consigmentFeeDTO.getFeeAllowances() != null) {
+                    totalAllowances = totalAllowances + consigmentFeeDTO.getFeeAllowances();
+                }
+            }
+            JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataBeanList, false);
+            modelMap.put("datasource", beanColDataSource);
+            modelMap.put("format", "xlsx");
+            if (user.isFourWeekPayOff()) {
+                modelMap.put("reportType", "PERIOD OVERVIEW");
+                modelMap.put("periodName", "Period:");
+                modelMap.put("period", "Week " + startWeek + "-" + endWeek);
+            } else {
+                modelMap.put("reportType", "MONTHLY OVERVIEW");
+                modelMap.put("periodName", "Month:");
+                modelMap.put("period", getMonthName(number));
+            }
+            modelMap.put("name", user.getFirstName());
+            modelMap.put("contractHours", user.getContractHours());
+            modelMap.put("totalAllowances", totalAllowances);
+            modelAndView = new ModelAndView("rpt_Consigment", modelMap);
             userKeyDao.delete(userKey);
             return modelAndView;
         } else {

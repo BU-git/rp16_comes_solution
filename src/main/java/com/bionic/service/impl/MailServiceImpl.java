@@ -138,9 +138,28 @@ public class MailServiceImpl implements MailService {
 
             message += "Your link to download TVT report: " + tvtUrl + "?key="+ key +" \n";
 
+            key = System.currentTimeMillis();
+            userKey = new UserKey(key, user.getEmail(), "report");
+            userKeyDao.saveAndFlush(userKey);
+            StringBuilder consigmentsUrl = new StringBuilder();
+            consigmentsUrl
+                    .append(env.getProperty(URL))
+                    .append("/summary/")
+                    .append(userId)
+                    .append("/")
+                    .append(year)
+                    .append("/")
+                    .append(period)
+                    .append("/")
+                    .append("Consigment.xlsx");
+
+            message += "Your link to download consigments report: " + consigmentsUrl + "?key="+ key +" \n";
+
         } else {
             throw new UserNotExistsException(email);
         }
+
+
         String subject = "Overtime & Allowances reports";
         sendMail(email, subject, message);
     }
