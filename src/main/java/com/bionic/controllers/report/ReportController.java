@@ -63,7 +63,7 @@ public class ReportController {
                 } else {
                     modelMap.put("reportType", "MONTHLY OVERVIEW");
                 }
-                List<TvtPaidDTO> dataBeanList = tvtService.getTvtPaid(userId, year, number);
+                List<TvtPaidDTO> dataBeanList = tvtService.getTvtPaidForYear(userId, year, number);
 
                 modelMap.put("name", user.getFirstName());
                 modelMap.put("year", year);
@@ -78,7 +78,7 @@ public class ReportController {
                 } else {
                     modelMap.put("reportType", "MONTHLY OVERVIEW");
                 }
-                List<TvtBuildDTO> dataBeanList = tvtService.getTvtBuild(userId, year, number);
+                List<TvtBuildDTO> dataBeanList = tvtService.getTvtBuildForYear(userId, year, number);
 
                 modelMap.put("name", user.getFirstName());
                 modelMap.put("year", year);

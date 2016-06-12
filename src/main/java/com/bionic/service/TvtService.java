@@ -10,7 +10,11 @@ import java.util.List;
  */
 public interface TvtService {
 
-    List<TvtPaidDTO> getTvtPaid(int userId, int year, int period);
+    List<TvtPaidDTO> getTvtPaidForYear(int userId, int year, int endingPeriod);
 
-    List<TvtBuildDTO> getTvtBuild(int userId, int year, int period);
+    TvtPaidDTO getTvtPaidForPeriod(int userId, int year, int period);
+
+    List<TvtBuildDTO> getTvtBuildForYear(int userId, int year, int endingPeriod);
+
+    TvtBuildDTO getTvtBuildForPeriod(int userId, int year, int period);
 }

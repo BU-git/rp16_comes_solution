@@ -117,14 +117,13 @@ public class WorkSchedule {
 
         WorkSchedule that = (WorkSchedule) o;
 
-        if (!id.equals(that.id)) return false;
         if (sunday != null ? !sunday.equals(that.sunday) : that.sunday != null) return false;
         if (monday != null ? !monday.equals(that.monday) : that.monday != null) return false;
         if (tuesday != null ? !tuesday.equals(that.tuesday) : that.tuesday != null) return false;
         if (wednesday != null ? !wednesday.equals(that.wednesday) : that.wednesday != null) return false;
         if (thursday != null ? !thursday.equals(that.thursday) : that.thursday != null) return false;
         if (friday != null ? !friday.equals(that.friday) : that.friday != null) return false;
-        if (saturday != null ? saturday.equals(that.saturday) : that.saturday == null) return false;
+        if (saturday != null ? !saturday.equals(that.saturday) : that.saturday != null) return false;
 
         return true;
 
@@ -133,7 +132,6 @@ public class WorkSchedule {
     @Override
     public int hashCode() {
         int result = id.hashCode();
-        result = 31 * result + (creationTime != null ? creationTime.hashCode() : 0);
         result = 31 * result + (sunday != null ? sunday.hashCode() : 0);
         result = 31 * result + (monday != null ? monday.hashCode() : 0);
         result = 31 * result + (tuesday != null ? tuesday.hashCode() : 0);
@@ -148,7 +146,7 @@ public class WorkSchedule {
     public String toString() {
         return "WorkSchedule{" +
                 "id=" + id +
-                "userId=" + userId +
+                ", userId=" + userId +
                 ", creationTime=" + creationTime +
                 ", sunday='" + sunday + '\'' +
                 ", monday='" + monday + '\'' +

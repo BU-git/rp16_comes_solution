@@ -129,10 +129,16 @@ public class UserServiceImpl implements UserService {
         User existingUser = userDao.findByEmail(user.getEmail());
         WorkSchedule existingWorkSchedule = existingUser.getWorkSchedule();
         WorkSchedule incomingWorkSchedule = user.getWorkSchedule();
+        System.out.println("Existing workschedule == " + existingWorkSchedule);
+        System.out.println("Incoming workschedule == " + incomingWorkSchedule);
 
         if (incomingWorkSchedule == null) {
             user.setWorkSchedule(existingWorkSchedule);
+            System.out.println("====================");
+            System.out.println("New empty workSchedule created");
         } else if (!(existingWorkSchedule.equals(incomingWorkSchedule))) {
+            System.out.println("====================");
+            System.out.println("Updating workSchedule");
             Date date = new Date();
             existingWorkSchedule.setDeactivationTime(date);
             incomingWorkSchedule.setCreationTime(date);
@@ -141,7 +147,12 @@ public class UserServiceImpl implements UserService {
             incomingWorkSchedule.setDeactivationTime(new Date(new Date().getTime() * 2));
             WorkSchedule updatedWorkSchedule = workScheduleService.saveWorkSchedule(incomingWorkSchedule);
             user.setWorkSchedule(updatedWorkSchedule);
+        } else {
+            user.setWorkSchedule(existingWorkSchedule);
+            System.out.println("====================");
+            System.out.println("Existing workSchedule left");
         }
+
     }
 
     @Override
