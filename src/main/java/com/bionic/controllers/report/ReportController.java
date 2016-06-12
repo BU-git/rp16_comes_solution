@@ -1,14 +1,13 @@
 package com.bionic.controllers.report;
 
 import com.bionic.dao.UserKeyDao;
-import com.bionic.dto.AllowancesDTO;
-import com.bionic.dto.ConsigmentFeeDTO;
-import com.bionic.dto.OvertimeDTO;
+import com.bionic.dto.*;
 import com.bionic.exception.auth.impl.UserNotExistsException;
 import com.bionic.model.User;
 import com.bionic.model.UserKey;
 import com.bionic.service.OvertimeService;
 import com.bionic.service.ReportService;
+import com.bionic.service.TvtService;
 import com.bionic.service.UserService;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +42,9 @@ public class ReportController {
     private OvertimeService overtimeService;
 
     @Autowired
+    private TvtService tvtService;
+
+    @Autowired
     private UserKeyDao userKeyDao;
 
     @RequestMapping(value = "/TVT.xlsx", method = RequestMethod.GET)
@@ -52,14 +54,45 @@ public class ReportController {
 
         UserKey userKey = userKeyDao.findBySecretForReport(key);
         if (userKey != null) {
+            User user = userService.findById(userId);
 
+            if (user.isPaidTimeForTime()) {
 
+                if (user.isFourWeekPayOff()) {
+                    modelMap.put("reportType", "PERIOD OVERVIEW");
+                } else {
+                    modelMap.put("reportType", "MONTHLY OVERVIEW");
+                }
+                List<TvtPaidDTO> dataBeanList = tvtService.getTvtPaid(userId, year, number);
 
-            modelAndView = new ModelAndView("rtp_TVT", modelMap);
+                modelMap.put("name", user.getFirstName());
+                modelMap.put("year", year);
+                modelMap.put("datasource", dataBeanList);
+                modelMap.put("format", "xlsx");
+
+                modelAndView = new ModelAndView("rpt_TVTpaid", modelMap);
+            } else {
+
+                if (user.isFourWeekPayOff()) {
+                    modelMap.put("reportType", "PERIOD OVERVIEW");
+                } else {
+                    modelMap.put("reportType", "MONTHLY OVERVIEW");
+                }
+                List<TvtBuildDTO> dataBeanList = tvtService.getTvtBuild(userId, year, number);
+
+                modelMap.put("name", user.getFirstName());
+                modelMap.put("year", year);
+                modelMap.put("datasource", dataBeanList);
+                modelMap.put("format", "xlsx");
+
+                modelAndView = new ModelAndView("rpt_TVTbuild", modelMap);
+            }
+
+//            userKeyDao.delete(userKey);
             return modelAndView;
 
         } else {
-         throw new UserNotExistsException();
+            throw new UserNotExistsException();
         }
     }
 
@@ -107,28 +140,29 @@ public class ReportController {
             modelMap.put("totalTimes", totalTimes);
             modelMap.put("allowances", allowances);
             modelAndView = new ModelAndView("rpt_Allowances", modelMap);
-            userKeyDao.delete(userKey);
+//            userKeyDao.delete(userKey);
+
             return modelAndView;
         } else {
             throw new UserNotExistsException();
         }
     }
 
-    @RequestMapping(value = "/Consigment.xlsx",method = RequestMethod.GET)
-    public ModelAndView consigmentExcelReport(ModelMap modelMap, ModelAndView modelAndView, @PathVariable("userId") int userId,
-                                              @PathVariable("year") int year, @PathVariable("number") int number,
-                                              @RequestParam("key") long key) throws UserNotExistsException {
+    @RequestMapping(value = "/Consignment.xlsx",method = RequestMethod.GET)
+    public ModelAndView consignmentExcelReport(ModelMap modelMap, ModelAndView modelAndView, @PathVariable("userId") int userId,
+                                               @PathVariable("year") int year, @PathVariable("number") int number,
+                                               @RequestParam("key") long key) throws UserNotExistsException {
 
         UserKey userKey = userKeyDao.findBySecretForReport(key);
         if (userKey != null) {
             User user = userService.findById(userId);
-            List<ConsigmentFeeDTO> dataBeanList = reportService.getConsigmentList(user, year, number);
+            List<ConsignmentFeeDTO> dataBeanList = reportService.getConsigmentList(user, year, number);
             int startWeek = number * NUMBER_OF_WEEKS_IN_PERIOD + 1;
             int endWeek = startWeek + NUMBER_OF_WEEKS_IN_PERIOD - 1;
             Double totalAllowances = 0.0;
-            for (ConsigmentFeeDTO consigmentFeeDTO : dataBeanList) {
-                if (consigmentFeeDTO.getFeeAllowances() != null) {
-                    totalAllowances = totalAllowances + consigmentFeeDTO.getFeeAllowances();
+            for (ConsignmentFeeDTO consignmentFeeDTO : dataBeanList) {
+                if (consignmentFeeDTO.getFeeAllowances() != null) {
+                    totalAllowances = totalAllowances + consignmentFeeDTO.getFeeAllowances();
                 }
             }
             JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(dataBeanList, false);
@@ -147,7 +181,7 @@ public class ReportController {
             modelMap.put("contractHours", user.getContractHours());
             modelMap.put("totalAllowances", totalAllowances);
             modelAndView = new ModelAndView("rpt_Consigment", modelMap);
-            userKeyDao.delete(userKey);
+//            userKeyDao.delete(userKey);
             return modelAndView;
         } else {
             throw new UserNotExistsException();
@@ -208,6 +242,7 @@ public class ReportController {
 
             modelAndView = new ModelAndView("rpt_Overtime", modelMap);
 
+//            userKeyDao.delete(userKey);
             return modelAndView;
         } else {
             throw new UserNotExistsException();

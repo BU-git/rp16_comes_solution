@@ -4,7 +4,7 @@ import com.bionic.config.RootConfig;
 import com.bionic.dao.DayTypeDao;
 import com.bionic.dto.AllowancesDTO;
 import com.bionic.dao.ShiftDao;
-import com.bionic.dto.ConsigmentFeeDTO;
+import com.bionic.dto.ConsignmentFeeDTO;
 import com.bionic.model.DayType;
 import com.bionic.model.Ride;
 import com.bionic.model.Shift;
@@ -256,7 +256,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<ConsigmentFeeDTO> getConsigmentList(User user, int year, int period) {
+    public List<ConsignmentFeeDTO> getConsigmentList(User user, int year, int period) {
         Date periodStartTime;
         Date periodEndTime;
         if (user.isFourWeekPayOff()) {
@@ -268,20 +268,20 @@ public class ReportServiceImpl implements ReportService {
         }
         List<DayType> dayTypes = dayTypeDao.getDayTypesForPeriod(user.getId(), periodStartTime, periodEndTime);
 
-        List<ConsigmentFeeDTO> consigmentFeeList = new LinkedList<>();
+        List<ConsignmentFeeDTO> consigmentFeeList = new LinkedList<>();
         for (DayType dayType : dayTypes) {
-            ConsigmentFeeDTO consigmentFeeDTO = new ConsigmentFeeDTO();;
-            consigmentFeeDTO.setFee(dayType.getStartTime() + " - " + dayType.getEndTime());
-            consigmentFeeDTO.setFeeType(dayType.getDayTypeName().toString());
+            ConsignmentFeeDTO consignmentFeeDTO = new ConsignmentFeeDTO();;
+            consignmentFeeDTO.setFee(dayType.getStartTime() + " - " + dayType.getEndTime());
+            consignmentFeeDTO.setFeeType(dayType.getDayTypeName().toString());
             switch (dayType.getDayTypeName()) {
                 case CONSIGNMENT_FEE:
-                    consigmentFeeDTO.setFeeAllowances(20.28);
+                    consignmentFeeDTO.setFeeAllowances(20.28);
                     break;
                 case STAND_OVER_ALLOWANCE:
-                    consigmentFeeDTO.setFeeAllowances(20.17);
+                    consignmentFeeDTO.setFeeAllowances(20.17);
                     break;
             }
-            consigmentFeeList.add(consigmentFeeDTO);
+            consigmentFeeList.add(consignmentFeeDTO);
         }
         return consigmentFeeList;
     }

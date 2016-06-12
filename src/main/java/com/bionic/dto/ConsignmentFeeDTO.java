@@ -3,7 +3,7 @@ package com.bionic.dto;
 /**
  * @author Dima Budko
  */
-public class ConsigmentFeeDTO {
+public class ConsignmentFeeDTO {
     private String fee;
     private Double feeAllowances;
     private String feeType;
