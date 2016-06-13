@@ -186,8 +186,8 @@ public class UserServiceImpl implements UserService {
         UserKey userKey = userKeyDao.findBySecretForResetPass(key);
         if (userKey != null) {
             User user = userDao.findByEmail(userKey.getEmail());
-            int tempPasswordLength = 10;
-            String letters = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789";
+            int tempPasswordLength = 5;
+            String letters = "123456789";
             StringBuilder tempPassword = new StringBuilder();
             Random rand = new Random(System.currentTimeMillis());
 
