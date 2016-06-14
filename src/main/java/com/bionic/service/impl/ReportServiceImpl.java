@@ -259,6 +259,7 @@ public class ReportServiceImpl implements ReportService {
     public List<ConsignmentFeeDTO> getConsigmentList(User user, int year, int period) {
         Date periodStartTime;
         Date periodEndTime;
+        int countOfDays = 0;
         if (user.isFourWeekPayOff()) {
             periodStartTime = PeriodCalculator.getPeriodStartTime(year, period);
             periodEndTime = PeriodCalculator.getPeriodEndTime(year, period);
@@ -270,15 +271,19 @@ public class ReportServiceImpl implements ReportService {
 
         List<ConsignmentFeeDTO> consigmentFeeList = new LinkedList<>();
         for (DayType dayType : dayTypes) {
-            ConsignmentFeeDTO consignmentFeeDTO = new ConsignmentFeeDTO();;
-            consignmentFeeDTO.setFee(dayType.getStartTime() + " - " + dayType.getEndTime());
-            consignmentFeeDTO.setFeeType(dayType.getDayTypeName().toString());
+            ConsignmentFeeDTO consignmentFeeDTO = new ConsignmentFeeDTO();
             switch (dayType.getDayTypeName()) {
                 case CONSIGNMENT_FEE:
-                    consignmentFeeDTO.setFeeAllowances(20.28);
+                    consignmentFeeDTO.setFee(dayType.getStartTime() + " - " + dayType.getEndTime());
+                    consignmentFeeDTO.setFeeType(dayType.getDayTypeName().toString());
+                    countOfDays = dayType.getEndTime().getDate() - dayType.getStartTime().getDate() + 1;
+                    consignmentFeeDTO.setFeeAllowances(20.28 * countOfDays);
                     break;
                 case STAND_OVER_ALLOWANCE:
-                    consignmentFeeDTO.setFeeAllowances(20.17);
+                    consignmentFeeDTO.setFee(dayType.getStartTime() + " - " + dayType.getEndTime());
+                    consignmentFeeDTO.setFeeType(dayType.getDayTypeName().toString());
+                    countOfDays = dayType.getEndTime().getDate() - dayType.getStartTime().getDate() + 1;
+                    consignmentFeeDTO.setFeeAllowances(20.17 * countOfDays);
                     break;
             }
             consigmentFeeList.add(consignmentFeeDTO);
