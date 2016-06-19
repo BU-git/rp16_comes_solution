@@ -18,6 +18,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -39,13 +40,13 @@ public class ReportServiceImpl implements ReportService {
     private static final double MULTIPLE_INTERIM_DAYS = 47.28;
     private static final double MULTIPLE_LAST_DAYS_BETWEEN_24_AND_6 = 1.21;
     private static final double MULTIPLE_LAST_DAYS_BETWEEN_24_AND_6_PAST_12 = 2.73;
+    private static final int MONTHS_IN_YEAR = 12;
 
     @Autowired
     private ShiftDao shiftDao;
 
     @Autowired
     private DayTypeDao dayTypeDao;
-
 
 
     @Override
@@ -58,8 +59,8 @@ public class ReportServiceImpl implements ReportService {
             periodStartTime = PeriodCalculator.getPeriodStartTime(year, period);
             periodEndTime = PeriodCalculator.getPeriodEndTime(year, period);
         } else {
-            periodStartTime = MonthCalculator.getMonthStartTime(year,period);
-            periodEndTime = MonthCalculator.getMonthEndTime(year,period);
+            periodStartTime = MonthCalculator.getMonthStartTime(year, period);
+            periodEndTime = MonthCalculator.getMonthEndTime(year, period);
         }
         System.err.println("testing " + shiftDao);
         List<Shift> shifts = shiftDao.getForPeriod(user.getId(), periodStartTime, periodEndTime);
@@ -86,8 +87,8 @@ public class ReportServiceImpl implements ReportService {
 
     public double getAllowances(AllowancesDTO allowancesDTO, Shift shift) {
         double allowances = 0;
-        List<Ride>  rides = shift.getRides();
-        int totalHours = (int)(rides.get(rides.size() - 1).getEndTime().getTime() - rides.get(0).getStartTime().getTime()) / (1000 * 60 * 60);
+        List<Ride> rides = shift.getRides();
+        int totalHours = (int) (rides.get(rides.size() - 1).getEndTime().getTime() - rides.get(0).getStartTime().getTime()) / (1000 * 60 * 60);
         // Single day ride
         if (totalHours <= 24) {
             if (allowancesDTO.getTotalTimes() > 12) {
@@ -98,7 +99,7 @@ public class ReportServiceImpl implements ReportService {
                 allowances += allowancesDTO.getTotalTimes() * FOR_LONGER_THAN_4_HOURS;
                 System.err.println("test02 " + allowances);
             }
-            for (Ride ride :rides) {
+            for (Ride ride : rides) {
                 if (ride.getStartTime().getHours() < 14) {
                     if (ride.getStartTime().getDate() != ride.getEndTime().getDate()) {
                         if (ride.getStartTime().getHours() >= 18) {
@@ -125,8 +126,8 @@ public class ReportServiceImpl implements ReportService {
             allowances = 0;
             //Allowances per hour
             if (rides.get(0).getStartTime().getDate() == rides.get(1).getStartTime().getDate()) {
-                allowances += (rides.get(0).getEndTime().getHours() - rides.get(0).getStartTime().getHours()) * MULTIPLE_FIRST_DAY;
-                allowances += (rides.get(1).getEndTime().getHours() - rides.get(1).getStartTime().getHours()) * MULTIPLE_FIRST_DAY;
+                allowances += hoursBetween(rides.get(0).getStartTime(), rides.get(0).getEndTime()) * MULTIPLE_FIRST_DAY;
+                allowances += hoursBetween(rides.get(1).getStartTime(), rides.get(1).getEndTime()) * MULTIPLE_FIRST_DAY;
                 if (rides.get(0).getStartTime().getHours() < 17) {
                     int hours = 24 - rides.get(0).getEndTime().getHours();
                     if (hours > 7) {
@@ -147,7 +148,7 @@ public class ReportServiceImpl implements ReportService {
 
                 endDate = rides.get(1).getEndTime();
             } else {
-                allowances += (rides.get(0).getEndTime().getHours() - rides.get(0).getStartTime().getHours()) * MULTIPLE_FIRST_DAY;
+                allowances += hoursBetween(rides.get(0).getStartTime(), rides.get(0).getEndTime()) * MULTIPLE_FIRST_DAY;
                 if (rides.get(0).getStartTime().getHours() < 17) {
                     int hours = rides.get(0).getEndTime().getHours() - 17;
                     System.err.println("testing1 " + hours);
@@ -161,17 +162,20 @@ public class ReportServiceImpl implements ReportService {
                 endDate = rides.get(0).getEndTime();
             }
             //Interim days
-            allowances += (rides.get(rides.size()-1).getStartTime().getDate() - endDate.getDate() - 1) * MULTIPLE_INTERIM_DAYS;
+            allowances += daysBetween(endDate, rides.get(rides.size() - 1).getStartTime()) * MULTIPLE_INTERIM_DAYS;
+            System.err.println("test3.1 " + rides.get(rides.size() - 1).getStartTime());
+            System.err.println("test3.2 " + endDate);
+            System.err.println("test3.3 " + daysBetween(rides.get(rides.size() - 1).getStartTime(), endDate));
             System.err.println("test3" + allowances);
 
             //Last day
-            if (rides.get(rides.size()-1).getEndTime().getDate() == rides.get(rides.size()-2).getStartTime().getDate()) {
-                if (rides.get(rides.size()-1).getStartTime().getHours() <= 6) {
-                    int hours = rides.get(rides.size()-1).getEndTime().getHours() -  rides.get(rides.size()-1).getStartTime().getHours();
+            if (rides.get(rides.size() - 1).getEndTime().getDate() == rides.get(rides.size() - 2).getStartTime().getDate()) {
+                if (rides.get(rides.size() - 1).getStartTime().getHours() <= 6) {
+                    int hours = rides.get(rides.size() - 1).getEndTime().getHours() - rides.get(rides.size() - 1).getStartTime().getHours();
                     if (hours > 6) {
                         hours = 6;
                     }
-                    if (rides.get(rides.size()-1).getEndTime().getHours() > 12) {
+                    if (rides.get(rides.size() - 1).getEndTime().getHours() > 12) {
                         allowances += hours * MULTIPLE_LAST_DAYS_BETWEEN_24_AND_6_PAST_12;
                         System.err.println("test4" + allowances);
                     } else {
@@ -179,12 +183,12 @@ public class ReportServiceImpl implements ReportService {
                         System.err.println("test5" + allowances);
                     }
                 }
-                if (rides.get(rides.size()-2).getStartTime().getHours() <= 6) {
-                    int hours = rides.get(rides.size()-2).getEndTime().getHours() -  rides.get(rides.size()-2).getStartTime().getHours();
+                if (rides.get(rides.size() - 2).getStartTime().getHours() <= 6) {
+                    int hours = rides.get(rides.size() - 2).getEndTime().getHours() - rides.get(rides.size() - 2).getStartTime().getHours();
                     if (hours > 6) {
                         hours = 6;
                     }
-                    if (rides.get(rides.size()-1).getEndTime().getHours() > 12) {
+                    if (rides.get(rides.size() - 1).getEndTime().getHours() > 12) {
                         allowances += hours * MULTIPLE_LAST_DAYS_BETWEEN_24_AND_6_PAST_12;
                         System.err.println("test6" + allowances);
                     } else {
@@ -193,10 +197,10 @@ public class ReportServiceImpl implements ReportService {
                     }
                 }
             } else {
-                if (rides.get(rides.size()-1).getEndTime().getDate() == rides.get(rides.size()-1).getStartTime().getDate()) {
-                    if (rides.get(rides.size()-1).getStartTime().getHours() <= 6) {
+                if (rides.get(rides.size() - 1).getEndTime().getDate() == rides.get(rides.size() - 1).getStartTime().getDate()) {
+                    if (rides.get(rides.size() - 1).getStartTime().getHours() <= 6) {
                         int hours = 0;
-                        if (rides.get(rides.size()-1).getEndTime().getHours() <= 6) {
+                        if (rides.get(rides.size() - 1).getEndTime().getHours() <= 6) {
                             hours = rides.get(rides.size() - 1).getEndTime().getHours() - rides.get(rides.size() - 1).getStartTime().getHours();
                         } else {
                             hours = 6 - rides.get(rides.size() - 1).getStartTime().getHours();
@@ -204,7 +208,7 @@ public class ReportServiceImpl implements ReportService {
                         if (hours > 6) {
                             hours = 6;
                         }
-                        if (rides.get(rides.size()-1).getEndTime().getHours() > 12) {
+                        if (rides.get(rides.size() - 1).getEndTime().getHours() > 12) {
                             allowances += hours * MULTIPLE_LAST_DAYS_BETWEEN_24_AND_6_PAST_12;
                             System.err.println("test8" + allowances);
                         } else {
@@ -213,11 +217,11 @@ public class ReportServiceImpl implements ReportService {
                         }
                     }
                 } else {
-                    int hours = rides.get(rides.size()-1).getEndTime().getHours();
+                    int hours = rides.get(rides.size() - 1).getEndTime().getHours();
                     if (hours > 6) {
                         hours = 6;
                     }
-                    if (rides.get(rides.size()-1).getEndTime().getHours() > 12) {
+                    if (rides.get(rides.size() - 1).getEndTime().getHours() > 12) {
                         allowances += hours * MULTIPLE_LAST_DAYS_BETWEEN_24_AND_6_PAST_12;
                         System.err.println("test10" + allowances);
                     } else {
@@ -230,30 +234,14 @@ public class ReportServiceImpl implements ReportService {
         return allowances;
     }
 
-    public static void main(String[] args) {
-        ApplicationContext context = new AnnotationConfigApplicationContext(RootConfig.class);
-        UserService userService = context.getBean(UserService.class);
-        User user = userService.findById(3);
-//        ShiftDao shiftDao = context.getBean(ShiftDao.class);
-//        Date periodStartTime = PeriodCalculator.getPeriodStartTime(2016, 5);
-//        Date periodEndTime = PeriodCalculator.getPeriodEndTime(2016, 5);
-//        System.err.println("Start time " + periodStartTime);
-//        System.err.println("End time " + periodEndTime);
-//        List<Shift> shifts = shiftDao.getForPeriod(user.getId(), periodStartTime, periodEndTime);
-//        System.err.println("testing");
-//        System.out.println(shifts);
-//        System.err.println("testing");
-        ReportService rs = context.getBean(ReportService.class);
-        List<AllowancesDTO> list = rs.getReportList(user, 2016, 5);
-        System.err.println("testing");
-        System.out.println(list);
-//        Date date = new Date();
-//        date.setTime(2221231238133L);
-//        System.out.println(date);
-//        date.setHours(date.getHours() + 24);
-//        System.out.println(date);
-
+    private int daysBetween(Date d1, Date d2) {
+        return (int) ((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
     }
+
+    private int hoursBetween(Date d1, Date d2) {
+        return (int) ((d2.getTime() - d1.getTime()) / (1000 * 60 * 60));
+    }
+
 
     @Override
     public List<ConsignmentFeeDTO> getConsigmentList(User user, int year, int period) {
