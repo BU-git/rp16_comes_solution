@@ -29,6 +29,7 @@ public class LoggingAspect {
             log.trace(temp);
         }
     }
+
     @AfterReturning("allMethods()")
     public void logAfterReturn(JoinPoint joinpoint) {
         if (!log.isTraceEnabled()) return;
@@ -36,6 +37,7 @@ public class LoggingAspect {
         String methodName = joinpoint.getSignature().getName();
         log.trace("After Entering to Class " + className + " With Method Name " + methodName);
     }
+
     @AfterThrowing(pointcut = "allMethods()" , throwing = "ex")
     public void logAfterThrowing(JoinPoint joinpoint, Exception ex) {
         Object className = joinpoint.getTarget().getClass().getName();

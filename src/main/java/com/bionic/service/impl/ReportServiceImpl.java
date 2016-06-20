@@ -1,28 +1,20 @@
 package com.bionic.service.impl;
 
-import com.bionic.config.RootConfig;
 import com.bionic.dao.DayTypeDao;
-import com.bionic.dto.AllowancesDTO;
 import com.bionic.dao.ShiftDao;
+import com.bionic.dto.AllowancesDTO;
 import com.bionic.dto.ConsignmentFeeDTO;
 import com.bionic.model.DayType;
 import com.bionic.model.Ride;
 import com.bionic.model.Shift;
 import com.bionic.model.User;
 import com.bionic.service.ReportService;
-import com.bionic.service.UserService;
 import com.bionic.service.util.MonthCalculator;
 import com.bionic.service.util.PeriodCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -64,11 +56,14 @@ public class ReportServiceImpl implements ReportService {
         }
         System.err.println("testing " + shiftDao);
         List<Shift> shifts = shiftDao.getForPeriod(user.getId(), periodStartTime, periodEndTime);
+        Collections.sort(shifts, (l, r) -> (int)(l.getStartTime().getTime() - r.getStartTime().getTime()));
         System.err.println("testing " + shifts);
         int i = 0;
         for (Shift shift : shifts) {
             List<Ride> rides = shift.getRides();
+
             if (rides != null) {
+
                 i++;
                 AllowancesDTO allowancesDTO = new AllowancesDTO();
                 allowancesDTO.setRides("Ride " + i + " From " + rides.get(0).getStartTime() + " To " + rides.get(rides.size() - 1).getEndTime());

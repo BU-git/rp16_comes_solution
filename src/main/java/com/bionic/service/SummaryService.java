@@ -13,6 +13,8 @@ import java.util.List;
  */
 public interface SummaryService {
 
+    WorkingWeekDTO getSummaryTotal(List<WorkingWeekDTO> workingWeekDtoList);
+
     List<WorkingWeekDTO> getSummaryForPeriod(int userId, int year, int period)
                                 throws ShiftsNotFoundException, ShiftsFromFuturePeriodException;
 

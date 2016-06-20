@@ -35,6 +35,19 @@ public class SummaryServiceImpl implements SummaryService {
     @Autowired
     private WorkScheduleService workScheduleService;
 
+    @Override
+    public WorkingWeekDTO getSummaryTotal(List<WorkingWeekDTO> workingWeekDtoList) {
+        WorkingWeekDTO workingWeekDTO = new WorkingWeekDTO();
+
+        for (WorkingWeekDTO w : workingWeekDtoList) {
+            workingWeekDTO.setWorkedTime(workingWeekDTO.getWorkedTime() + w.getWorkedTime());
+            System.out.println("SUMMARY WEEK = " + w.getWorkedTime());
+            System.out.println("SUMMARY TOTAL = " + workingWeekDTO.getWorkedTime() / MILLIS_IN_HOUR);
+        }
+
+        return workingWeekDTO;
+    }
+
     public List<WorkingWeekDTO> getSummaryForMonth(int userId, int year, int month)
                                     throws ShiftsNotFoundException, ShiftsFromFuturePeriodException {
 
@@ -105,12 +118,12 @@ public class SummaryServiceImpl implements SummaryService {
             Date saturdayStartTime = getSaturdayStartTime(weekStartTime);
             Date saturdayEndTime = getSaturdayEndTime(weekEndTime);
             Date sundayStartTime = getSundayStartTime(weekStartTime);
-            System.out.println("weekStartTime = " + weekStartTime);
-            System.out.println("workingWeekEndTime = " + workingWeekEndTime);
-            System.out.println("saturdayStartTime = " + saturdayStartTime);
-            System.out.println("saturdayEndTime = " + saturdayEndTime);
-            System.out.println("sundayStartTime = " + sundayStartTime);
-            System.out.println("weekEndTime = " + weekEndTime);
+//            System.out.println("weekStartTime = " + weekStartTime);
+//            System.out.println("workingWeekEndTime = " + workingWeekEndTime);
+//            System.out.println("saturdayStartTime = " + saturdayStartTime);
+//            System.out.println("saturdayEndTime = " + saturdayEndTime);
+//            System.out.println("sundayStartTime = " + sundayStartTime);
+//            System.out.println("weekEndTime = " + weekEndTime);
 
             int contractHours = 0;
             contractHours = workScheduleService.getContractHoursForWeek(userId, weekStartTime);
@@ -157,87 +170,15 @@ public class SummaryServiceImpl implements SummaryService {
             List<Ride> rides = s.getRides();
             Collections.sort(rides, (l, r) -> (int)(l.getStartTime().getTime() - r.getStartTime().getTime()));
 
-            int sequentialWorkedTime = 0;
-
             for (int i = 0; i < rides.size(); i++) {
                 Ride r = rides.get(i);
                 if (r.getEndTime().getTime() > weekStartTime.getTime()) {
                     if (r.getStartTime().getTime() > weekEndTime.getTime()) break shift;
-                    long tempWorkedTime = 0;
-                    if (r.getStartTime().getTime() < weekStartTime.getTime()) {
-                        tempWorkedTime = r.getEndTime().getTime() - weekStartTime.getTime();
-                        workedTime += tempWorkedTime;
                         shiftSet.add(s);
-                    } else if (r.getEndTime().getTime() > weekEndTime.getTime()) {
-                        tempWorkedTime = weekEndTime.getTime() - r.getStartTime().getTime();
-                        workedTime += tempWorkedTime;
-                        shiftSet.add(s);
-                    } else {
-                        tempWorkedTime = r.getEndTime().getTime() - r.getStartTime().getTime();
-                        workedTime += tempWorkedTime;
-                        shiftSet.add(s);
-                    }
-                    System.out.println("temp worked time = " + (tempWorkedTime/ 1000 / 60 / 60d));
-                    if (i == 0) {
-                        tempWorkedTime += r.getStartTime().getTime() - s.getStartTime().getTime();
-                        System.out.println("temp worked time first = " + (tempWorkedTime / 1000 / 60 / 60d));
-                        workedTime += r.getStartTime().getTime() - s.getStartTime().getTime();
-                    }
-                    if (i == rides.size()-1) {
-                        tempWorkedTime += s.getEndTime().getTime() - r.getEndTime().getTime();
-                        System.out.println("temp worked time last = " + (tempWorkedTime / 1000 / 60 / 60d));
-                        workedTime += s.getEndTime().getTime() - r.getEndTime().getTime();
-                    }
-
-                    //Calculate pause for sequential time rides
-                    if (i == 0 && i != rides.size()-1) {
-                        if (rides.get(i).getEndTime().getTime() == rides.get(i + 1).getStartTime().getTime()){
-                            sequentialWorkedTime += tempWorkedTime;
-                        } else {
-                            long tempPauseTime = getPauseTime(tempWorkedTime);
-                            pauseTime += tempPauseTime;
-                        }
-
-                    } else if (i != 0 && i != rides.size()-1) {
-                        if (rides.get(i).getEndTime().getTime() == rides.get(i + 1).getStartTime().getTime()){
-                            sequentialWorkedTime += tempWorkedTime;
-                        } else if (sequentialWorkedTime > 0) {
-                            sequentialWorkedTime += tempWorkedTime;
-                            long tempPauseTime = getPauseTime(sequentialWorkedTime);
-                            System.out.println("sequential worked time = " + (sequentialWorkedTime / 1000 / 60 / 60d));
-                            pauseTime += tempPauseTime;
-                            sequentialWorkedTime = 0;
-                        } else {
-                            long tempPauseTime = getPauseTime(tempWorkedTime);
-                            pauseTime += tempPauseTime;
-                        }
-
-                    } else if (i == rides.size()-1) {
-                        if (sequentialWorkedTime > 0) {
-                            sequentialWorkedTime += tempWorkedTime;
-                            long tempPauseTime = getPauseTime(sequentialWorkedTime);
-                            System.out.println("sequential worked time = " + (sequentialWorkedTime / 1000 / 60 / 60d));
-                            pauseTime += tempPauseTime;
-                            sequentialWorkedTime = 0;
-                        } else {
-                            long tempPauseTime = getPauseTime(tempWorkedTime);
-                            pauseTime += tempPauseTime;
-                        }
-                    }
-
                 }
             }
         }
 
-        long overTime = 0;
-        long actualWorkedTime = workedTime - pauseTime;
-        if (actualWorkedTime >= contractTime) overTime = actualWorkedTime - contractTime;
-        System.out.println("worked time = " + (workedTime / 1000 / 60 / 60d));
-        System.out.println("pause time = " + (pauseTime / 1000 / 60 / 60d));
-        System.out.println("actual worked time = " + (actualWorkedTime / 1000 / 60 / 60d));
-        System.out.println("contract time = " + (contractTime / 1000 / 60 / 60d));
-        workingWeek.setWorkedTime(actualWorkedTime);
-        workingWeek.setOverTime(overTime);
         workingWeek.setShiftList(shiftSet);
 
         return workingWeek;

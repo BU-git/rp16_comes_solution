@@ -179,22 +179,24 @@ public class OvertimeServiceImpl implements OvertimeService {
 //                    System.out.println("period start time = " + startTime.getTime());
                     if (r.getStartTime().getTime() < startTime.getTime()) {
                         tempWorkedTime = r.getEndTime().getTime() - startTime.getTime();
+                        System.out.println("-----------------------Saturday = " + tempWorkedTime);
                         workedTime += tempWorkedTime;
                     } else if (r.getEndTime().getTime() > endTime.getTime()) {
-                        tempWorkedTime = endTime.getTime() - r.getStartTime().getTime();
+                        tempWorkedTime = endTime.getTime() - r.getStartTime().getTime() + 1;
+                        System.out.println("-----------------------Friday = " + tempWorkedTime);
                         workedTime += tempWorkedTime;
                     } else {
                         tempWorkedTime = r.getEndTime().getTime() - r.getStartTime().getTime();
                         workedTime += tempWorkedTime;
                     }
 
-                    System.out.println("temp worked time = " + (tempWorkedTime/ 1000 / 60 / 60d));
-                    if (i == 0) {
+                    System.out.println("temp worked time = " + (tempWorkedTime/ 1000 / 60d));
+                    if (i == 0 && startTime.getTime() < r.getStartTime().getTime()) {
                         tempWorkedTime += r.getStartTime().getTime() - s.getStartTime().getTime();
-                        System.out.println("temp worked time first = " + (tempWorkedTime / 1000 / 60 / 60d));
+                        System.out.println("temp worked time first = " + (tempWorkedTime / 1000 / 60d));
                         workedTime += r.getStartTime().getTime() - s.getStartTime().getTime();
                     }
-                    if (i == rides.size()-1) {
+                    if (i == rides.size()-1 && endTime.getTime() > r.getEndTime().getTime()) {
                         tempWorkedTime += s.getEndTime().getTime() - r.getEndTime().getTime();
                         System.out.println("temp worked time last = " + (tempWorkedTime / 1000 / 60 / 60d));
                         workedTime += s.getEndTime().getTime() - r.getEndTime().getTime();
