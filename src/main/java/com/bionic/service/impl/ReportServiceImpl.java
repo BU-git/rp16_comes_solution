@@ -67,9 +67,10 @@ public class ReportServiceImpl implements ReportService {
                 allowancesDTO.setRides("Ride " + i + " From " + rides.get(0).getStartTime() + " To " + rides.get(rides.size() - 1).getEndTime());
                 allowancesDTO.setTotalDays((int) TimeUnit.DAYS.convert((rides.get(rides.size() - 1).getEndTime().getTime() - rides.get(0).getStartTime().getTime()), TimeUnit.MILLISECONDS) + 1);
                 int totalTimes = 0;
-                for (Ride ride : shift.getRides()) {
-                    totalTimes += (ride.getEndTime().getTime() - ride.getStartTime().getTime()) / (1000 * 60 * 60);
-                }
+//                for (Ride ride : shift.getRides()) {
+//                    totalTimes += (ride.getEndTime().getTime() - ride.getStartTime().getTime()) / (1000 * 60 * 60);
+//                }
+                totalTimes += (rides.get(rides.size()-1).getEndTime().getTime() - rides.get(0).getStartTime().getTime()) / (1000 * 60 * 60);
                 allowancesDTO.setTotalTimes(totalTimes);
                 allowancesDTO.setAllowances(getAllowances(allowancesDTO, shift));
                 reportList.add(allowancesDTO);
