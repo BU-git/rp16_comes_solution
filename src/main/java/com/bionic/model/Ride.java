@@ -72,4 +72,14 @@ public class Ride {
         if (this.getId().equals(ride.getId())) return true;
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Ride{" +
+                "id=" + id +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", shift=" + shift +
+                '}';
+    }
 }

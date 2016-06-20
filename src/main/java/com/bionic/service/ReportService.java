@@ -13,5 +13,4 @@ import java.util.List;
 public interface ReportService {
     List<AllowancesDTO> getReportList(User user, int year, int period);
     List<ConsignmentFeeDTO> getConsigmentList(User user, int year, int period);
-    public double getAllowances(AllowancesDTO allowancesDTO, Shift shift);
 }

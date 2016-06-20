@@ -32,7 +32,6 @@ public class ReportServiceImpl implements ReportService {
     private static final double MULTIPLE_INTERIM_DAYS = 47.28;
     private static final double MULTIPLE_LAST_DAYS_BETWEEN_24_AND_6 = 1.21;
     private static final double MULTIPLE_LAST_DAYS_BETWEEN_24_AND_6_PAST_12 = 2.73;
-    private static final int MONTHS_IN_YEAR = 12;
 
     @Autowired
     private ShiftDao shiftDao;
@@ -56,14 +55,13 @@ public class ReportServiceImpl implements ReportService {
         }
         System.err.println("testing " + shiftDao);
         List<Shift> shifts = shiftDao.getForPeriod(user.getId(), periodStartTime, periodEndTime);
+        filterWorkShifts(shifts,periodStartTime,periodEndTime);
         Collections.sort(shifts, (l, r) -> (int)(l.getStartTime().getTime() - r.getStartTime().getTime()));
         System.err.println("testing " + shifts);
         int i = 0;
         for (Shift shift : shifts) {
             List<Ride> rides = shift.getRides();
-
             if (rides != null) {
-
                 i++;
                 AllowancesDTO allowancesDTO = new AllowancesDTO();
                 allowancesDTO.setRides("Ride " + i + " From " + rides.get(0).getStartTime() + " To " + rides.get(rides.size() - 1).getEndTime());
@@ -80,7 +78,34 @@ public class ReportServiceImpl implements ReportService {
         return reportList;
     }
 
-    public double getAllowances(AllowancesDTO allowancesDTO, Shift shift) {
+
+    private void filterWorkShifts(List<Shift> shifts,Date periodStartTime,Date periodEndTime) {
+        for (Shift shift:shifts) {
+            List<Ride> rides = shift.getRides();
+            List<Ride> toRemove= new ArrayList<>();
+            if (rides != null) {
+                for (Ride ride : rides ) {
+                    if (ride.getStartTime().getTime() < periodStartTime.getTime() && ride.getEndTime().getTime() > periodStartTime.getTime()) {
+                        ride.setStartTime(periodStartTime);
+                    }
+                    if (ride.getEndTime().getTime() < periodStartTime.getTime()) {
+                        toRemove.add(ride);
+                    }
+                    if (ride.getEndTime().getTime() > periodEndTime.getTime() && ride.getStartTime().getTime() < periodEndTime.getTime()) {
+                        ride.setEndTime(periodEndTime);
+                    }
+
+                    if (ride.getStartTime().getTime() > periodEndTime.getTime()) {
+                        toRemove.add(ride);
+                    }
+                }
+                rides.removeAll(toRemove);
+            }
+        }
+    }
+
+
+    private double getAllowances(AllowancesDTO allowancesDTO, Shift shift) {
         double allowances = 0;
         List<Ride> rides = shift.getRides();
         int totalHours = (int) (rides.get(rides.size() - 1).getEndTime().getTime() - rides.get(0).getStartTime().getTime()) / (1000 * 60 * 60);
@@ -140,7 +165,6 @@ public class ReportServiceImpl implements ReportService {
                     allowances += hours * (MULTIPLE_FIRST_DAY_BETWEEN_17_24 - MULTIPLE_FIRST_DAY);
                     System.err.println("test1 " + allowances);
                 }
-
                 endDate = rides.get(1).getEndTime();
             } else {
                 allowances += hoursBetween(rides.get(0).getStartTime(), rides.get(0).getEndTime()) * MULTIPLE_FIRST_DAY;
