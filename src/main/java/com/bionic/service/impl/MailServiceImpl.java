@@ -84,6 +84,8 @@ public class MailServiceImpl implements MailService {
     public void sendReportLinks(String email, int userId,  int year, int period) throws UserNotExistsException{
 
         User user = userService.findById(userId);
+        userKeyDao.deleteByUserEmail(user.getEmail());
+
         String message = "";
         if (!(user == null)) {
             long key = System.currentTimeMillis();

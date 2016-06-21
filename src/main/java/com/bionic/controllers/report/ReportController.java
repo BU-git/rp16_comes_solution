@@ -88,7 +88,6 @@ public class ReportController {
                 modelAndView = new ModelAndView("rpt_TVTbuild", modelMap);
             }
 
-//            userKeyDao.delete(userKey);
             return modelAndView;
 
         } else {
@@ -140,7 +139,6 @@ public class ReportController {
             modelMap.put("totalTimes", totalTimes);
             modelMap.put("allowances", allowances);
             modelAndView = new ModelAndView("rpt_Allowances", modelMap);
-//            userKeyDao.delete(userKey);
 
             return modelAndView;
         } else {
@@ -181,7 +179,7 @@ public class ReportController {
             modelMap.put("contractHours", user.getContractHours());
             modelMap.put("totalAllowances", totalAllowances);
             modelAndView = new ModelAndView("rpt_Consigment", modelMap);
-//            userKeyDao.delete(userKey);
+
             return modelAndView;
         } else {
             throw new UserNotExistsException();
@@ -242,7 +240,6 @@ public class ReportController {
 
             modelAndView = new ModelAndView("rpt_Overtime", modelMap);
 
-//            userKeyDao.delete(userKey);
             return modelAndView;
         } else {
             throw new UserNotExistsException();
